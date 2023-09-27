@@ -3,6 +3,6 @@
     public interface IRoleService
     {
         Task<bool> ExistsNameAsync(string name);
-        
+
     }
 }
