@@ -1,8 +1,8 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.RoleCommand;
+using System.Net;
 
 namespace shopecommerce.API.Controllers
 {
@@ -14,8 +14,7 @@ namespace shopecommerce.API.Controllers
         {
         }
 
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateRoleAsync([FromBody] CreateRoleCommand model)
         {
