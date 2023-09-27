@@ -59,5 +59,41 @@ namespace shopecommerce.Domain.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin Cateogry Id không hợp lệ..
+        /// </summary>
+        public static string category_id_is_invalid {
+            get {
+                return ResourceManager.GetString("category_id_is_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Danh mục không tồn tại trong hệ thống..
+        /// </summary>
+        public static string category_is_not_exist {
+            get {
+                return ResourceManager.GetString("category_is_not_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên danh mục đã tồn tại..
+        /// </summary>
+        public static string category_name_exist {
+            get {
+                return ResourceManager.GetString("category_name_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy dữ liệu..
+        /// </summary>
+        public static string not_found {
+            get {
+                return ResourceManager.GetString("not_found", resourceCulture);
+            }
+        }
     }
 }

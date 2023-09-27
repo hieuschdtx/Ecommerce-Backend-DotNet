@@ -59,5 +59,14 @@ namespace shopecommerce.Domain.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quyền người dùng đã tồn tại..
+        /// </summary>
+        public static string role_name_is_existed {
+            get {
+                return ResourceManager.GetString("role_name_is_existed", resourceCulture);
+            }
+        }
     }
 }

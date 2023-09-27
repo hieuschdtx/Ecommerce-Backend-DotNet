@@ -59,5 +59,113 @@ namespace shopecommerce.Domain.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa được cấp quyền để thực hiện yêu cầu này..
+        /// </summary>
+        public static string forbidden {
+            get {
+                return ResourceManager.GetString("forbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy dữ liệu..
+        /// </summary>
+        public static string not_found {
+            get {
+                return ResourceManager.GetString("not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin đăng nhập không hợp lệ..
+        /// </summary>
+        public static string unauthorized {
+            get {
+                return ResourceManager.GetString("unauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email đã được đăng ký..
+        /// </summary>
+        public static string user_email_existed {
+            get {
+                return ResourceManager.GetString("user_email_existed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email không hợp lệ..
+        /// </summary>
+        public static string user_email_invalid {
+            get {
+                return ResourceManager.GetString("user_email_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin User Id không hợp lệ..
+        /// </summary>
+        public static string user_id_is_invalid {
+            get {
+                return ResourceManager.GetString("user_id_is_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin User Id không tồn tại..
+        /// </summary>
+        public static string user_id_is_not_existed {
+            get {
+                return ResourceManager.GetString("user_id_is_not_existed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thiếu thông tin User Id..
+        /// </summary>
+        public static string user_id_is_required {
+            get {
+                return ResourceManager.GetString("user_id_is_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tài khoản đã tồn tại..
+        /// </summary>
+        public static string user_name_existed {
+            get {
+                return ResourceManager.GetString("user_name_existed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên tài khoản không hợp lệ..
+        /// </summary>
+        public static string user_name_invalid {
+            get {
+                return ResourceManager.GetString("user_name_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu không hợp lệ..
+        /// </summary>
+        public static string user_password_invalid {
+            get {
+                return ResourceManager.GetString("user_password_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số điện thoại đã được đăng ký..
+        /// </summary>
+        public static string user_phone_number_is_existed {
+            get {
+                return ResourceManager.GetString("user_phone_number_is_existed", resourceCulture);
+            }
+        }
     }
 }
