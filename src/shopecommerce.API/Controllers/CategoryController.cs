@@ -1,40 +1,43 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.CategoryCommand;
 using shopecommerce.Application.Queries.CategoryQuery;
 using shopecommerce.Domain.Commons;
+using System.Net;
 
 namespace shopecommerce.API.Controllers;
 [ApiController]
 [Route("v1/category")]
 public class CategoryController : BaseController
 {
-    public CategoryController( IMediator mediator, IAuthorizationService authorizationService ) : base(mediator, authorizationService)
+    public CategoryController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
     {
     }
 
     [HttpPost]
     [Route("create")]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<IActionResult> CreateCategoryAsync( [FromBody] CreateCategoryCommand model )
+    public async Task<IActionResult> CreateCategoryAsync([FromBody] CreateCategoryCommand command)
     {
-        var resp = await _mediator.Send(model);
+        var resp = await _mediator.Send(command);
         return Ok(resp);
     }
 
     [HttpPut]
     [Route("update")]
-    public async Task<IActionResult> UpdateCategoryAsync( [FromBody] UpdateCategoryCommand model )
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<IActionResult> UpdateCategoryAsync([FromQuery] string id, [FromBody] UpdateCategoryCommand command)
     {
-        var resp = await _mediator.Send(model);
+        command.SetId(id);
+        var resp = await _mediator.Send(command);
         return Ok(resp);
     }
 
     [HttpDelete]
     [Route("delete")]
-    public async Task<IActionResult> DeleteCategoryAsync( [FromQuery] string id )
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    public async Task<IActionResult> DeleteCategoryAsync([FromQuery] string id)
     {
         var resp = await _mediator.Send(new DeleteCategoryCommand(id));
         return Ok(resp);
@@ -47,11 +50,11 @@ public class CategoryController : BaseController
         var resp = await _mediator.Send(new GetAllCategoryQuery());
         return Ok(resp);
     }
-    
+
     [HttpGet]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetCategoryById( string id )
+    public async Task<IActionResult> GetCategoryById(string id)
     {
         var resp = await _mediator.Send(new GetCategoryByIdQuery { category_id = id });
         return Ok(resp);
