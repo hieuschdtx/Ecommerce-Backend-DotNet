@@ -16,9 +16,18 @@ namespace shopecommerce.API.Controllers
 
         [HttpPost("create")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateRoleAsync([FromBody] CreateRoleCommand model)
+        public async Task<IActionResult> CreateRoleAsync([FromBody] CreateRoleCommand command)
         {
-            var resp = await _mediator.Send(model);
+            var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+
+        [HttpPut("update")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> UpdateRoleAsync([FromQuery] string role_id, [FromBody] UpdateRoleCommand command)
+        {
+            command.SetId(role_id);
+            var resp = await _mediator.Send(command);
             return Ok(resp);
         }
     }
