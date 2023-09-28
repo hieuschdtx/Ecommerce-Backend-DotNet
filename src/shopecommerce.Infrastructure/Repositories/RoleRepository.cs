@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using shopecommerce.Domain.Commons;
+﻿using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Data;
@@ -21,7 +20,7 @@ namespace shopecommerce.Infrastructure.Repositories
 
         public async Task<Roles> GetByIdAsync(string id)
         {
-            return (await _context.Roles.FirstOrDefaultAsync(x => x.id == id))!;
+            return await _context.Roles.FindAsync(id);
         }
 
         public async Task<Roles> AddAsync(Roles entity)
