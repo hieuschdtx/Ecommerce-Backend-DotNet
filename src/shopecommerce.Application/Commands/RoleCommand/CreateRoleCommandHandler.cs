@@ -30,6 +30,8 @@ namespace shopecommerce.Application.Commands.RoleCommand
             }
 
             var roleMapping = _mapper.Map(request, new Roles());
+            roleMapping.SetNameToLower(roleMapping.name);
+
             await _roleRepository.AddAsync(roleMapping);
             await _roleRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 

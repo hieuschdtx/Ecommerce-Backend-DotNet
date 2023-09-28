@@ -26,5 +26,9 @@ namespace shopecommerce.Domain.Entities
             this.name = name;
             this.description = description;
         }
+        public void SetNameToLower(string name)
+        {
+            this.name = name.ToLower();
+        }
     }
 }
