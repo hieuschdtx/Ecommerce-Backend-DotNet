@@ -1,9 +1,8 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
-using shopecommerce.Domain.Models;
+using System.Net;
 
 namespace shopecommerce.API.Controllers
 {
@@ -18,7 +17,7 @@ namespace shopecommerce.API.Controllers
         [HttpPost]
         [Route("register")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] CreateUserCommand request)
+        public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterUserCommand request)
         {
             var resp = await _mediator.Send(request);
             return Ok(resp);

@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using shopecommerce.API.Configurations;
@@ -78,17 +79,23 @@ internal class Program
         // }).AddEntityFrameworkStores<EcommerceContext>();
 
         //Jwt Authentication
-        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-           .AddJwtBearer()
-           .AddCookie(options =>
-           {
-               options.Cookie.Name = setting.Cookie.Name;
-               options.Cookie.HttpOnly = setting.Cookie.HttpOnly;
-               options.Cookie.Domain = setting.Cookie.Domain;
-               options.Cookie.SameSite = setting.Cookie.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
-               options.Cookie.SecurePolicy = setting.Cookie.SecurePolicy ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
-           });
-
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer()
+        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        {
+            options.SlidingExpiration = true;
+            options.Cookie.Name = setting.Cookie.Name;
+            options.Cookie.HttpOnly = setting.Cookie.HttpOnly;
+            options.Cookie.Domain = setting.Cookie.Domain;
+            options.Cookie.SameSite = setting.Cookie.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
+            options.Cookie.SecurePolicy = setting.Cookie.SecurePolicy ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
+        });
+        builder.Services.ConfigureOptions<JwtOptionsSetup>();
+        builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
         // Add cors
         builder.Services.AddCors(options =>
         {
@@ -98,8 +105,7 @@ internal class Program
                 .AllowAnyHeader());
         });
 
-        builder.Services.ConfigureOptions<JwtOptionsSetup>();
-        builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+
 
         var app = builder.Build();
 
