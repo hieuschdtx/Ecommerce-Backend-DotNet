@@ -20,5 +20,10 @@ namespace shopecommerce.Domain.Extensions
             var headers = context.Response.GetTypedHeaders();
             headers.Expires = DateTime.UtcNow.AddMinutes(minutes);
         }
+
+        public static void SetHeaderValue(this HttpContext context, string key, string value)
+        {
+            context.Response.Headers.Add(key, value);
+        }
     }
 }
