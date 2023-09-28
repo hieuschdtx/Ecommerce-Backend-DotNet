@@ -47,5 +47,13 @@ namespace shopecommerce.API.Controllers
             var resp = await _mediator.Send(new GetRoleByIdQuery(role_id));
             return Ok(resp);
         }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllRoleAsync()
+        {
+            var resp = await _mediator.Send(new GetAllRoleQuery());
+            return Ok(resp);
+        }
     }
 }
