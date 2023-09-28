@@ -8,6 +8,7 @@ namespace shopecommerce.Application.Validator
         public bool RequireNonAlphanumeric { get; set; } = true;
         public bool RequireUppercase { get; set; } = true;
         public int RequiredLength { get; set; } = 8;
+        public string messgeErrorPassword() => $"Mật khẩu phải có ít nhất {RequiredLength} ký tự, một ký tự đặc biệt, một ký tự viết hoa.";
 
         public RegisterUserCommandValidator()
         {
@@ -18,11 +19,9 @@ namespace shopecommerce.Application.Validator
 
             RuleFor(p => p.password)
                 .NotEmpty().WithMessage("Mật khẩu không được để trống.")
-                .MinimumLength(RequiredLength).WithMessage($"Mật khẩu phải có ít nhất {RequiredLength} ký tự.")
-                .Matches("[A-Z]").When(p => RequireUppercase)
-                .WithMessage("Mật khẩu phải có ít nhất một ký tự viết hoa.")
-                .Matches("[!@#$%^&*()]").When(p => RequireNonAlphanumeric)
-                .WithMessage("Mật khẩu phải có ít nhất một ký tự đặc biệt.");
+                .MinimumLength(RequiredLength).WithMessage(messgeErrorPassword())
+                .Matches("[A-Z]").When(p => RequireUppercase).WithMessage(messgeErrorPassword())
+                .Matches("[!@#$%^&*()]").When(p => RequireNonAlphanumeric).WithMessage(messgeErrorPassword());
 
             RuleFor(p => p.confirm_password)
                 .NotEmpty().WithMessage("Xác nhận mật khẩu không được để trống.")
@@ -34,6 +33,7 @@ namespace shopecommerce.Application.Validator
 
             RuleFor(p => p.phone_number)
                 .NotEmpty().WithMessage("Xác nhận mật khẩu không được để trống.")
+                .MaximumLength(11).WithMessage("Số điện thoại không hợp lệ.")
                 .Matches("^[0-9]*$").WithMessage("Số điện thoại chỉ được nhập số.");
         }
     }

@@ -2,8 +2,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using shopecommerce.API.Configurations;
@@ -79,13 +77,9 @@ internal class Program
         // }).AddEntityFrameworkStores<EcommerceContext>();
 
         //Jwt Authentication
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+        builder.Services.AddAuthentication(setting.Cookie.Name)
         .AddJwtBearer()
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+        .AddCookie(setting.Cookie.Name, options =>
         {
             options.SlidingExpiration = true;
             options.Cookie.Name = setting.Cookie.Name;

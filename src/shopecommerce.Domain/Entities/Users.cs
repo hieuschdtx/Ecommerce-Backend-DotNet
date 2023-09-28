@@ -1,3 +1,5 @@
+using shopecommerce.Domain.Commons;
+
 namespace shopecommerce.Domain.Entities;
 
 public class Users
@@ -21,6 +23,7 @@ public class Users
     public string email { get; set; }
     public bool? email_confirmed { get; set; }
     public string password { get; set; }
+    public string password_salt { get; set; }
     public string security_stamp { get; set; }
     public string concurrency_stamp { get; set; }
     public string phone_number { get; set; }
@@ -29,9 +32,24 @@ public class Users
     public int? access_failed_count { get; set; }
     public string role_id { get; set; }
     #endregion
-        
+
     #region Generated Relationships
     public virtual Roles role_Roles { get; set; }
     public virtual ICollection<Orders> user_Orders { get; set; }
     #endregion
+
+    public void SetRoleUser(string role_id)
+    {
+        this.role_id = role_id;
+    }
+
+    public void SetCreatedatUser()
+    {
+        this.created_at = DateTime.Now;
+    }
+
+    public void SetPassWordHash(string enteredPassword)
+    {
+        (this.password, this.password_salt) = PasswordHasher.HashPassword(enteredPassword);
+    }
 }
