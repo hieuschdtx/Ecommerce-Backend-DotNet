@@ -1,4 +1,5 @@
-﻿using shopecommerce.Domain.Commons;
+﻿using Microsoft.EntityFrameworkCore;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Data;
@@ -38,6 +39,11 @@ namespace shopecommerce.Infrastructure.Repositories
         {
             _context.Remove(entity);
             await Task.CompletedTask;
+        }
+
+        public async Task<Roles> GetRoleByNameAsync(string name)
+        {
+            return await _context.Roles.FirstOrDefaultAsync(p => p.name.ToLower() == name.ToLower());
         }
     }
 }

@@ -67,6 +67,11 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("password")
                 .HasColumnType("text");
 
+            builder.Property(t => t.password_salt)
+                .IsRequired()
+                .HasColumnName("password_salt")
+                .HasColumnType("text");
+
             builder.Property(t => t.security_stamp)
                 .HasColumnName("security_stamp")
                 .HasColumnType("text");

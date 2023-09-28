@@ -126,4 +126,7 @@
   <data name="role_name_is_existed" xml:space="preserve">
     <value>Quyền người dùng đã tồn tại.</value>
   </data>
+  <data name="role_name_is_invalid" xml:space="preserve">
+    <value>Quyền người dùng không tồn tại.</value>
+  </data>
 </root>
