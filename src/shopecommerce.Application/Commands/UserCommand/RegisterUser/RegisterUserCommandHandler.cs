@@ -9,20 +9,20 @@ using shopecommerce.Domain.Resources;
 
 namespace shopecommerce.Application.Commands.UserCommand.RegisterUser;
 
-public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, BaseResponseDto>
+public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, BaseResponseDto>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
 
-    public CreateUserCommandHandler(IUserService userService, IUserRepository userRepository, IMapper mapper)
+    public RegisterUserCommandHandler(IUserService userService, IUserRepository userRepository, IMapper mapper)
     {
         _userService = userService;
         _userRepository = userRepository;
         _mapper = mapper;
     }
 
-    public async Task<BaseResponseDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponseDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         if(await _userService.ExistsEmailAsync(request.email))
         {

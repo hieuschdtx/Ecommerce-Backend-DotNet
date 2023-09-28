@@ -3,11 +3,12 @@ using shopecommerce.Domain.Models;
 
 namespace shopecommerce.Application.Commands.UserCommand.RegisterUser;
 
-public class CreateUserCommand : CommandBase<BaseResponseDto>
+public class RegisterUserCommand : CommandBase<BaseResponseDto>
 {
     public string full_name { get; set; }
     public string phone_number { get; set; }
     public string email { get; set; }
     public string password { get; set; }
     public string confirm_password { get; set; }
+    public string role_id { get; set; }
 }

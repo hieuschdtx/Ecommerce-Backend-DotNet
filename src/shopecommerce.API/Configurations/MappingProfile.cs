@@ -27,7 +27,7 @@ public class MappingProfile : Profile
               => srcMember != null));
 
         //Users mapper
-        CreateMap<CreateUserCommand, Users>().ReverseMap()
+        CreateMap<RegisterUserCommand, Users>().ReverseMap()
             .ForAllMembers(opts
                 => opts.Condition((src, dest, srcMember)
                     => srcMember != null));
