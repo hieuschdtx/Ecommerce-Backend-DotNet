@@ -23,11 +23,18 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update")]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateRoleAsync([FromQuery] string role_id, [FromBody] UpdateRoleCommand command)
         {
             command.SetId(role_id);
             var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> DeleteRoleAsync([FromQuery] string role_id)
+        {
+            var resp = await _mediator.Send(new DeleteRoleCommand(role_id));
             return Ok(resp);
         }
     }
