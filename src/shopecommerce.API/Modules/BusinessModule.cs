@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using shopecommerce.Application.Services.CategoryService;
 using shopecommerce.Domain.Commons;
+using shopecommerce.Domain.Extensions;
 using shopecommerce.Infrastructure.Authentications;
 using shopecommerce.Infrastructure.Data;
 using shopecommerce.Infrastructure.Repositories;
@@ -11,13 +12,6 @@ namespace shopecommerce.API.Modules;
 
 internal class BusinessModule : Autofac.Module
 {
-    public IConfiguration Configuration { get; }
-
-    public BusinessModule(WebApplicationBuilder builder)
-    {
-        Configuration = builder.Configuration;
-    }
-
     protected override void Load(ContainerBuilder builder)
     {
         builder.RegisterType(typeof(SqlConnectionFactory))
@@ -31,6 +25,10 @@ internal class BusinessModule : Autofac.Module
           .FindConstructorsWith(new AllConstructorFinder())
           .AsImplementedInterfaces();
 
+        builder.RegisterAssemblyTypes(typeof(CategoryService).Assembly).
+            Where(s => s.Name.EndsWith("Service")).AsImplementedInterfaces().
+            InstancePerRequest().InstancePerLifetimeScope();
+
         builder.RegisterType<HttpContextAccessor>()
             .As<IHttpContextAccessor>().SingleInstance();
 
@@ -38,8 +36,7 @@ internal class BusinessModule : Autofac.Module
         builder.RegisterType(typeof(JwtProvider))
             .As(typeof(IJwtProvider)).InstancePerLifetimeScope();
 
-        builder.RegisterAssemblyTypes(typeof(CategoryService).Assembly).
-            Where(s => s.Name.EndsWith("Service")).AsImplementedInterfaces().
-            InstancePerRequest().InstancePerLifetimeScope();
+        builder.RegisterType(typeof(HttpContextExtensionWrapper))
+            .As(typeof(IHttpContextExtensionWrapper)).InstancePerLifetimeScope();
     }
 }

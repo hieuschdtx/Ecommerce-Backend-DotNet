@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-
-namespace shopecommerce.Domain.Commons
+﻿namespace shopecommerce.Domain.Commons
 {
     public class PagedList<T> : List<T>
     {
@@ -25,20 +22,6 @@ namespace shopecommerce.Domain.Commons
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
-        }
-
-        public static void SaveToPagedList(PagedList<T> items, IHttpContextAccessor httpContextAccessor)
-        {
-            var metadata = new
-            {
-                items.total_count,
-                items.page_size,
-                items.current_page,
-                items.total_pages,
-                items.HasNext,
-                items.HasPrevious
-            };
-            httpContextAccessor.HttpContext?.Response.Headers.Add("X-Panigation", JsonConvert.SerializeObject(metadata));
         }
     }
 }

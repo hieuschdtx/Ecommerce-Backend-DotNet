@@ -28,6 +28,7 @@ internal class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddHttpContextAccessor();
 
         //Register services
         builder.Services.AddValidatorsFromAssembly(typeof(Program)
@@ -44,7 +45,7 @@ internal class Program
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
            .ConfigureContainer<ContainerBuilder>(options =>
            {
-               options.RegisterModule(new BusinessModule(builder));
+               options.RegisterModule(new BusinessModule());
                options.RegisterModule(new MediatRModule());
            });
 
@@ -99,8 +100,6 @@ internal class Program
 
         builder.Services.ConfigureOptions<JwtOptionsSetup>();
         builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
-
-        builder.Services.AddHttpContextAccessor();
 
         var app = builder.Build();
 
