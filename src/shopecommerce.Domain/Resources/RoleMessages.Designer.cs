@@ -61,7 +61,16 @@ namespace shopecommerce.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Role_id không tồn tại..
+        ///   Looks up a localized string similar to Role id không hợp lệ..
+        /// </summary>
+        public static string role_id_is_invalid {
+            get {
+                return ResourceManager.GetString("role_id_is_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role id không tồn tại..
         /// </summary>
         public static string role_id_is_not_exist {
             get {
