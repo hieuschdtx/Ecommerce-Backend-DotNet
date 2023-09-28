@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="role_id_is_invalid" xml:space="preserve">
+    <value>Role id không hợp lệ.</value>
+  </data>
   <data name="role_id_is_not_exist" xml:space="preserve">
-    <value>Role_id không tồn tại.</value>
+    <value>Role id không tồn tại.</value>
   </data>
   <data name="role_name_is_existed" xml:space="preserve">
     <value>Quyền người dùng đã tồn tại.</value>

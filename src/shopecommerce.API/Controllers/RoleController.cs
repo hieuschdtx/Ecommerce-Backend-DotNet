@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.RoleCommand;
+using shopecommerce.Application.Queries.RoleQuery;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
@@ -30,11 +31,20 @@ namespace shopecommerce.API.Controllers
             var resp = await _mediator.Send(command);
             return Ok(resp);
         }
+
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteRoleAsync([FromQuery] string role_id)
         {
             var resp = await _mediator.Send(new DeleteRoleCommand(role_id));
+            return Ok(resp);
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetRoleByIdAsync([FromQuery] string role_id)
+        {
+            var resp = await _mediator.Send(new GetRoleByIdQuery(role_id));
             return Ok(resp);
         }
     }
