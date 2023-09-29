@@ -23,7 +23,6 @@ public class Users
     public string email { get; set; }
     public bool? email_confirmed { get; set; }
     public string password { get; set; }
-    public string password_salt { get; set; }
     public string security_stamp { get; set; }
     public string concurrency_stamp { get; set; }
     public string phone_number { get; set; }
@@ -50,6 +49,6 @@ public class Users
 
     public void SetPassWordHash(string enteredPassword)
     {
-        (this.password, this.password_salt) = PasswordHasher.HashPassword(enteredPassword);
+        this.password = PasswordHasher.HassPassword(enteredPassword);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using shopecommerce.Application.Services.RoleService;
 using shopecommerce.Application.Services.UserService;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Entities;
@@ -13,17 +12,15 @@ namespace shopecommerce.Application.Commands.UserCommand.RegisterUser;
 public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, BaseResponseDto>
 {
     private readonly IUserRepository _userRepository;
-    private readonly IRoleService _roleService;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
 
-    public RegisterUserCommandHandler(IUserService userService, IUserRepository userRepository, IMapper mapper, IRoleService roleService, IRoleRepository roleRepository)
+    public RegisterUserCommandHandler(IUserService userService, IUserRepository userRepository, IMapper mapper, IRoleRepository roleRepository)
     {
         _userService = userService;
         _userRepository = userRepository;
         _mapper = mapper;
-        _roleService = roleService;
         _roleRepository = roleRepository;
     }
 
