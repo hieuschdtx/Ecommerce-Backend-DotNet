@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
+using shopecommerce.Application.Commands.UserCommand.UpdateUser;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
@@ -14,13 +15,23 @@ namespace shopecommerce.API.Controllers
         {
         }
 
-        [HttpPost]
-        [Route("register")]
+        [HttpPost("register")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterUserCommand request)
         {
             var resp = await _mediator.Send(request);
             return Ok(resp);
         }
+
+        [HttpPut("update")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
+        {
+            command.SetId(id);
+
+            var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+
     }
 }

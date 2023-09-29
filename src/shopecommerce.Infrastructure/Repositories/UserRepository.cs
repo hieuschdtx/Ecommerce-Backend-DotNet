@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using shopecommerce.Domain.Commons;
+﻿using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Data;
@@ -18,7 +17,7 @@ public class UserRepository : IUserRepository
 
     public async Task<Users> GetByIdAsync(string id)
     {
-        return (await _context.Users.FirstOrDefaultAsync(x => Equals(BaseGuidEx.GetGuid(id), BaseGuidEx.GetGuid(x.id))))!;
+        return await _context.Users.FindAsync(id);
     }
 
     public async Task<Users> AddAsync(Users entity)
