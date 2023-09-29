@@ -46,7 +46,8 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
 
             builder.Property(t => t.gender)
                 .HasColumnName("gender")
-                .HasColumnType("boolean");
+                .HasColumnType("boolean")
+                .HasDefaultValue(false);
 
             builder.Property(t => t.created_at)
                 .IsRequired()
@@ -91,7 +92,8 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
 
             builder.Property(t => t.access_failed_count)
                 .HasColumnName("access_failed_count")
-                .HasColumnType("integer");
+                .HasColumnType("integer")
+                .HasDefaultValue(0);
 
             builder.Property(t => t.role_id)
                 .IsRequired()

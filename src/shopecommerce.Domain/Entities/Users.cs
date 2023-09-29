@@ -51,4 +51,14 @@ public class Users
     {
         this.password = PasswordHasher.HassPassword(enteredPassword);
     }
+
+    public void SetLoginFaileCount()
+    {
+        this.access_failed_count++;
+    }
+
+    public void SetRefreshToken(string refreshToken)
+    {
+        this.refresh_token = refreshToken;
+    }
 }

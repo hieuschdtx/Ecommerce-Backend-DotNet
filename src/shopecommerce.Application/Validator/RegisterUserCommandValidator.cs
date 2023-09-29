@@ -32,7 +32,7 @@ namespace shopecommerce.Application.Validator
                 .MaximumLength(256).WithMessage("Độ dài tên người dùng không quá 256 kí tự.");
 
             RuleFor(p => p.phone_number)
-                .NotEmpty().WithMessage("Xác nhận mật khẩu không được để trống.")
+                .NotEmpty().WithMessage("Số điện thoại không được để trống.")
                 .MaximumLength(11).WithMessage("Số điện thoại không hợp lệ.")
                 .Matches("^[0-9]*$").WithMessage("Số điện thoại chỉ được nhập số.");
         }

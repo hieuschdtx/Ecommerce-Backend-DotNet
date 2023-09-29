@@ -167,5 +167,14 @@ namespace shopecommerce.Domain.Resources {
                 return ResourceManager.GetString("user_phone_number_is_existed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số điện thoại không tồn tại..
+        /// </summary>
+        public static string user_phone_number_is_not_existed {
+            get {
+                return ResourceManager.GetString("user_phone_number_is_not_existed", resourceCulture);
+            }
+        }
     }
 }

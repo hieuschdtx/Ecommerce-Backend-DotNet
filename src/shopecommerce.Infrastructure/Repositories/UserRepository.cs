@@ -1,4 +1,5 @@
-﻿using shopecommerce.Domain.Commons;
+﻿using Microsoft.EntityFrameworkCore;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Data;
@@ -35,5 +36,10 @@ public class UserRepository : IUserRepository
     {
         _context.Remove(entity);
         await Task.CompletedTask;
+    }
+
+    public async Task<Users> GetUserByPhoneNumber(string phoneNumber)
+    {
+        return await _context.Users.FirstOrDefaultAsync(p => p.phone_number == phoneNumber);
     }
 }

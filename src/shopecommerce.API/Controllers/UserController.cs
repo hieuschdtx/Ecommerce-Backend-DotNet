@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.Application.Commands.UserCommand.LoginUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
 using System.Net;
@@ -29,6 +30,14 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
 
+            var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+
+        [HttpPost("login")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserCommand command)
+        {
             var resp = await _mediator.Send(command);
             return Ok(resp);
         }

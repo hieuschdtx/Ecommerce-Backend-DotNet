@@ -10,9 +10,9 @@ public class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
     private readonly JwtOptions _jwtOptions;
     private readonly JwtValidation _jwtValidation;
 
-    public JwtBearerOptionsSetup(JwtOptions jwtOptions, JwtValidation jwtValidation)
+    public JwtBearerOptionsSetup(IOptions<JwtOptions> jwtOptions, JwtValidation jwtValidation)
     {
-        _jwtOptions = jwtOptions;
+        _jwtOptions = jwtOptions.Value;
         _jwtValidation = jwtValidation;
     }
 

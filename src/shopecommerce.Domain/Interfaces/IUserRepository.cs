@@ -5,4 +5,5 @@ namespace shopecommerce.Domain.Interfaces;
 
 public interface IUserRepository : IGenericRepository<Users>
 {
+    Task<Users> GetUserByPhoneNumber(string phoneNumber);
 }

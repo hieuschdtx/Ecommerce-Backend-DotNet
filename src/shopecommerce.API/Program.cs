@@ -2,12 +2,14 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using shopecommerce.API.Configurations;
 using shopecommerce.API.Modules;
 using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Behaviors;
+using shopecommerce.Infrastructure.Authentications;
 using shopecommerce.Infrastructure.Configurations;
 using shopecommerce.Infrastructure.Data;
 using System.Data;
@@ -39,6 +41,8 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
 
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        builder.Services.AddScoped<JwtValidation, JwtValidationImplementation>();
 
         builder.Services.AddAutofac();
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
@@ -77,7 +81,7 @@ internal class Program
         // }).AddEntityFrameworkStores<EcommerceContext>();
 
         //Jwt Authentication
-        builder.Services.AddAuthentication(setting.Cookie.Name)
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer()
         .AddCookie(setting.Cookie.Name, options =>
         {
