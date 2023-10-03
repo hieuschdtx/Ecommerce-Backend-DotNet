@@ -24,4 +24,12 @@ public class UserService : UserServiceBase, IUserService
 
         return await conn.ExecuteScalarAsync<bool>(commnandText, new { phoneNumber });
     }
+
+    public async Task<bool> MacthRefreshToken(string refreshToken)
+    {
+        const string commnandText = @"select exists(select 1 from users where refresh_token = @refreshToken)";
+        using var conn = _factory.GetOpenConnection();
+
+        return await conn.ExecuteScalarAsync<bool>(commnandText, new { refreshToken });
+    }
 }
