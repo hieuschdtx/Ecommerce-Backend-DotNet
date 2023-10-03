@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.ColorCommand.CreateColor;
+using shopecommerce.Application.Commands.ColorCommand.DeleteColor;
 using shopecommerce.Application.Commands.ColorCommand.UpdateColor;
+using shopecommerce.Application.Queries.ColorQuery.GetAllColor;
+using shopecommerce.Application.Queries.ColorQuery.GetColorById;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
@@ -23,12 +26,36 @@ namespace shopecommerce.API.Controllers
             return Ok(resp);
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateColorAsync([FromQuery] string id, [FromBody] UpdateColorCommand command)
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+
+        [HttpDelete("delete")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteColorAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new DeleteColorCommand(id));
+            return Ok(resp);
+        }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllColorAsync()
+        {
+            var resp = await _mediator.Send(new GetAllColorQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetColorByIdAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetColorByIdQuery(id));
             return Ok(resp);
         }
     }

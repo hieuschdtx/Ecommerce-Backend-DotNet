@@ -1,4 +1,6 @@
-﻿using shopecommerce.Domain.Commons;
+﻿using Dapper;
+using shopecommerce.Domain.Commons;
+using shopecommerce.Domain.Models;
 
 namespace shopecommerce.Application.Services.ColorService
 {
@@ -9,6 +11,13 @@ namespace shopecommerce.Application.Services.ColorService
         public ColorServiceBase(ISqlConnectionFactory factory)
         {
             _factory = factory;
+        }
+
+        public async Task<IEnumerable<ColorDto>> GetAllAsync()
+        {
+            const string queryText = @"select * from colors";
+            using var conn = _factory.GetOpenConnection();
+            return await conn.QueryAsync<ColorDto>(queryText);
         }
     }
 }
