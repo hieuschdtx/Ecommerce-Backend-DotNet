@@ -12,7 +12,7 @@ namespace shopecommerce.Domain.Entities
 
         #region Generated Properties
         public new string id { get; set; }
-        public string description { get; set; }
+        public string? description { get; set; }
         public int discount { get; set; }
         public DateTime from_day { get; set; }
         public DateTime to_day { get; set; }

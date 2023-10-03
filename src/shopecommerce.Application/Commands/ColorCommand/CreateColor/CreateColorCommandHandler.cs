@@ -9,7 +9,7 @@ using shopecommerce.Domain.Resources;
 
 namespace shopecommerce.Application.Commands.ColorCommand.CreateColor
 {
-    internal class CreateColorCommandHandler : ICommandHandler<CreateColorCommand, BaseResponseDto>
+    public class CreateColorCommandHandler : ICommandHandler<CreateColorCommand, BaseResponseDto>
     {
         private readonly IColorRepository _colorRepository;
         private readonly IColorService _colorService;
