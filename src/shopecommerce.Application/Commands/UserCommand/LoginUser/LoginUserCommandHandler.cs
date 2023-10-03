@@ -1,12 +1,11 @@
-﻿using shopecommerce.Application.Commands.UserCommand.LoginUser;
-using shopecommerce.Domain.Commons;
+﻿using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
 
-namespace shopecommerce.Application.Commands.UserCommand
+namespace shopecommerce.Application.Commands.UserCommand.LoginUser
 {
     public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, BaseResponseDto>
     {
@@ -24,7 +23,7 @@ namespace shopecommerce.Application.Commands.UserCommand
             var user = await _userRepository.GetUserByPhoneNumber(request.phone_number);
             if(user == null)
             {
-                throw new BusinessRuleException("user_phone_number_is_not_existed", UserMessages.user_phone_number_is_not_existed);
+                throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
             }
             //check password
             if(!PasswordHasher.VerifyPassword(user.password, request.password))
@@ -32,7 +31,7 @@ namespace shopecommerce.Application.Commands.UserCommand
                 user.SetLoginFaileCount();
                 await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-                throw new BusinessRuleException("user_password_invalid", UserMessages.user_password_invalid);
+                throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
             }
 
             //save refreshtoken

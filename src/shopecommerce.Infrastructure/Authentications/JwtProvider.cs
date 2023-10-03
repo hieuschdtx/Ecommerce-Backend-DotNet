@@ -76,6 +76,7 @@ public class JwtProvider : IJwtProvider
     public async Task SignOutAsync()
     {
         await _httpContextAccessor.HttpContext.SignOutAsync(_appSetting.Cookie.Name);
+        _httpContextAccessor.HttpContext.Response.Cookies.Delete("Authorization");
     }
 
     private async Task SigningAsync(IIdentity claimsIdentity)

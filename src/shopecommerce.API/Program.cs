@@ -81,7 +81,11 @@ internal class Program
         // }).AddEntityFrameworkStores<EcommerceContext>();
 
         //Jwt Authentication
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
         .AddJwtBearer()
         .AddCookie(setting.Cookie.Name, options =>
         {

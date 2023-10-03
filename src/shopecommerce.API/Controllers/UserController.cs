@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.UserCommand.LoginUser;
+using shopecommerce.Application.Commands.UserCommand.LogoutUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
 using System.Net;
@@ -42,5 +43,14 @@ namespace shopecommerce.API.Controllers
             return Ok(resp);
         }
 
+        [HttpPost("logout")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> LogoutUserAsync([FromQuery] string id, LogoutUserCommand command)
+        {
+            command.SetId(id);
+
+            var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
     }
 }
