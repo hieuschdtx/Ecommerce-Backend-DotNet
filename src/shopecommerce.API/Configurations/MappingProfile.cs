@@ -3,6 +3,7 @@ using shopecommerce.Application.Commands.CategoryCommand;
 using shopecommerce.Application.Commands.ColorCommand.CreateColor;
 using shopecommerce.Application.Commands.ColorCommand.UpdateColor;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
+using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Commands.RoleCommand;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
@@ -60,6 +61,8 @@ public class MappingProfile : Profile
 
         //Promotion Mapper
         CreateMap<CreatePromotionCommand, Promotions>()
+                    .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+        CreateMap<UpdatePromotionCommand, Promotions>()
                     .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
     }

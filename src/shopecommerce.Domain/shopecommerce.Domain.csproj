@@ -45,6 +45,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ColorMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\PromotionMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PromotionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\RoleMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -65,6 +70,10 @@
     <EmbeddedResource Update="Resources\ColorMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ColorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\PromotionMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PromotionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\RoleMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
