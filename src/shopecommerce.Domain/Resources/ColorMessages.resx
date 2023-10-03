@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="color_id_not_existed" xml:space="preserve">
+    <value>Color id không tồn tại.</value>
+  </data>
   <data name="color_name_existed" xml:space="preserve">
     <value>Tên màu đã tồn tại.</value>
   </data>

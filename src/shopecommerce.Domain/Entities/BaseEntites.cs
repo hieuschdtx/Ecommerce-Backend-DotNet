@@ -2,9 +2,9 @@
 
 public abstract class BaseEntites
 {
-    public string create_by { get; set; }
+    public string? create_by { get; set; }
     public DateTime create_at { get; set; }
-    public string modified_by { get; set; }
+    public string? modified_by { get; set; }
     public DateTime? modified_at { get; set; }
 
     private string _id;

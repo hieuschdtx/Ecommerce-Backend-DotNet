@@ -61,6 +61,15 @@ namespace shopecommerce.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Color id không tồn tại..
+        /// </summary>
+        public static string color_id_not_existed {
+            get {
+                return ResourceManager.GetString("color_id_not_existed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tên màu đã tồn tại..
         /// </summary>
         public static string color_name_existed {
