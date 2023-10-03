@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using shopecommerce.Application.Commands.CategoryCommand;
+using shopecommerce.Application.Commands.ColorCommand.CreateColor;
 using shopecommerce.Application.Commands.RoleCommand;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
@@ -44,5 +45,9 @@ public class MappingProfile : Profile
             .ForAllMembers(opts
                 => opts.Condition((src, dest, srcMember)
                     => srcMember != null));
+
+        //Colors mapper
+        CreateMap<CreateColorCommand, Colors>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }
