@@ -52,5 +52,9 @@ public class MappingProfile : Profile
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
         CreateMap<UpdateColorCommand, Colors>()
                     .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+        CreateMap<ColorDto, Colors>().ReverseMap()
+            .ForAllMembers(opts
+                => opts.Condition((src, dest, srcMember)
+                    => srcMember != null));
     }
 }
