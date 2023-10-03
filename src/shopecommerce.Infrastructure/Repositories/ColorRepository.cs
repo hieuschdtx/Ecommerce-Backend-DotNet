@@ -1,4 +1,5 @@
-﻿using shopecommerce.Domain.Commons;
+﻿using Microsoft.EntityFrameworkCore;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Data;
@@ -16,24 +17,26 @@ namespace shopecommerce.Infrastructure.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public Task<Colors> AddAsync(Colors entity)
+        public async Task<Colors> AddAsync(Colors entity)
         {
-            throw new NotImplementedException();
+            return (await _context.AddAsync(entity)).Entity;
         }
 
-        public Task DeleteAsync(Colors entity)
+        public async Task DeleteAsync(Colors entity)
         {
-            throw new NotImplementedException();
+            _context.Remove(entity);
+            await Task.CompletedTask;
         }
 
-        public Task<Colors> GetByIdAsync(string id)
+        public async Task<Colors> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _context.Colors.FirstOrDefaultAsync(p => p.id == id);
         }
 
-        public Task UpdateAsync(Colors entity)
+        public async Task UpdateAsync(Colors entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
+            await Task.CompletedTask;
         }
     }
 }
