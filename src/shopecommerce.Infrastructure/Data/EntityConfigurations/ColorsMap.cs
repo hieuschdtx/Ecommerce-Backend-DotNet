@@ -27,6 +27,10 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnType("character varying(256)")
                 .HasMaxLength(256);
 
+            builder.Property(t => t.code)
+                .HasColumnName("code")
+                .HasColumnType("text");
+
             builder.Property(t => t.create_by)
                 .HasColumnName("create_by")
                 .HasColumnType("character varying(256)")
