@@ -2,9 +2,9 @@
 
 public abstract class BaseEntites
 {
-    public string? create_by { get; set; }
+    public string create_by { get; set; }
     public DateTime create_at { get; set; }
-    public string? modified_by { get; set; }
+    public string modified_by { get; set; }
     public DateTime? modified_at { get; set; }
 
     private string _id;
@@ -16,4 +16,5 @@ public abstract class BaseEntites
     }
     public void UpdateModifiedTime() => modified_at = DateTime.Now;
     public void CreateTime() => create_at = DateTime.Now;
+    public DateTime SetDateTimeWithoutTimeZone(DateTime dateTime) => DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 }
