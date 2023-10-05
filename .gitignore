@@ -113,3 +113,6 @@ obj/
 # Logs file
 logs/*
 .vs/
+.fake
+.vscode/
+/.vscode
