@@ -21,10 +21,12 @@ public class MappingProfile : Profile
           .ForAllMembers(opts
             => opts.Condition((src, dest, srcMember)
               => srcMember != null));
+
         CreateMap<UpdateCategoryCommand, Categories>().ReverseMap()
           .ForAllMembers(opts
             => opts.Condition((src, dest, srcMember)
               => srcMember != null));
+
         CreateMap<CategoryDto, Categories>().ReverseMap()
           .ForAllMembers(opts
             => opts.Condition((src, dest, srcMember)
@@ -35,6 +37,7 @@ public class MappingProfile : Profile
             .ForAllMembers(opts
                 => opts.Condition((src, dest, srcMember)
                     => srcMember != null));
+
         CreateMap<UpdateUserCommand, Users>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
@@ -43,6 +46,7 @@ public class MappingProfile : Profile
             .ForAllMembers(opts
                 => opts.Condition((src, dest, srcMember)
                     => srcMember != null));
+
         CreateMap<RoleDto, Roles>().ReverseMap()
             .ForAllMembers(opts
                 => opts.Condition((src, dest, srcMember)
@@ -50,9 +54,12 @@ public class MappingProfile : Profile
 
         //Promotion Mapper
         CreateMap<CreatePromotionCommand, Promotions>()
-                    .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
-        CreateMap<UpdatePromotionCommand, Promotions>()
-        .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
+        CreateMap<UpdatePromotionCommand, Promotions>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        CreateMap<PromotionDto, Promotions>().ReverseMap()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }

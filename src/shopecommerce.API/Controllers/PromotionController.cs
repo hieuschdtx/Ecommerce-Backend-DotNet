@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.DeletePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
+using shopecommerce.Application.Queries.PromotionQuery.GetAllPromotion;
+using shopecommerce.Application.Queries.PromotionQuery.GetPromotionById;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
@@ -38,6 +40,22 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> DeletePromotionAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new DeletePromotionCommand(id));
+            return Ok(resp);
+        }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllPromotionAsync()
+        {
+            var resp = await _mediator.Send(new GetAllPromotionQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPromotionById([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetPromotionByIdQuery(id));
             return Ok(resp);
         }
     }
