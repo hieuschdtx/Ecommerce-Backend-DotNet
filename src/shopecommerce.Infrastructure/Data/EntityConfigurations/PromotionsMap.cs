@@ -9,7 +9,6 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
         public void Configure(EntityTypeBuilder<Promotions> builder)
         {
             #region Generated Configure
-
             // table
             builder.ToTable("promotions", "public");
 
@@ -22,8 +21,9 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("id")
                 .HasColumnType("text");
 
-            builder.Property(t => t.description)
-                .HasColumnName("description")
+            builder.Property(t => t.name)
+                .IsRequired()
+                .HasColumnName("name")
                 .HasColumnType("text");
 
             builder.Property(t => t.discount)
@@ -34,34 +34,39 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.from_day)
                 .IsRequired()
                 .HasColumnName("from_day")
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Property(t => t.to_day)
                 .IsRequired()
                 .HasColumnName("to_day")
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
 
-            builder.Property(t => t.create_by)
-                .HasColumnName("create_by")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+            builder.Property(t => t.status)
+                .HasColumnName("status")
+                .HasColumnType("boolean")
+                .HasDefaultValueSql("false");
 
-            builder.Property(t => t.create_at)
+            builder.Property(t => t.created_by)
+                .HasColumnName("created_by")
+                .HasColumnType("text");
+
+            builder.Property(t => t.created_at)
                 .IsRequired()
-                .HasColumnName("create_at")
-                .HasColumnType("timestamp without time zone");
+                .HasColumnName("created_at")
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Property(t => t.modified_by)
                 .HasColumnName("modified_by")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.modified_at)
                 .HasColumnName("modified_at")
                 .HasColumnType("timestamp without time zone");
 
             // relationships
-
             #endregion
         }
     }

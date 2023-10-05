@@ -4,7 +4,7 @@ using Autofac.Features.Variance;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
-using shopecommerce.Application.Commands.CategoryCommand;
+using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
 using System.Reflection;
 
 namespace shopecommerce.API.Modules

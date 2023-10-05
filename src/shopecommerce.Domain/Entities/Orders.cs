@@ -15,6 +15,9 @@ namespace shopecommerce.Domain.Entities
         public string customer_address { get; set; }
         public string customer_email { get; set; }
         public string customer_phone { get; set; }
+        public string note { get; set; }
+        public bool request_invoice { get; set; }
+        public DateOnly delivery_date { get; set; }
         public DateTime create_at { get; set; }
         public string payment_status { get; set; }
         public string status { get; set; }

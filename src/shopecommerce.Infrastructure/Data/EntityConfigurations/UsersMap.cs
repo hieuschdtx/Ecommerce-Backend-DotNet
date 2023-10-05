@@ -25,8 +25,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.full_name)
                 .IsRequired()
                 .HasColumnName("full_name")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.address)
                 .HasColumnName("address")
@@ -47,12 +46,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.gender)
                 .HasColumnName("gender")
                 .HasColumnType("boolean")
-                .HasDefaultValue(false);
-
-            builder.Property(t => t.created_at)
-                .IsRequired()
-                .HasColumnName("created_at")
-                .HasColumnType("timestamp without time zone");
+                .HasDefaultValueSql("false");
 
             builder.Property(t => t.email)
                 .IsRequired()
@@ -68,23 +62,15 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("password")
                 .HasColumnType("text");
 
-            builder.Property(t => t.security_stamp)
-                .HasColumnName("security_stamp")
-                .HasColumnType("text");
-
-            builder.Property(t => t.concurrency_stamp)
-                .HasColumnName("concurrency_stamp")
-                .HasColumnType("text");
-
             builder.Property(t => t.phone_number)
                 .IsRequired()
                 .HasColumnName("phone_number")
-                .HasColumnType("character varying(15)")
-                .HasMaxLength(15);
+                .HasColumnType("text");
 
             builder.Property(t => t.phone_number_confirmed)
                 .HasColumnName("phone_number_confirmed")
-                .HasColumnType("boolean");
+                .HasColumnType("boolean")
+                .HasDefaultValueSql("false");
 
             builder.Property(t => t.lockout_end)
                 .HasColumnName("lockout_end")
@@ -93,7 +79,17 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.access_failed_count)
                 .HasColumnName("access_failed_count")
                 .HasColumnType("integer")
-                .HasDefaultValue(0);
+                .HasDefaultValueSql("0");
+
+            builder.Property(t => t.created_at)
+                .IsRequired()
+                .HasColumnName("created_at")
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
+
+            builder.Property(t => t.modified_at)
+                .HasColumnName("modified_at")
+                .HasColumnType("timestamp without time zone");
 
             builder.Property(t => t.role_id)
                 .IsRequired()
