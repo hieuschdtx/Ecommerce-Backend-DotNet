@@ -57,44 +57,36 @@ public class EcommerceContext : DbContext, IUnitOfWork
     {
         #region Generated Configuration
         modelBuilder.ApplyConfiguration(new CategoriesMap());
-        modelBuilder.ApplyConfiguration(new ColorsMap());
+        modelBuilder.ApplyConfiguration(new ContactsMap());
         modelBuilder.ApplyConfiguration(new NewsMap());
         modelBuilder.ApplyConfiguration(new OrderDetailsMap());
         modelBuilder.ApplyConfiguration(new OrdersMap());
         modelBuilder.ApplyConfiguration(new PaymentMethodsMap());
         modelBuilder.ApplyConfiguration(new PoliciesMap());
         modelBuilder.ApplyConfiguration(new ProductCategoriesMap());
-        modelBuilder.ApplyConfiguration(new ProductColorsMap());
-        modelBuilder.ApplyConfiguration(new ProductDetailsMap());
         modelBuilder.ApplyConfiguration(new ProductsMap());
-        modelBuilder.ApplyConfiguration(new ProductTagsMap());
-        modelBuilder.ApplyConfiguration(new ProductVariantsMap());
+        modelBuilder.ApplyConfiguration(new ProductsPricesMap());
         modelBuilder.ApplyConfiguration(new PromotionsMap());
         modelBuilder.ApplyConfiguration(new RolesMap());
         modelBuilder.ApplyConfiguration(new SlidesMap());
-        modelBuilder.ApplyConfiguration(new SpecificationsMap());
         modelBuilder.ApplyConfiguration(new UsersMap());
         #endregion
     }
 
     #region Generated Properties
     public virtual DbSet<Categories> Categories { get; set; }
-    public virtual DbSet<Colors> Colors { get; set; }
+    public virtual DbSet<Contacts> Contacts { get; set; }
     public virtual DbSet<News> News { get; set; }
     public virtual DbSet<OrderDetails> OrderDetails { get; set; }
     public virtual DbSet<Orders> Orders { get; set; }
     public virtual DbSet<PaymentMethods> PaymentMethods { get; set; }
     public virtual DbSet<Policies> Policies { get; set; }
     public virtual DbSet<ProductCategories> ProductCategories { get; set; }
-    public virtual DbSet<ProductColors> ProductColors { get; set; }
-    public virtual DbSet<ProductDetails> ProductDetails { get; set; }
     public virtual DbSet<Products> Products { get; set; }
-    public virtual DbSet<ProductTags> ProductTags { get; set; }
-    public virtual DbSet<ProductVariants> ProductVariants { get; set; }
+    public virtual DbSet<ProductsPrices> ProductsPrices { get; set; }
     public virtual DbSet<Promotions> Promotions { get; set; }
     public virtual DbSet<Roles> Roles { get; set; }
     public virtual DbSet<Slides> Slides { get; set; }
-    public virtual DbSet<Specifications> Specifications { get; set; }
     public virtual DbSet<Users> Users { get; set; }
     #endregion
 }

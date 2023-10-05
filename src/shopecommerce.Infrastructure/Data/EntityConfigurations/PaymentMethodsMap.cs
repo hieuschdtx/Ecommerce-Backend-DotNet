@@ -24,8 +24,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.name)
                 .IsRequired()
                 .HasColumnName("name")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             // relationships
             #endregion

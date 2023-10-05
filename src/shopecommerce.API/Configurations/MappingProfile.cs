@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using shopecommerce.Application.Commands.CategoryCommand;
-using shopecommerce.Application.Commands.ColorCommand.CreateColor;
-using shopecommerce.Application.Commands.ColorCommand.UpdateColor;
+using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
+using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
-using shopecommerce.Application.Commands.RoleCommand;
+using shopecommerce.Application.Commands.RoleCommand.CreateRole;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
 using shopecommerce.Domain.Entities;
@@ -44,16 +43,6 @@ public class MappingProfile : Profile
                 => opts.Condition((src, dest, srcMember)
                     => srcMember != null));
         CreateMap<RoleDto, Roles>().ReverseMap()
-            .ForAllMembers(opts
-                => opts.Condition((src, dest, srcMember)
-                    => srcMember != null));
-
-        //Colors mapper
-        CreateMap<CreateColorCommand, Colors>()
-            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
-        CreateMap<UpdateColorCommand, Colors>()
-                    .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
-        CreateMap<ColorDto, Colors>().ReverseMap()
             .ForAllMembers(opts
                 => opts.Condition((src, dest, srcMember)
                     => srcMember != null));

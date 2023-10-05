@@ -1,8 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using shopecommerce.Application.Commands.CategoryCommand;
-using shopecommerce.Application.Queries.CategoryQuery;
+using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
+using shopecommerce.Application.Commands.CategoryCommand.DeleteCategory;
+using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
+using shopecommerce.Application.Queries.CategoryQuery.GetAllCategory;
+using shopecommerce.Application.Queries.CategoryQuery.GetCategoryById;
+using shopecommerce.Application.Queries.CategoryQuery.GetCategoryFilter;
+using shopecommerce.Application.Queries.CategoryQuery.GetCategoryPaging;
 using shopecommerce.Domain.Commons;
 using System.Net;
 

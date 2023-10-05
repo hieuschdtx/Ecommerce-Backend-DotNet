@@ -24,42 +24,53 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.customer_name)
                 .IsRequired()
                 .HasColumnName("customer_name")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.customer_address)
                 .IsRequired()
                 .HasColumnName("customer_address")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.customer_email)
                 .IsRequired()
                 .HasColumnName("customer_email")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.customer_phone)
                 .IsRequired()
                 .HasColumnName("customer_phone")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
+
+            builder.Property(t => t.note)
+                .HasColumnName("note")
+                .HasColumnType("text");
+
+            builder.Property(t => t.request_invoice)
+                .IsRequired()
+                .HasColumnName("request_invoice")
+                .HasColumnType("boolean");
+
+            builder.Property(t => t.delivery_date)
+                .IsRequired()
+                .HasColumnName("delivery_date")
+                .HasColumnType("date")
+                .HasDefaultValueSql("now()");
 
             builder.Property(t => t.create_at)
                 .IsRequired()
                 .HasColumnName("create_at")
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Property(t => t.payment_status)
                 .HasColumnName("payment_status")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.status)
                 .IsRequired()
                 .HasColumnName("status")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text")
+                .HasDefaultValueSql("false");
 
             builder.Property(t => t.bill_invoice)
                 .IsRequired()

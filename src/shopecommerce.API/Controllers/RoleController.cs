@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using shopecommerce.Application.Commands.RoleCommand;
-using shopecommerce.Application.Queries.RoleQuery;
+using shopecommerce.Application.Commands.RoleCommand.CreateRole;
+using shopecommerce.Application.Commands.RoleCommand.DeleteRole;
+using shopecommerce.Application.Commands.RoleCommand.UpdateRole;
+using shopecommerce.Application.Queries.RoleQuery.GetAllRole;
+using shopecommerce.Application.Queries.RoleQuery.GetRoleById;
 using System.Net;
 
 namespace shopecommerce.API.Controllers

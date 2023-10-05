@@ -21,16 +21,5 @@ namespace shopecommerce.API.Controllers
             var resp = await _mediator.Send(command);
             return Ok(resp);
         }
-
-        [HttpPost("create")]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdatePromotionAsync([FromBody] CreatePromotionCommand command)
-        {
-            var resp = await _mediator.Send(command);
-            return Ok(resp);
-        }
-
-
-
     }
 }
