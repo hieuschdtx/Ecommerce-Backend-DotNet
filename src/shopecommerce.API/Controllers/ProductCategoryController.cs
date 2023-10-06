@@ -3,7 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
+using shopecommerce.Application.Commands.ProductCategoryCommand.DeleteProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
+using shopecommerce.Application.Queries.ProductCategoryQuery.GetAllProductCategory;
+using shopecommerce.Application.Queries.ProductCategoryQuery.GetProductCategoryById;
 
 namespace shopecommerce.API.Controllers
 {
@@ -29,6 +32,30 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> DeleteProductCategoryAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new DeleteProductCategoryCommand(id));
+            return Ok(resp);
+        }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllProductCategoryAsync()
+        {
+            var resp = await _mediator.Send(new GetAllProductCategoryQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllProductCategoryAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetProductCategoryByIdQuery(id));
             return Ok(resp);
         }
     }
