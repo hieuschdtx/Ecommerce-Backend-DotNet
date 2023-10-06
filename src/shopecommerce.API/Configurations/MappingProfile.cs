@@ -2,6 +2,7 @@
 using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
 using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
+using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Commands.RoleCommand.CreateRole;
@@ -66,5 +67,8 @@ public class MappingProfile : Profile
         //Product Category mapper
         CreateMap<CreateProductCategoryCommand, ProductCategories>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        CreateMap<UpdateProductCategoryCommand, ProductCategories>()
+        .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }
