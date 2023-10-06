@@ -40,6 +40,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CategoryMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\ProductCategoryMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProductCategoryMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\PromotionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,6 +66,10 @@
     <EmbeddedResource Update="Resources\CategoryMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CategoryMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ProductCategoryMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProductCategoryMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\PromotionMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

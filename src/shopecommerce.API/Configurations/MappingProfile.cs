@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
 using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
+using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Commands.RoleCommand.CreateRole;
@@ -60,6 +61,10 @@ public class MappingProfile : Profile
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         CreateMap<PromotionDto, Promotions>().ReverseMap()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        //Product Category mapper
+        CreateMap<CreateProductCategoryCommand, ProductCategories>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }
