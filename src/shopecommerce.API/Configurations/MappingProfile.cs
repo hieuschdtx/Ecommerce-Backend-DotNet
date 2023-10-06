@@ -69,6 +69,9 @@ public class MappingProfile : Profile
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         CreateMap<UpdateProductCategoryCommand, ProductCategories>()
-        .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        CreateMap<ProductCategoryDto, ProductCategories>().ReverseMap()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }

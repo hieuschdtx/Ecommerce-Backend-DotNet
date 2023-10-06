@@ -120,4 +120,7 @@
   <data name="Product_Category_id_not_existed" xml:space="preserve">
     <value>Product category id không tồn tại.</value>
   </data>
+  <data name="Product_Category_id_invalid" xml:space="preserve">
+    <value>Product category id không hợp lệ.</value>
+  </data>
 </root>
