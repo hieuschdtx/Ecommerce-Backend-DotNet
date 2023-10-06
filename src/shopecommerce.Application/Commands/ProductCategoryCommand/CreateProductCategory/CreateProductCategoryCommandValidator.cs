@@ -12,7 +12,7 @@ namespace shopecommerce.Application.Commands.ProductCategoryCommand.CreateProduc
             RuleFor(p => p.category_id).NotEmpty().WithMessage("Danh mục không được để trống")
                 .Must((model, Id) => BaseGuidEx.IsGuid(model.category_id)).WithMessage("Category Id không hợp lệ");
 
-            RuleFor(p => p.category_id).Must(BeValidPromotion).WithMessage("Promotion Id không hợp lệ");
+            RuleFor(p => p.promotion_id).Must(BeValidPromotion).WithMessage("Promotion Id không hợp lệ");
         }
         private static bool BeValidPromotion(string? id)
         {

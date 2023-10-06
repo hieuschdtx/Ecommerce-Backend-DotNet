@@ -32,7 +32,7 @@ namespace shopecommerce.Application.Commands.ProductCategoryCommand.CreateProduc
         {
             if (await _categoryRepository.GetByIdAsync(request.category_id) is null)
             {
-                throw new BusinessRuleException("Product_Category_id_not_existed", ProductCategoryMessages.Product_Category_id_not_existed, HttpStatusCode.BadRequest);
+                throw new BusinessRuleException("category_is_not_exist", CategoryMessages.category_is_not_exist, HttpStatusCode.BadRequest);
             }
 
             if (request.promotion_id != null && await _promotionRepository.GetByIdAsync(request.promotion_id) is null)

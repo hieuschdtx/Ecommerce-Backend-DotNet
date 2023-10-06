@@ -23,10 +23,10 @@ namespace shopecommerce.Domain.Entities
                 alias = HandleCharacter.ConvertAlias(value);
             }
         }
-        public string description { get; set; }
+        public string? description { get; set; }
         public string alias { get; set; }
         public string category_id { get; set; }
-        public string promotion_id { get; set; }
+        public string? promotion_id { get; set; }
         #endregion
 
         #region Generated Relationships 
