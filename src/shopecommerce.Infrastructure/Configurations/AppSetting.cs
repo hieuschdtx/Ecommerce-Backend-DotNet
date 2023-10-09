@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace shopecommerce.Infrastructure.Configurations;
 
 public class AppSetting
 {
-    public CookieSettings Cookie { get; set; } = new();
+    public CookieSettings cookieSettings { get; set; } = new();
     public HeaderKeyStrings headerKeyStrings { get; set; } = new();
+    public JwtBearerSetting jwtBearerSetting { get; set; } = new();
 }
 
 public class CookieSettings
@@ -24,4 +26,9 @@ public class CookieSettings
 public class HeaderKeyStrings
 {
     public string Panigation { get; private set; } = "X-Panigation";
+}
+
+public class JwtBearerSetting
+{
+    public string Name = JwtBearerDefaults.AuthenticationScheme;
 }

@@ -43,6 +43,9 @@ public class MappingProfile : Profile
         CreateMap<UpdateUserCommand, Users>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
+        CreateMap<UserDto, Users>().ReverseMap()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
         //Roles mapper
         CreateMap<CreateRoleCommand, Roles>().ReverseMap()
             .ForAllMembers(opts
