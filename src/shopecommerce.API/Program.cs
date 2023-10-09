@@ -2,13 +2,16 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using shopecommerce.API.Configurations;
 using shopecommerce.API.Modules;
 using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Behaviors;
+using shopecommerce.Domain.Consts;
 using shopecommerce.Infrastructure.Authentications;
 using shopecommerce.Infrastructure.Configurations;
 using shopecommerce.Infrastructure.Data;
@@ -19,7 +22,7 @@ namespace shopecommerce.API;
 
 internal class Program
 {
-    private static void Main(string[ ] args)
+    private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         var setting = new AppSetting();
@@ -95,9 +98,42 @@ internal class Program
             options.Cookie.Domain = setting.Cookie.Domain;
             options.Cookie.SameSite = setting.Cookie.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
             options.Cookie.SecurePolicy = setting.Cookie.SecurePolicy ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
+        })
+        .Services.AddAuthorization(options =>
+        {
+            var builder = new AuthorizationPolicyBuilder(
+                JwtBearerDefaults.AuthenticationScheme,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+            builder = builder.RequireAuthenticatedUser();
+            options.DefaultPolicy = builder.Build();
+
+            options.AddPolicy(RoleConst.Guest, policy =>
+            {
+                policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Employee, RoleConst.Guest)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+            });
+            options.AddPolicy(RoleConst.Employee, policy =>
+           {
+               policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Employee)
+                   .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+           });
+            options.AddPolicy(RoleConst.Manager, policy =>
+            {
+                policy.RequireRole(RoleConst.Manager, RoleConst.Administrator)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+            });
+            options.AddPolicy(RoleConst.Administrator, policy =>
+            {
+                policy.RequireRole(RoleConst.Administrator)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+            });
         });
+
         builder.Services.ConfigureOptions<JwtOptionsSetup>();
         builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+
+        builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AppAuthorizationMiddlewareResultHandler>();
         // Add cors
         builder.Services.AddCors(options =>
         {
@@ -112,7 +148,7 @@ internal class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if(app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -125,6 +161,8 @@ internal class Program
         app.UseAuthentication();
 
         app.UseAuthorization();
+
+        // app.UseMiddleware<AppAuthorizationMiddlewareResultHandler>();
 
         app.MapControllers();
 

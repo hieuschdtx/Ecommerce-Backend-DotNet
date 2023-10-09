@@ -60,4 +60,9 @@ public class Users
     {
         this.refresh_token = refreshToken;
     }
+
+    public void SetLockoutEnd()
+    {
+        this.lockout_end = DateTime.Now;
+    }
 }

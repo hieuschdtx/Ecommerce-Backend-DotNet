@@ -2,7 +2,6 @@ using System.Net;
 using AutoMapper;
 using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Queries;
-using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
