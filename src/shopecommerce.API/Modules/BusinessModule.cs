@@ -33,18 +33,9 @@ internal class BusinessModule : Autofac.Module
         builder.RegisterType<HttpContextAccessor>()
             .As<IHttpContextAccessor>().SingleInstance();
 
-        //builder.RegisterType<JwtProvider>()
-        //    .As<IJwtProvider>().SingleInstance();
-
-        //Application Service Provider
-        //builder.RegisterType(typeof(JwtProvider))
-        //    .As(typeof(IJwtProvider)).InstancePerLifetimeScope();
-
         builder.RegisterType<JwtProvider>().As<IJwtProvider>();
-        //builder.RegisterType<JwtValidation>().AsSelf();
-        builder.RegisterInstance(new JwtOptions()).SingleInstance(); // Thay thế bằng cách đăng ký từ configuration
-        //builder.RegisterInstance(new HttpContextAccessor().HttpContext).As<HttpContext>();
-        builder.RegisterInstance(new AppSetting()).SingleInstance(); // Thay thế bằng cách đăng ký từ configuration
+        builder.RegisterInstance(new JwtOptions()).SingleInstance();
+        builder.RegisterInstance(new AppSetting()).SingleInstance();
 
         builder.RegisterType(typeof(JwtOptions))
             .AsSelf().SingleInstance();

@@ -47,7 +47,7 @@ public class JwtProvider : IJwtProvider
             new(ClaimTypeConst.RefreshToken, user.refresh_token)
         };
 
-        var identity = new ClaimsIdentity(claims, _appSetting.Cookie.Name);
+        var identity = new ClaimsIdentity(claims, _appSetting.cookieSettings.Name);
 
         var token = new JwtSecurityToken(
            _jwtOptions.Issuer,
@@ -75,17 +75,17 @@ public class JwtProvider : IJwtProvider
     {
         var cookieOptions = new CookieOptions
         {
-            HttpOnly = _appSetting.Cookie.HttpOnly,
-            SameSite = _appSetting.Cookie.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None,
-            Secure = _appSetting.Cookie.SecurePolicy,
-            Expires = DateTime.UtcNow.AddYears(_appSetting.Cookie.Expires)
+            HttpOnly = _appSetting.cookieSettings.HttpOnly,
+            SameSite = _appSetting.cookieSettings.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None,
+            Secure = _appSetting.cookieSettings.SecurePolicy,
+            Expires = DateTime.UtcNow.AddYears(_appSetting.cookieSettings.Expires)
         };
         _httpContextAccessor.HttpContext.Response.Cookies.Append(JwtBearerDefaults.AuthenticationScheme, token, cookieOptions);
     }
 
     public async Task SignOutAsync()
     {
-        await _httpContextAccessor.HttpContext.SignOutAsync(_appSetting.Cookie.Name);
+        await _httpContextAccessor.HttpContext.SignOutAsync(_appSetting.cookieSettings.Name);
         _httpContextAccessor.HttpContext.Response.Cookies.Delete(JwtBearerDefaults.AuthenticationScheme);
     }
 
@@ -93,6 +93,6 @@ public class JwtProvider : IJwtProvider
     {
         var principal = new ClaimsPrincipal(claimsIdentity);
 
-        await _httpContextAccessor.HttpContext.SignInAsync(_appSetting.Cookie.Name, principal);
+        await _httpContextAccessor.HttpContext.SignInAsync(_appSetting.cookieSettings.Name, principal);
     }
 }

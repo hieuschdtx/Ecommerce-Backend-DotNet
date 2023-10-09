@@ -2,8 +2,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -86,47 +84,47 @@ internal class Program
         //Jwt Authentication
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = setting.jwtBearerSetting.Name;
+            options.DefaultChallengeScheme = setting.jwtBearerSetting.Name;
         })
         .AddJwtBearer()
-        .AddCookie(setting.Cookie.Name, options =>
+        .AddCookie(setting.cookieSettings.Name, options =>
         {
             options.SlidingExpiration = true;
-            options.Cookie.Name = setting.Cookie.Name;
-            options.Cookie.HttpOnly = setting.Cookie.HttpOnly;
-            options.Cookie.Domain = setting.Cookie.Domain;
-            options.Cookie.SameSite = setting.Cookie.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
-            options.Cookie.SecurePolicy = setting.Cookie.SecurePolicy ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
+            options.Cookie.Name = setting.cookieSettings.Name;
+            options.Cookie.HttpOnly = setting.cookieSettings.HttpOnly;
+            options.Cookie.Domain = setting.cookieSettings.Domain;
+            options.Cookie.SameSite = setting.cookieSettings.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
+            options.Cookie.SecurePolicy = setting.cookieSettings.SecurePolicy ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
         })
         .Services.AddAuthorization(options =>
         {
             var builder = new AuthorizationPolicyBuilder(
-                JwtBearerDefaults.AuthenticationScheme,
-                CookieAuthenticationDefaults.AuthenticationScheme
+                setting.jwtBearerSetting.Name,
+                setting.cookieSettings.Name
             );
             builder = builder.RequireAuthenticatedUser();
             options.DefaultPolicy = builder.Build();
 
             options.AddPolicy(RoleConst.Guest, policy =>
             {
-                policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Employee, RoleConst.Guest)
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Guest)
+                    .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
             });
             options.AddPolicy(RoleConst.Employee, policy =>
            {
                policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Employee)
-                   .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                   .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
            });
             options.AddPolicy(RoleConst.Manager, policy =>
             {
                 policy.RequireRole(RoleConst.Manager, RoleConst.Administrator)
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                    .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
             });
             options.AddPolicy(RoleConst.Administrator, policy =>
             {
                 policy.RequireRole(RoleConst.Administrator)
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                    .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
             });
         });
 
@@ -137,13 +135,11 @@ internal class Program
         // Add cors
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(setting.Cookie.CorsOrigins, option =>
+            options.AddPolicy(setting.cookieSettings.CorsOrigins, option =>
              option.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
         });
-
-
 
         var app = builder.Build();
 

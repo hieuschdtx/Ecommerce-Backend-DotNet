@@ -6,6 +6,7 @@ using shopecommerce.Application.Commands.UserCommand.LogoutUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
 using shopecommerce.Application.Queries.UserQuery.GetAllUser;
+using shopecommerce.Application.Queries.UserQuery.GetUserById;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -34,7 +35,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Policy = RoleConst.Manager)]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
         {
@@ -61,12 +62,28 @@ namespace shopecommerce.API.Controllers
             return Ok(resp);
         }
 
-        [HttpGet]
+        [HttpGet("get-all")]
         [Authorize(Policy = RoleConst.Employee)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserAync()
         {
             var resp = await _mediator.Send(new GetUserQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = RoleConst.Manager)]
+        public async Task<IActionResult> GetUserByIdAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetUserByIdQuery(id));
+            return Ok(resp);
+        }
+
+        [HttpGet("profile")]
+        [Authorize(Policy = RoleConst.Guest)]
+        public async Task<IActionResult> GetUserInformation()
+        {
+            var resp = await _mediator.Send(new GetUserByIdQuery(CurrentUserId));
             return Ok(resp);
         }
     }
