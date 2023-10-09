@@ -7,11 +7,13 @@ using shopecommerce.Application.Commands.ProductCategoryCommand.DeleteProductCat
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
 using shopecommerce.Application.Queries.ProductCategoryQuery.GetAllProductCategory;
 using shopecommerce.Application.Queries.ProductCategoryQuery.GetProductCategoryById;
+using shopecommerce.Domain.Consts;
 
 namespace shopecommerce.API.Controllers
 {
     [ApiController]
     [Route("v1/product-category")]
+    [Authorize(Policy = RoleConst.Employee)]
     public class ProductCategoryController : BaseController
     {
         public ProductCategoryController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)

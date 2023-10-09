@@ -6,12 +6,14 @@ using shopecommerce.Application.Commands.PromotionCommand.DeletePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Queries.PromotionQuery.GetAllPromotion;
 using shopecommerce.Application.Queries.PromotionQuery.GetPromotionById;
+using shopecommerce.Domain.Consts;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
 {
     [ApiController]
     [Route("v1/promotion")]
+    [Authorize(Policy = RoleConst.Employee)]
     public class PromotionController : BaseController
     {
         public PromotionController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
