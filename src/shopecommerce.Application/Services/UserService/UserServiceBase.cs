@@ -1,4 +1,6 @@
-﻿using shopecommerce.Domain.Commons;
+﻿using Dapper;
+using shopecommerce.Domain.Commons;
+using shopecommerce.Domain.Models;
 
 namespace shopecommerce.Application.Services.UserService;
 
@@ -9,5 +11,12 @@ public class UserServiceBase
     public UserServiceBase(ISqlConnectionFactory factory)
     {
         _factory = factory;
+    }
+
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
+    {
+        const string queryString = @"select * from users";
+        using var conn = _factory.GetOpenConnection();
+        return await conn.QueryAsync<UserDto>(queryString);
     }
 }

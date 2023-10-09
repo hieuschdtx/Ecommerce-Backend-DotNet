@@ -55,7 +55,8 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
 
             builder.Property(t => t.email_confirmed)
                 .HasColumnName("email_confirmed")
-                .HasColumnType("boolean");
+                .HasColumnType("boolean")
+                .HasDefaultValueSql("false");
 
             builder.Property(t => t.password)
                 .IsRequired()

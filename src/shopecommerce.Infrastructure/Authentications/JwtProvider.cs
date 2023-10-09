@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using shopecommerce.Domain.Commons;
+using shopecommerce.Domain.Consts;
 using shopecommerce.Domain.Entities;
+using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Configurations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,10 +19,16 @@ public class JwtProvider : IJwtProvider
     private readonly AppSetting _appSetting = new();
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly JwtOptions _jwtOptions;
+    private readonly IRoleRepository _roleRepository;
     private readonly JwtValidation _jwtValidation;
 
-    public JwtProvider(IOptions<JwtOptions> jwtOptions, IHttpContextAccessor httpContextAccessor, JwtValidation jwtValidation)
+    public JwtProvider(
+        IOptions<JwtOptions> jwtOptions,
+        IHttpContextAccessor httpContextAccessor,
+        JwtValidation jwtValidation,
+        IRoleRepository roleRepository)
     {
+        _roleRepository = roleRepository;
         _jwtOptions = jwtOptions.Value;
         _httpContextAccessor = httpContextAccessor;
         _jwtValidation = jwtValidation;
@@ -27,14 +36,15 @@ public class JwtProvider : IJwtProvider
 
     public async Task<string> GenerateAccessTokenAsync(Users user)
     {
-        var claims = new Claim[ ]
+        var role = await _roleRepository.GetByIdAsync(user.role_id);
+        var claims = new Claim[]
         {
-         new("id", user.id),
-         new("full_name", user.full_name),
-         new("email", user.email!),
-         new("phone", user.phone_number!),
-         new("role_id", user.role_id),
-         new("refresh_token", user.refresh_token)
+            new(ClaimTypeConst.Id, user.id),
+            new(ClaimTypeConst.FullName, user.full_name),
+            new(ClaimTypeConst.Email, user.email!),
+            new(ClaimTypeConst.Phone, user.phone_number!),
+            new(ClaimTypes.Role, role.name),
+            new(ClaimTypeConst.RefreshToken, user.refresh_token)
         };
 
         var identity = new ClaimsIdentity(claims, _appSetting.Cookie.Name);
@@ -70,13 +80,13 @@ public class JwtProvider : IJwtProvider
             Secure = _appSetting.Cookie.SecurePolicy,
             Expires = DateTime.UtcNow.AddYears(_appSetting.Cookie.Expires)
         };
-        _httpContextAccessor.HttpContext.Response.Cookies.Append("Authorization", token, cookieOptions);
+        _httpContextAccessor.HttpContext.Response.Cookies.Append(JwtBearerDefaults.AuthenticationScheme, token, cookieOptions);
     }
 
     public async Task SignOutAsync()
     {
         await _httpContextAccessor.HttpContext.SignOutAsync(_appSetting.Cookie.Name);
-        _httpContextAccessor.HttpContext.Response.Cookies.Delete("Authorization");
+        _httpContextAccessor.HttpContext.Response.Cookies.Delete(JwtBearerDefaults.AuthenticationScheme);
     }
 
     private async Task SigningAsync(IIdentity claimsIdentity)

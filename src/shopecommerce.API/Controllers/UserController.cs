@@ -5,6 +5,8 @@ using shopecommerce.Application.Commands.UserCommand.LoginUser;
 using shopecommerce.Application.Commands.UserCommand.LogoutUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
+using shopecommerce.Application.Queries.UserQuery.GetAllUser;
+using shopecommerce.Domain.Consts;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
@@ -17,6 +19,12 @@ namespace shopecommerce.API.Controllers
         {
         }
 
+        [HttpGet("unauthorized")]
+        public IActionResult GetUnAuthenticated()
+        {
+            return Unauthorized();
+        }
+
         [HttpPost("register")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterUserCommand request)
@@ -26,6 +34,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
         {
@@ -44,12 +53,20 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("logout")]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> LogoutUserAsync([FromQuery] string id, LogoutUserCommand command)
+        public async Task<IActionResult> LogoutUserAsync()
         {
-            command.SetId(id);
+            var resp = await _mediator.Send(new LogoutUserCommand(CurrentUserId, CurrentRefreshToken));
+            return Ok(resp);
+        }
 
-            var resp = await _mediator.Send(command);
+        [HttpGet]
+        [Authorize(Policy = RoleConst.Employee)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetUserAync()
+        {
+            var resp = await _mediator.Send(new GetUserQuery());
             return Ok(resp);
         }
     }

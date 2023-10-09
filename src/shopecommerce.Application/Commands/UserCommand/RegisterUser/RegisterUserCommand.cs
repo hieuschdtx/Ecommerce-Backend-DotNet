@@ -11,5 +11,5 @@ public class RegisterUserCommand : CommandBase<BaseResponseDto>
     public string email { get; set; }
     public string password { get; set; }
     public string confirm_password { get; set; }
-    public string name_role { get; set; } = RoleConst.User;
+    public string name_role { get; set; } = RoleConst.Guest;
 }
