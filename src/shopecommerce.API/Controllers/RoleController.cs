@@ -6,12 +6,14 @@ using shopecommerce.Application.Commands.RoleCommand.DeleteRole;
 using shopecommerce.Application.Commands.RoleCommand.UpdateRole;
 using shopecommerce.Application.Queries.RoleQuery.GetAllRole;
 using shopecommerce.Application.Queries.RoleQuery.GetRoleById;
+using shopecommerce.Domain.Consts;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
 {
     [ApiController]
     [Route("api/role")]
+    [Authorize(Policy = RoleConst.Manager)]
     public class RoleController : BaseController
     {
         public RoleController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)

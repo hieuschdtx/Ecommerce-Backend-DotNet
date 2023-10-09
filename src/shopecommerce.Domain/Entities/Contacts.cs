@@ -2,9 +2,14 @@
 {
     public class Contacts
     {
-        public Contacts()
+        public Contacts(string id, string name, string email, string message)
         {
             #region Generated Constructor
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.message = message;
+            this.created_at = DateTime.Now;
             #endregion
         }
 

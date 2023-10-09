@@ -9,11 +9,13 @@ using shopecommerce.Application.Queries.CategoryQuery.GetCategoryById;
 using shopecommerce.Application.Queries.CategoryQuery.GetCategoryFilter;
 using shopecommerce.Application.Queries.CategoryQuery.GetCategoryPaging;
 using shopecommerce.Domain.Commons;
+using shopecommerce.Domain.Consts;
 using System.Net;
 
 namespace shopecommerce.API.Controllers;
 [ApiController]
 [Route("v1/category")]
+[Authorize(Policy = RoleConst.Employee)]
 public class CategoryController : BaseController
 {
     public CategoryController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
