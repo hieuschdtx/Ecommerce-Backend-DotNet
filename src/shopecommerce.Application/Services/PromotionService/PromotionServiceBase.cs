@@ -19,4 +19,11 @@ public class PromotionServiceBase
         using var conn = _factory.GetOpenConnection();
         return await conn.QueryAsync<PromotionDto>(queryString);
     }
+
+    public async Task<int> GetDisCount(string promotionId)
+    {
+        const string queryString = @"select discount from promotions where id = @promotionId";
+        using var conn = _factory.GetOpenConnection();
+        return await conn.QueryFirstOrDefaultAsync<int>(queryString, new { promotionId });
+    }
 }

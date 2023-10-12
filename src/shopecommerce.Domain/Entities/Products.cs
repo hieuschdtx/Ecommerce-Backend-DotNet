@@ -33,7 +33,7 @@ namespace shopecommerce.Domain.Entities
         public bool home_flag { get; set; }
         public bool hot_flag { get; set; }
         public int stock { get; set; }
-        public int? view_count { get; set; }
+        public int? view_count { get; set; } = 0;
         public string product_category_id { get; set; }
         public string promotion_id { get; set; }
         public string origin { get; set; }
@@ -46,5 +46,15 @@ namespace shopecommerce.Domain.Entities
         public virtual ICollection<ProductsPrices> product_ProductsPrices { get; set; }
         public virtual Promotions promotion_Promotions { get; set; }
         #endregion
+
+        public void SetAvatarFileString(string avatar)
+        {
+            this.avatar = avatar;
+        }
+
+        public void SetThumnailFileString(string thumnails)
+        {
+            this.thumnails = thumnails;
+        }
     }
 }

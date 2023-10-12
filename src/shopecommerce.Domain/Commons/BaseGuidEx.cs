@@ -14,11 +14,13 @@ public static class BaseGuidEx
 
     public static bool BeValidGuid(string? id)
     {
-        if (!string.IsNullOrEmpty(id))
+        if(!string.IsNullOrEmpty(id))
         {
             return IsGuid(id);
         }
 
         return true;
     }
+
+    public static string GetNewGuid() => Guid.NewGuid().ToString();
 }
