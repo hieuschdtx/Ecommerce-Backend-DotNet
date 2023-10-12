@@ -75,7 +75,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.bill_invoice)
                 .IsRequired()
                 .HasColumnName("bill_invoice")
-                .HasColumnType("numeric(18,0)");
+                .HasColumnType("numeric(18,2)");
 
             builder.Property(t => t.payment_method_id)
                 .IsRequired()

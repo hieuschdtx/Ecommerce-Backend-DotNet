@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Entities;
-using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
+using shopecommerce.Domain.Interfaces;
+using shopecommerce.Domain.Commons.Commands;
 
 namespace shopecommerce.Application.Commands.PromotionCommand.CreatePromotion
 {

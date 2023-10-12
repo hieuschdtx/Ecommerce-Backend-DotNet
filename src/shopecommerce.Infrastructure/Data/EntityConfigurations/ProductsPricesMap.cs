@@ -24,16 +24,16 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.weight)
                 .IsRequired()
                 .HasColumnName("weight")
-                .HasColumnType("numeric(18,0)");
+                .HasColumnType("numeric(18,2)");
 
             builder.Property(t => t.price)
                 .IsRequired()
                 .HasColumnName("price")
-                .HasColumnType("numeric(18,0)");
+                .HasColumnType("numeric(18,2)");
 
             builder.Property(t => t.price_sale)
                 .HasColumnName("price_sale")
-                .HasColumnType("numeric(18,0)")
+                .HasColumnType("numeric(18,2)")
                 .HasDefaultValueSql("0");
 
             builder.Property(t => t.product_id)

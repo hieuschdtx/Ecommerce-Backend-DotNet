@@ -19,5 +19,10 @@
         #region Generated Relationships
         public virtual Products product_Products { get; set; }
         #endregion
+
+        public void SetPriceSale(int discount)
+        {
+            this.price_sale = this.price - (this.price * discount / 100);
+        }
     }
 }

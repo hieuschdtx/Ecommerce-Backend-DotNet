@@ -34,7 +34,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.total_amount)
                 .IsRequired()
                 .HasColumnName("total_amount")
-                .HasColumnType("numeric(18,0)");
+                .HasColumnType("numeric(18,2)");
 
             // relationships
             builder.HasOne(t => t.product_Products)

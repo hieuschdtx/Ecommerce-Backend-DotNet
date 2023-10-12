@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
+using shopecommerce.Domain.Models;
+using shopecommerce.Domain.Entities;
+using shopecommerce.Application.Commands.RoleCommand.CreateRole;
+using shopecommerce.Application.Commands.UserCommand.UpdateUser;
+using shopecommerce.Application.Commands.UserCommand.RegisterUser;
+using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
 using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
 using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
-using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
-using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
-using shopecommerce.Application.Commands.RoleCommand.CreateRole;
-using shopecommerce.Application.Commands.UserCommand.RegisterUser;
-using shopecommerce.Application.Commands.UserCommand.UpdateUser;
-using shopecommerce.Domain.Entities;
-using shopecommerce.Domain.Models;
+using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
+using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
+
 
 namespace shopecommerce.API.Configurations;
 
@@ -76,5 +78,11 @@ public class MappingProfile : Profile
 
         CreateMap<ProductCategoryDto, ProductCategories>().ReverseMap()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        //Product mapper
+        CreateMap<CreateProductCommand, Products>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        //ProductPrice mapper
     }
 }

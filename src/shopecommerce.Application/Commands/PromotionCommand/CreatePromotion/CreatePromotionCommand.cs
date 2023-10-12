@@ -1,5 +1,5 @@
-﻿using shopecommerce.Domain.Commons.Commands;
-using shopecommerce.Domain.Models;
+﻿using shopecommerce.Domain.Models;
+using shopecommerce.Domain.Commons.Commands;
 
 namespace shopecommerce.Application.Commands.PromotionCommand.CreatePromotion
 {
