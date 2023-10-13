@@ -11,6 +11,7 @@ using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
+using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 
 
 namespace shopecommerce.API.Configurations;
@@ -81,6 +82,8 @@ public class MappingProfile : Profile
 
         //Product mapper
         CreateMap<CreateProductCommand, Products>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+        CreateMap<UpdateProductCommand, Products>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         //ProductPrice mapper

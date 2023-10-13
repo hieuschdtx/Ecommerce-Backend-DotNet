@@ -26,4 +26,11 @@ public class PromotionServiceBase
         using var conn = _factory.GetOpenConnection();
         return await conn.QueryFirstOrDefaultAsync<int>(queryString, new { promotionId });
     }
+
+    public async Task<PromotionDto> GetPromotionByProductId(string productId)
+    {
+        const string queryString = @"select pro.* from product_categories pc join products p on pc.id = p.product_category_id join promotions pro on pc.promotion_id = pro.id where p.id = @productId";
+        using var conn = _factory.GetOpenConnection();
+        return await conn.QueryFirstOrDefaultAsync<PromotionDto>(queryString, new { productId });
+    }
 }

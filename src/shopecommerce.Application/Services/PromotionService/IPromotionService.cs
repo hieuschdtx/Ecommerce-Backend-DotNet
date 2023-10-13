@@ -6,4 +6,5 @@ public interface IPromotionService
 {
     Task<IEnumerable<PromotionDto>> GetAllAsync();
     Task<int> GetDisCount(string promotionId);
+    Task<PromotionDto> GetPromotionByProductId(string productId);
 }

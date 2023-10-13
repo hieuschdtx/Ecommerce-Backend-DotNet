@@ -66,20 +66,6 @@ internal class Program
             connection.Open();
             return connection;
         });
-        //Identity
-        // builder.Services.AddIdentity<Users, Roles>(options =>
-        // {
-        //    options.Password.RequireLowercase = false;
-        //    options.Password.RequireDigit = false;
-        //    options.Password.RequiredLength = 8;
-        //    options.Password.RequireNonAlphanumeric = true;
-        //    options.Password.RequireUppercase = true;
-        //    options.Password.RequiredUniqueChars = 1;
-        //    //lockout
-        //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-        //    options.Lockout.MaxFailedAccessAttempts = 5;
-        //    options.User.RequireUniqueEmail = true;
-        // }).AddEntityFrameworkStores<EcommerceContext>();
 
         //Jwt Authentication
         builder.Services.AddAuthentication(options =>
@@ -127,7 +113,6 @@ internal class Program
                     .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
             });
         });
-
         builder.Services.ConfigureOptions<JwtOptionsSetup>();
         builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 

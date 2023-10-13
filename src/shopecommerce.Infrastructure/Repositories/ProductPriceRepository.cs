@@ -33,6 +33,11 @@ namespace shopecommerce.Infrastructure.Repositories
             return await _context.ProductsPrices.FirstOrDefaultAsync(p => p.id == id);
         }
 
+        public async Task<ProductsPrices> GetProductsPricesByProductId(string productPriceId, string productId)
+        {
+            return await _context.ProductsPrices.FirstOrDefaultAsync(p => p.id == productPriceId && p.product_id == productId);
+        }
+
         public async Task UpdateAsync(ProductsPrices entity)
         {
             _context.Update(entity);

@@ -24,5 +24,11 @@
         {
             this.price_sale = this.price - (this.price * discount / 100);
         }
+
+        public void SetPriceAndWeight(decimal price, decimal weight)
+        {
+            this.price = price;
+            this.weight = weight;
+        }
     }
 }
