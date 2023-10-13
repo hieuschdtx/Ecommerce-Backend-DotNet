@@ -22,9 +22,5 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
         public string? origin { get; set; }
         public string? storage { get; set; }
     }
-    public class Prices
-    {
-        public decimal weight { get; set; }
-        public decimal price { get; set; }
-    }
+    
 }
