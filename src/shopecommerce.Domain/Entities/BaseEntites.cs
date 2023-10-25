@@ -17,4 +17,5 @@ public abstract class BaseEntites
     public void UpdateModifiedTime() => modified_at = DateTime.Now;
     public void CreateTime() => created_at = DateTime.Now;
     public DateTime SetDateTimeWithoutTimeZone(DateTime dateTime) => DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
+    public static DateOnly ParsedDob(string date) => DateOnly.Parse(date);
 }

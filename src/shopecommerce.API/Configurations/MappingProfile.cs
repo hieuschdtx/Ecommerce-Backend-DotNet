@@ -12,6 +12,7 @@ using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
+using shopecommerce.Application.Commands.UserCommand.CreateUser;
 
 
 namespace shopecommerce.API.Configurations;
@@ -47,6 +48,9 @@ public class MappingProfile : Profile
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         CreateMap<UserDto, Users>().ReverseMap()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        CreateMap<CreateUserCommand, Users>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         //Roles mapper

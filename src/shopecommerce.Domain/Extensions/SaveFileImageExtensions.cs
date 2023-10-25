@@ -8,10 +8,10 @@ namespace shopecommerce.Domain.Extensions
 {
     public static class SaveFileImageExtensions
     {
-        public static async Task<string> SaveFileImageAsync(IFormFile file, IWebHostEnvironment environment)
+        public static async Task<string> SaveFileImageAsync(IFormFile file, IWebHostEnvironment environment, string folder)
         {
             // Tạo đường dẫn đến thư mục "wwwroot/images"
-            var imagePath = Path.Combine(environment.WebRootPath, "uploads");
+            var imagePath = Path.Combine(environment.WebRootPath, $"images/{folder}");
 
             // Tạo tên file kết hợp timeStamp và tên gốc của file
             var fileName = $"{HandleCharacter.ConvertAlias(file.FileName[..file.FileName.LastIndexOf(".")]) + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName)}";

@@ -1,4 +1,4 @@
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
@@ -20,7 +20,7 @@ namespace shopecommerce.API;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static void Main(string[ ] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         var setting = new AppSetting();
@@ -80,7 +80,8 @@ internal class Program
             options.Cookie.Name = setting.cookieSettings.Name;
             options.Cookie.HttpOnly = setting.cookieSettings.HttpOnly;
             options.Cookie.Domain = setting.cookieSettings.Domain;
-            options.Cookie.SameSite = setting.cookieSettings.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
+            // options.Cookie.SameSite = setting.cookieSettings.SameSite == "Lax" ? SameSiteMode.Lax : SameSiteMode.None;
+            options.Cookie.SameSite = SameSiteMode.None;
             options.Cookie.SecurePolicy = setting.cookieSettings.SecurePolicy ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
         })
         .Services.AddAuthorization(options =>
@@ -120,16 +121,21 @@ internal class Program
         // Add cors
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(setting.cookieSettings.CorsOrigins, option =>
-             option.AllowAnyOrigin()
+            options.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder
+                .WithOrigins("http://localhost:3030/")
+                .SetIsOriginAllowed(host => true)
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .AllowCredentials();
+            });
         });
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if(app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -144,8 +150,10 @@ internal class Program
         app.UseAuthorization();
 
         // app.UseMiddleware<AppAuthorizationMiddlewareResultHandler>();
+        //app.UseMiddleware<TokenVerificationMiddleware>();
 
         app.MapControllers();
+        app.UseCors("AllowAllOrigins");
 
         app.Run();
     }

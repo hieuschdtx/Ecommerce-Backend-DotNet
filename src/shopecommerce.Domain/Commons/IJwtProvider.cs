@@ -8,4 +8,5 @@ public interface IJwtProvider
     void SaveCookiesStorage(string token);
     string GenerateRefreshToken();
     Task SignOutAsync();
+    Task<bool> VerifyAccessTokenAsync(string token);
 }

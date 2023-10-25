@@ -7,7 +7,7 @@
         public string full_name { get; set; }
         public string? address { get; set; }
         public string? avatar { get; set; }
-        public DateOnly? dob { get; set; }
+        public DateTime? dob { get; set; }
         public string? refresh_token { get; set; }
         public bool? gender { get; set; }
         public string email { get; set; }

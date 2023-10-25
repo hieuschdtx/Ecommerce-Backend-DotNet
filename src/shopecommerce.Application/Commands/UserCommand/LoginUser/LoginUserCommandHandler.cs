@@ -23,7 +23,9 @@ namespace shopecommerce.Application.Commands.UserCommand.LoginUser
             var user = await _userRepository.GetUserByPhoneNumber(request.phone_number);
             if(user == null)
             {
-                throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
+                //throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
+                return new BaseResponseDto(false, UserMessages.unauthorized);
+
             }
             //check password
             if(!PasswordHasher.VerifyPassword(user.password, request.password))
