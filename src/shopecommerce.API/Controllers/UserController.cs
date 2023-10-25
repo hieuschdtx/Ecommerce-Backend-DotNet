@@ -33,28 +33,30 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterUserCommand request)
         {
             var resp = await _mediator.Send(request);
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpPost("create")]
         [Authorize(Policy = RoleConst.Manager)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateUserAsync([FromForm] CreateUserCommand command)
         {
             var resp = await _mediator.Send(command);
-            return resp.success ? Ok(resp) : BadRequest(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
 
         [HttpPut("update")]
         [Authorize(Policy = RoleConst.Manager)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
         {
             command.SetId(id);
 
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpPost("login")]
@@ -62,16 +64,17 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserCommand command)
         {
             var resp = await _mediator.Send(command);
-            return resp.success ? Ok(resp) : Unauthorized(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpPost("logout")]
         [Authorize]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> LogoutUserAsync()
         {
             var resp = await _mediator.Send(new LogoutUserCommand(CurrentUserId, CurrentRefreshToken));
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpGet("get-all")]
@@ -86,6 +89,7 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet]
         [Authorize(Policy = RoleConst.Manager)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         public async Task<IActionResult> GetUserByIdAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new GetUserByIdQuery(id));
@@ -94,6 +98,7 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet("profile")]
         [Authorize(Policy = RoleConst.Guest)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         public async Task<IActionResult> GetUserInformation()
         {
             var resp = await _mediator.Send(new GetUserByIdQuery(CurrentUserId));

@@ -20,13 +20,13 @@ namespace shopecommerce.Domain.Extensions
             try
             {
                 Directory.CreateDirectory(imagePath);
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                using(var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
                 return $"/{fileName}";
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new BusinessRuleException("Error", ex.Message);
             }

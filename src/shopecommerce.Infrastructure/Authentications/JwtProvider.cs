@@ -110,7 +110,6 @@ public class JwtProvider : IJwtProvider
             ValidIssuer = _jwtOptions.Issuer
         };
 
-
         try
         {
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out _);

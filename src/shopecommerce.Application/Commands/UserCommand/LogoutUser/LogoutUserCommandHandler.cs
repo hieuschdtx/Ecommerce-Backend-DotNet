@@ -1,9 +1,9 @@
 ﻿using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
-using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.UserCommand.LogoutUser
 {
@@ -21,14 +21,14 @@ namespace shopecommerce.Application.Commands.UserCommand.LogoutUser
         public async Task<BaseResponseDto> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.id.ToString());
-            if (user == null)
+            if(user == null)
             {
-                throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
+                return new BaseResponseDto(false, UserMessages.unauthorized, (int)HttpStatusCode.Unauthorized);
             }
 
-            if (!string.Equals(request.refresh_token, user.refresh_token))
+            if(!string.Equals(request.refresh_token, user.refresh_token))
             {
-                throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
+                return new BaseResponseDto(false, UserMessages.unauthorized, (int)HttpStatusCode.Unauthorized);
             }
 
             //signout session
@@ -36,7 +36,7 @@ namespace shopecommerce.Application.Commands.UserCommand.LogoutUser
             user.SetLockoutEnd();
             await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-            return new BaseResponseDto(true, "Đăng xuất thành công");
+            return new BaseResponseDto(true, "Đăng xuất thành công", (int)HttpStatusCode.OK);
         }
     }
 }
