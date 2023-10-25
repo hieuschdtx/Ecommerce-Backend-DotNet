@@ -12,7 +12,7 @@ using System.Net;
 namespace shopecommerce.API.Controllers
 {
     [ApiController]
-    [Route("api/role")]
+    [Route("v1/role")]
     [Authorize(Policy = RoleConst.Manager)]
     public class RoleController : BaseController
     {
@@ -54,6 +54,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet("get-all")]
+        [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllRoleAsync()
         {

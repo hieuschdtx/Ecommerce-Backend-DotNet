@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using shopecommerce.Application.Services.PromotionService;
 using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
+using shopecommerce.Domain.Consts;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Extensions;
@@ -59,7 +60,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
             //Kiểm tra và lưu avatar
             if (request.thumbnails_file != null)
             {
-                newProduct.SetAvatarFileString(await SaveFileImageExtensions.SaveFileImageAsync(request?.avatar_file, _environment));
+                newProduct.SetAvatarFileString(await SaveFileImageExtensions.SaveFileImageAsync(request?.avatar_file, _environment, FolderConst.Product));
             }
 
             //Kiểm tra và lưu thumnail
@@ -69,7 +70,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
                     .Where(file => file != null && file.Length > 0)
                     .Select(async file => new Image
                     {
-                        fileName = await SaveFileImageExtensions.SaveFileImageAsync(file, _environment)
+                        fileName = await SaveFileImageExtensions.SaveFileImageAsync(file, _environment, FolderConst.Product)
                     })
                     .ToList();
                 newProduct.SetThumnailFileString(JsonConvert.SerializeObject(thumbnailList));

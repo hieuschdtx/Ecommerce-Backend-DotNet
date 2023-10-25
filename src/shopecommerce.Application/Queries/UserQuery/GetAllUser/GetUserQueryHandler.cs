@@ -15,7 +15,8 @@ namespace shopecommerce.Application.Queries.UserQuery.GetAllUser
 
         public async Task<IEnumerable<UserDto>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            return await _userService.GetAllAsync();
+            var users = await _userService.GetAllAsync();
+            return users;
         }
     }
 }

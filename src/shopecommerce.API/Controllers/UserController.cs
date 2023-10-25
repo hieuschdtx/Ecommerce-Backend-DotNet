@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.Application.Commands.UserCommand.CreateUser;
 using shopecommerce.Application.Commands.UserCommand.LoginUser;
 using shopecommerce.Application.Commands.UserCommand.LogoutUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
@@ -34,8 +35,18 @@ namespace shopecommerce.API.Controllers
             return Ok(resp);
         }
 
+        [HttpPost("create")]
+        [Authorize(Policy = RoleConst.Manager)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> CreateUserAsync([FromForm] CreateUserCommand command)
+        {
+            var resp = await _mediator.Send(command);
+            return resp.success ? Ok(resp) : BadRequest(resp);
+        }
+
+
         [HttpPut("update")]
-        [Authorize]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
         {
@@ -50,7 +61,7 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserCommand command)
         {
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            return resp.success ? Ok(resp) : Unauthorized(resp);
         }
 
         [HttpPost("logout")]
@@ -63,7 +74,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet("get-all")]
-        [Authorize(Policy = RoleConst.Employee)]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserAync()
         {
