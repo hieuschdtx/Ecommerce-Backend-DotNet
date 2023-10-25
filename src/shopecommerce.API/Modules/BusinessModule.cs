@@ -33,7 +33,6 @@ internal class BusinessModule : Autofac.Module
         builder.RegisterType<HttpContextAccessor>()
             .As<IHttpContextAccessor>().SingleInstance();
 
-        builder.RegisterType<JwtProvider>().As<IJwtProvider>();
         builder.RegisterInstance(new JwtOptions()).SingleInstance();
         builder.RegisterInstance(new AppSetting()).SingleInstance();
 

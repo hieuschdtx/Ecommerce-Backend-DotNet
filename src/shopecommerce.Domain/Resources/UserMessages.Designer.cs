@@ -79,7 +79,7 @@ namespace shopecommerce.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thông tin đăng nhập không hợp lệ..
+        ///   Looks up a localized string similar to Bạn chưa đăng nhập hoặc đã hết phiên làm việc..
         /// </summary>
         public static string unauthorized {
             get {

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Commands.UserCommand.CreateUser;
 using shopecommerce.Application.Commands.UserCommand.LoginUser;
 using shopecommerce.Application.Commands.UserCommand.LogoutUser;
@@ -75,6 +76,7 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet("get-all")]
         [Authorize(Policy = RoleConst.Manager)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetUserAync()
         {
