@@ -54,7 +54,6 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet("get-all")]
-        [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllRoleAsync()
         {

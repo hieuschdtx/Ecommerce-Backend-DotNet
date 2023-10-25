@@ -1,9 +1,9 @@
 ﻿using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
-using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.UserCommand.LoginUser
 {
@@ -23,17 +23,16 @@ namespace shopecommerce.Application.Commands.UserCommand.LoginUser
             var user = await _userRepository.GetUserByPhoneNumber(request.phone_number);
             if(user == null)
             {
-                //throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
-                return new BaseResponseDto(false, UserMessages.unauthorized);
-
+                return new BaseResponseDto(false, UserMessages.unauthorized, (int)HttpStatusCode.Unauthorized);
             }
+
             //check password
             if(!PasswordHasher.VerifyPassword(user.password, request.password))
             {
                 user.SetLoginFaileCount();
                 await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-                throw new BusinessRuleException("unauthorized", UserMessages.unauthorized);
+                return new BaseResponseDto(false, UserMessages.unauthorized, (int)HttpStatusCode.Unauthorized);
             }
 
             //save refreshtoken
@@ -46,7 +45,7 @@ namespace shopecommerce.Application.Commands.UserCommand.LoginUser
             _jwtProvider.SaveCookiesStorage(accessToken);
 
             await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
-            return new BaseResponseDto(true, "Đăng nhập thành công", accessToken);
+            return new BaseResponseDto(true, "Đăng nhập thành công", (int)HttpStatusCode.OK, accessToken);
         }
     }
 }

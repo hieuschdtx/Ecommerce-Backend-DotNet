@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using shopecommerce.Domain.Commons.Commands;
-using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
 {
@@ -23,13 +23,13 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
             var user = await _userRepository.GetByIdAsync(request.id.ToString());
             if(user == null)
             {
-                throw new BusinessRuleException("user_id_is_not_existed", UserMessages.user_id_is_not_existed);
+                return new BaseResponseDto(false, UserMessages.user_id_is_not_existed, (int)HttpStatusCode.BadRequest);
             }
 
             await _userRepository.UpdateAsync(_mapper.Map(request, user));
             await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-            return new BaseResponseDto(true, "Update thông tin người dùng thành công");
+            return new BaseResponseDto(true, "Update thông tin người dùng thành công", (int)HttpStatusCode.NoContent);
         }
     }
 }

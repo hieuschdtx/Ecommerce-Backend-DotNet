@@ -154,9 +154,6 @@ internal class Program
 
         app.UseAuthorization();
 
-        // app.UseMiddleware<AppAuthorizationMiddlewareResultHandler>();
-        //app.UseMiddleware<TokenVerificationMiddleware>();
-
         app.MapControllers();
         app.UseCors("AllowAllOrigins");
 
