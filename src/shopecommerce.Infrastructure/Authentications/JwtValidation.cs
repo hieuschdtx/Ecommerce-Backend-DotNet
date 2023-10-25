@@ -16,7 +16,7 @@ public abstract class JwtValidation
         _jwtOptions = jwtOptions.Value;
     }
 
-    public int ExpireTime { get; set; } = 20;
+    public int ExpireTime { get; set; } = 2;
 
     public SymmetricSecurityKey SecurityKey
     {

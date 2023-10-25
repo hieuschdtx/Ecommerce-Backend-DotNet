@@ -1,37 +1,71 @@
+using shopecommerce.Domain.Commons;
+using shopecommerce.Domain.Models;
+using shopecommerce.Domain.Resources;
+using System.IdentityModel.Tokens.Jwt;
+
 namespace shopecommerce.API.OptionsSetup
 {
     public class TokenVerificationMiddleware
     {
+        private readonly IJwtProvider _jwtProvider;
         private readonly RequestDelegate _next;
-        public TokenVerificationMiddleware(RequestDelegate next)
+
+        public TokenVerificationMiddleware() { }
+        public TokenVerificationMiddleware(IJwtProvider jwtProvider, RequestDelegate next)
         {
+            _jwtProvider = jwtProvider;
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext context)
         {
-            var endPoint = httpContext.Request.Path.Value;
-            if(endPoint.Contains("/login") || endPoint.Contains("/register"))
+            var tokenValue = context.Request.Cookies["Bearer"];
+
+            if(string.IsNullOrEmpty(tokenValue))
             {
-                await _next(httpContext);
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.unauthorized), default);
+                return;
             }
 
-            string authorization = httpContext.Request.Headers["Authorization"];
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadToken(tokenValue) as JwtSecurityToken;
 
-            if(!string.IsNullOrEmpty(authorization))
+            //Kiểm tra sau khi đọc có null hay không
+            if(jwtToken == null)
             {
-                var token = authorization[authorization.IndexOf(" ")..];
-                if(token is not null)
-                {
-                    await _next(httpContext);
-                }
-
-                else
-                {
-                    httpContext.Response.StatusCode = 401;
-                    await httpContext.Response.WriteAsync("Token không hợp lệ");
-                }
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.unauthorized), default);
+                return;
             }
+
+            //kiểm tra thời gian hết hạn
+            if(jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.unauthorized), default);
+                return;
+            }
+
+            //Kiểm tra thông tin token của người dùng
+            if(!await _jwtProvider.VerifyAccessTokenAsync(tokenValue))
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.forbidden), default);
+                return;
+            }
+
+            await _next.Invoke(context);
+        }
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseMiddleware<TokenVerificationMiddleware>();
+        }
+    }
+    public class TokenVerificationMiddlewareImplementation : TokenVerificationMiddleware
+    {
+        public TokenVerificationMiddlewareImplementation(IJwtProvider jwtProvider, RequestDelegate next) : base(jwtProvider, next)
+        {
         }
     }
 }

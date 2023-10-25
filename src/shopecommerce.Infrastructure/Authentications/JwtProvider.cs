@@ -58,7 +58,7 @@ public class JwtProvider : IJwtProvider
            _jwtOptions.Audience,
            claims,
            null,
-           DateTime.UtcNow.AddSeconds(_jwtValidation.ExpireTime),
+           DateTime.UtcNow.AddHours(_jwtValidation.ExpireTime),
            _jwtValidation.GetSigning());
 
         var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
@@ -105,8 +105,11 @@ public class JwtProvider : IJwtProvider
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = _jwtValidation.SecurityKey
+            IssuerSigningKey = _jwtValidation.SecurityKey,
+            ValidAudience = _jwtOptions.Audience,
+            ValidIssuer = _jwtOptions.Issuer
         };
+
 
         try
         {
@@ -118,9 +121,8 @@ public class JwtProvider : IJwtProvider
                 return false;
             }
             return true;
-
         }
-        catch(System.Exception)
+        catch(Exception)
         {
             return false;
         }

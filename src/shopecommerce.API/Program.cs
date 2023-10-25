@@ -9,6 +9,7 @@ using shopecommerce.API.Configurations;
 using shopecommerce.API.Modules;
 using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Behaviors;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Consts;
 using shopecommerce.Infrastructure.Authentications;
 using shopecommerce.Infrastructure.Configurations;
@@ -42,6 +43,10 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
 
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
+        builder.Services.AddScoped<TokenVerificationMiddleware, TokenVerificationMiddlewareImplementation>();
 
         builder.Services.AddScoped<JwtValidation, JwtValidationImplementation>();
 

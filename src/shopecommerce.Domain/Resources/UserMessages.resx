@@ -124,7 +124,7 @@
     <value>Không tìm thấy dữ liệu.</value>
   </data>
   <data name="unauthorized" xml:space="preserve">
-    <value>Thông tin đăng nhập không hợp lệ.</value>
+    <value>Bạn chưa đăng nhập hoặc đã hết phiên làm việc.</value>
   </data>
   <data name="user_email_existed" xml:space="preserve">
     <value>Email đã được đăng ký.</value>
