@@ -37,7 +37,7 @@ namespace shopecommerce.Application.Queries.CategoryQuery.GetCategoryFilter
                 data.HasPrevious
             };
 
-            _httpContextAccessor.HttpContext.SetHeaderValue(                Setting.headerKeyStrings.Panigation, metadata.ToJson());
+            _httpContextAccessor.HttpContext.SetHeaderValue(Setting.headerKeyStrings.Panigation, metadata.ToJson());
 
             return data;
         }

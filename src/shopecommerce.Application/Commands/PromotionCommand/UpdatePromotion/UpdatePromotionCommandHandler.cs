@@ -1,32 +1,40 @@
 using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
-using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 public class UpdatePromotionCommandHandler : ICommandHandler<UpdatePromotionCommand, BaseResponseDto>
 {
     private readonly IPromotionRepository _promotionRepository;
     private readonly IMapper _mapper;
+    private readonly IHubContext<DataHub> _hubContext;
 
-    public UpdatePromotionCommandHandler(IPromotionRepository promotionRepository, IMapper mapper)
+    public UpdatePromotionCommandHandler(IPromotionRepository promotionRepository, IMapper mapper, IHubContext<DataHub> hubContext)
     {
         _promotionRepository = promotionRepository;
         _mapper = mapper;
+        _hubContext = hubContext;
     }
 
     public async Task<BaseResponseDto> Handle(UpdatePromotionCommand request, CancellationToken cancellationToken)
     {
-        var promotion = await _promotionRepository.GetByIdAsync(request.id.ToString()) ?? throw new BusinessRuleException("promotion_id_not_existed", PromotionMessages.promotion_id_not_existed);
+        var promotion = await _promotionRepository.GetByIdAsync(request.id.ToString());
+        if(promotion == null)
+        {
+            return new BaseResponseDto(false, PromotionMessages.promotion_id_not_existed, (int)HttpStatusCode.BadRequest);
+        }
 
-        if (string.IsNullOrEmpty(request.from_day.ToString()))
+        if(string.IsNullOrEmpty(request.from_day.ToString()))
         {
             request.from_day = promotion.from_day;
         }
 
-        if (string.IsNullOrEmpty(request.to_day.ToString()))
+        if(string.IsNullOrEmpty(request.to_day.ToString()))
         {
             request.to_day = promotion.to_day;
         }
@@ -38,6 +46,8 @@ public class UpdatePromotionCommandHandler : ICommandHandler<UpdatePromotionComm
 
         await _promotionRepository.UpdateAsync(promotionMapping);
         await _promotionRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
-        return new BaseResponseDto(true, "Cập nhật thành công");
+
+        await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken);
+        return new BaseResponseDto(true, "Cập nhật thành công", (int)HttpStatusCode.NoContent);
     }
 }

@@ -7,5 +7,5 @@ public class CreateCategoryCommand : CommandBase<BaseResponseDto>
 {
     public string name { get; set; }
     public string? description { get; set; }
-    public string? create_by { get; set; }
+    public string? created_by { get; set; }
 }

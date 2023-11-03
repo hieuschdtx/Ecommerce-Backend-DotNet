@@ -20,7 +20,7 @@ namespace shopecommerce.Application.Queries.CategoryQuery.GetCategoryById
 
         public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            if (!BaseGuidEx.IsGuid(request.category_id))
+            if(!BaseGuidEx.IsGuid(request.category_id))
                 throw new BusinessRuleException("category_id_is_invalid", CategoryMessages.category_id_is_invalid);
             var result = await _categoryRepository.GetByIdAsync(request.category_id);
             return _mapper.Map<CategoryDto>(result);

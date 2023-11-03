@@ -1,4 +1,3 @@
-using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCat
 using shopecommerce.Application.Queries.ProductCategoryQuery.GetAllProductCategory;
 using shopecommerce.Application.Queries.ProductCategoryQuery.GetProductCategoryById;
 using shopecommerce.Domain.Consts;
+using System.Net;
 
 namespace shopecommerce.API.Controllers
 {
@@ -25,7 +25,7 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> CreateProductCategoryAsync([FromBody] CreateProductCategoryCommand command)
         {
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpPut("update")]
@@ -34,7 +34,7 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpDelete]
@@ -42,7 +42,7 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> DeleteProductCategoryAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new DeleteProductCategoryCommand(id));
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpGet("get-all")]

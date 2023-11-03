@@ -33,6 +33,10 @@ internal class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddHttpContextAccessor();
 
+
+        //SignalR
+        builder.Services.AddSignalR();
+
         //Register services
         builder.Services.AddValidatorsFromAssembly(typeof(Program)
            .Assembly, includeInternalTypes: true);
@@ -152,10 +156,18 @@ internal class Program
 
         app.UseAuthentication();
 
+        app.MapControllers();
+
+        app.UseCors("AllowAllOrigins");
+
+        app.UseRouting();
+
         app.UseAuthorization();
 
-        app.MapControllers();
-        app.UseCors("AllowAllOrigins");
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHub<DataHub>("/datahub");
+        });
 
         app.Run();
     }
