@@ -1,4 +1,3 @@
-using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +6,7 @@ using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
 using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 using shopecommerce.Domain.Consts;
+using System.Net;
 
 namespace shopecommerce.API.Controllers
 {

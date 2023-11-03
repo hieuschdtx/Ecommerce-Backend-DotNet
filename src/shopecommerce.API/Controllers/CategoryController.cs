@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
 using shopecommerce.Application.Commands.CategoryCommand.DeleteCategory;
 using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
@@ -15,42 +16,44 @@ using System.Net;
 namespace shopecommerce.API.Controllers;
 [ApiController]
 [Route("v1/category")]
-[Authorize(Policy = RoleConst.Employee)]
 public class CategoryController : BaseController
 {
     public CategoryController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
     {
     }
 
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
+    [Authorize(Policy = RoleConst.Employee)]
+    [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public async Task<IActionResult> CreateCategoryAsync([FromBody] CreateCategoryCommand command)
     {
         var resp = await _mediator.Send(command);
-        return Ok(resp);
+        return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
     }
 
-    [HttpPut]
-    [Route("update")]
+    [HttpPut("update")]
+    [Authorize(Policy = RoleConst.Employee)]
+    [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> UpdateCategoryAsync([FromQuery] string id, [FromBody] UpdateCategoryCommand command)
     {
         command.SetId(id);
         var resp = await _mediator.Send(command);
-        return Ok(resp);
+        return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
     }
 
-    [HttpDelete]
-    [Route("delete")]
+    [HttpDelete("delete")]
+    [Authorize(Policy = RoleConst.Employee)]
+    [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> DeleteCategoryAsync([FromQuery] string id)
     {
         var resp = await _mediator.Send(new DeleteCategoryCommand(id));
-        return Ok(resp);
+        return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
     }
 
-    [HttpGet]
+    [HttpGet("get-all")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetAllCategoryAsync()
     {
@@ -58,8 +61,7 @@ public class CategoryController : BaseController
         return Ok(resp);
     }
 
-    [HttpGet]
-    [Route("{id}")]
+    [HttpGet("{id}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetCategoryById(string id)
     {
@@ -67,8 +69,7 @@ public class CategoryController : BaseController
         return Ok(resp);
     }
 
-    [HttpGet]
-    [Route("get-page")]
+    [HttpGet("get-page")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetCategoryPageAsync([FromQuery] QueryStringParameters request)
     {
@@ -76,8 +77,7 @@ public class CategoryController : BaseController
         return Ok(resp);
     }
 
-    [HttpGet]
-    [Route("search")]
+    [HttpGet("search")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetCategoryFilteringAsync([FromQuery] string searchTerm, [FromQuery] QueryStringParameters parameters)
     {

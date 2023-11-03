@@ -10,7 +10,7 @@ namespace shopecommerce.Application.Commands.CategoryCommand.CreateCategory
             RuleFor(p => p.name).NotEmpty().WithMessage("Tên không được để trống.");
             RuleFor(p => p.name).MaximumLength(256).WithMessage("Tên không quá 256 kí tự.");
             RuleFor(p => p.description).MaximumLength(256).WithMessage("Mô tả không quá 256 kí tự.");
-            RuleFor(p => p.create_by).MaximumLength(256).WithMessage("Tên người tạo không quá 256 kí tự.");
+            RuleFor(p => p.created_by).MaximumLength(256).WithMessage("Tên người tạo không quá 256 kí tự.");
             #endregion
         }
         private bool BeValidGuid(string id)

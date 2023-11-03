@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
-using shopecommerce.Domain.Entities;
-using shopecommerce.Domain.Models;
-using shopecommerce.Domain.Interfaces;
+using Microsoft.AspNetCore.SignalR;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
+using shopecommerce.Domain.Entities;
+using shopecommerce.Domain.Interfaces;
+using shopecommerce.Domain.Models;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.PromotionCommand.CreatePromotion
 {
@@ -10,11 +13,13 @@ namespace shopecommerce.Application.Commands.PromotionCommand.CreatePromotion
     {
         private readonly IPromotionRepository _promotionRepository;
         private readonly IMapper _mapper;
+        private readonly IHubContext<DataHub> _hubContext;
 
-        public CreatePromotionCommandHandler(IPromotionRepository promotionRepository, IMapper mapper)
+        public CreatePromotionCommandHandler(IPromotionRepository promotionRepository, IMapper mapper, IHubContext<DataHub> hubContext)
         {
             _promotionRepository = promotionRepository;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         public async Task<BaseResponseDto> Handle(CreatePromotionCommand request, CancellationToken cancellationToken)
@@ -27,7 +32,9 @@ namespace shopecommerce.Application.Commands.PromotionCommand.CreatePromotion
 
             await _promotionRepository.AddAsync(promotionMapping);
             await _promotionRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
-            return new BaseResponseDto(true, "Tạo thành công");
+
+            await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken: cancellationToken);
+            return new BaseResponseDto(true, "Tạo thành công", (int)HttpStatusCode.Created);
         }
     }
 }

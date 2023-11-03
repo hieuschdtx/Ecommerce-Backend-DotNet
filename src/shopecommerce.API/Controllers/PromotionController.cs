@@ -25,7 +25,7 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> CreatePromotionAsync([FromBody] CreatePromotionCommand command)
         {
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpPut("update")]
@@ -34,7 +34,7 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpDelete]
@@ -42,7 +42,7 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> DeletePromotionAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new DeletePromotionCommand(id));
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpGet("get-all")]
