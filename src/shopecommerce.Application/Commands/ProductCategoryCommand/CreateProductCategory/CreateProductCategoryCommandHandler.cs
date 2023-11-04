@@ -49,7 +49,7 @@ namespace shopecommerce.Application.Commands.ProductCategoryCommand.CreateProduc
             await _productCategoryRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
             await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken: cancellationToken);
-            return new BaseResponseDto(true, "Tạo thành công");
+            return new BaseResponseDto(true, "Tạo thành công", (int)HttpStatusCode.Created);
         }
     }
 }

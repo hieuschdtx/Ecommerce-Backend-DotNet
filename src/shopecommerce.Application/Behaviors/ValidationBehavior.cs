@@ -21,17 +21,29 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         if(!_validators.Any())
             return await next();
 
-        var errors = _validators
-          .Select(validation => validation.Validate(request))
-          .SelectMany(validationResult => validationResult.Errors)
-          .Where(validationFailure => validationFailure != null)
-          .Select(c => new InvalidCommandException.InvalidCommandItemDto(c.PropertyName, c.ErrorMessage))
-          .ToList();
+        //var errors = _validators
+        //  .Select(validation => validation.Validate(request))
+        //  .SelectMany(validationResult => validationResult.Errors)
+        //  .Where(validationFailure => validationFailure != null)
+        //  .Select(c => new InvalidCommandException.InvalidCommandItemDto(c.PropertyName, c.ErrorMessage))
+        //  .ToList();
 
-        if(errors.Any())
+        //if(errors.Any())
+        //{
+        //    throw new InvalidCommandException(errors[0].code, errors[0].message, errors);
+        //}
+        //return await next();
+
+        var validationContext = new ValidationContext<TRequest>(request);
+        var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(validationContext, cancellationToken)));
+        var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+
+        if(failures.Any())
         {
+            var errors = failures.Select(failure => new InvalidCommandException.InvalidCommandItemDto(failure.PropertyName, failure.ErrorMessage)).ToList();
             throw new InvalidCommandException(errors[0].code, errors[0].message, errors);
         }
+
         return await next();
     }
 }

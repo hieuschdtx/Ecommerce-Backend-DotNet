@@ -31,7 +31,7 @@ namespace shopecommerce.Application.Commands.ProductCategoryCommand.DeleteProduc
             await _productCategoryRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
             await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken: cancellationToken);
-            return new BaseResponseDto(true, "Xóa thành công");
+            return new BaseResponseDto(true, "Xóa thành công", (int)HttpStatusCode.OK);
         }
     }
 }

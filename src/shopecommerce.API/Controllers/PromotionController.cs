@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.DeletePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
@@ -34,14 +35,20 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
             return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
         [HttpDelete]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeletePromotionAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new DeletePromotionCommand(id));
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
             return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 

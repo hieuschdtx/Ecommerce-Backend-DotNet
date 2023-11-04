@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.SignalR;
-using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
@@ -11,12 +9,10 @@ namespace shopecommerce.Application.Commands.PromotionCommand.DeletePromotion;
 public class DeletePromotionCommandHandler : ICommandHandler<DeletePromotionCommand, BaseResponseDto>
 {
     private readonly IPromotionRepository _promotionRepository;
-    private readonly IHubContext<DataHub> _hubContext;
 
-    public DeletePromotionCommandHandler(IPromotionRepository promotionRepository, IHubContext<DataHub> hubContext)
+    public DeletePromotionCommandHandler(IPromotionRepository promotionRepository)
     {
         _promotionRepository = promotionRepository;
-        _hubContext = hubContext;
     }
 
     public async Task<BaseResponseDto> Handle(DeletePromotionCommand request, CancellationToken cancellationToken)
@@ -30,7 +26,6 @@ public class DeletePromotionCommandHandler : ICommandHandler<DeletePromotionComm
         await _promotionRepository.DeleteAsync(promotion);
         await _promotionRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-        await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken);
         return new BaseResponseDto(true, "Xóa thành công", (int)HttpStatusCode.OK);
     }
 }

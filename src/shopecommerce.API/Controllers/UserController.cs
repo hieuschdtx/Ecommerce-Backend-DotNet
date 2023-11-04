@@ -50,7 +50,7 @@ namespace shopecommerce.API.Controllers
         [HttpPut("update")]
         [Authorize(Policy = RoleConst.Manager)]
         [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
         {
             command.SetId(id);

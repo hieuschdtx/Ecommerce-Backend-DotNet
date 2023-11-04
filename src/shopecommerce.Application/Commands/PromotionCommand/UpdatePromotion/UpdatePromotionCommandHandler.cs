@@ -1,6 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.SignalR;
-using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
@@ -12,13 +10,11 @@ public class UpdatePromotionCommandHandler : ICommandHandler<UpdatePromotionComm
 {
     private readonly IPromotionRepository _promotionRepository;
     private readonly IMapper _mapper;
-    private readonly IHubContext<DataHub> _hubContext;
 
-    public UpdatePromotionCommandHandler(IPromotionRepository promotionRepository, IMapper mapper, IHubContext<DataHub> hubContext)
+    public UpdatePromotionCommandHandler(IPromotionRepository promotionRepository, IMapper mapper)
     {
         _promotionRepository = promotionRepository;
         _mapper = mapper;
-        _hubContext = hubContext;
     }
 
     public async Task<BaseResponseDto> Handle(UpdatePromotionCommand request, CancellationToken cancellationToken)
@@ -47,7 +43,6 @@ public class UpdatePromotionCommandHandler : ICommandHandler<UpdatePromotionComm
         await _promotionRepository.UpdateAsync(promotionMapping);
         await _promotionRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-        await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken);
-        return new BaseResponseDto(true, "Cập nhật thành công", (int)HttpStatusCode.NoContent);
+        return new BaseResponseDto(true, "Cập nhật thành công", (int)HttpStatusCode.OK);
     }
 }
