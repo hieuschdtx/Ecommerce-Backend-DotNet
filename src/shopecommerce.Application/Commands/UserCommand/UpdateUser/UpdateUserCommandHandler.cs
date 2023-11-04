@@ -29,7 +29,7 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
             await _userRepository.UpdateAsync(_mapper.Map(request, user));
             await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-            return new BaseResponseDto(true, "Update thông tin người dùng thành công", (int)HttpStatusCode.NoContent);
+            return new BaseResponseDto(true, "Update thông tin người dùng thành công", (int)HttpStatusCode.OK);
         }
     }
 }

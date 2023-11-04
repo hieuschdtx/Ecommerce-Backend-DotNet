@@ -54,7 +54,7 @@ namespace shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProduc
             await _productCategoryRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
             await _hubContext.Clients.All.SendAsync("RELOAD_DATA_CHANGE", cancellationToken: cancellationToken);
-            return new BaseResponseDto(true, "Cập nhật thành công");
+            return new BaseResponseDto(true, "Cập nhật thành công", (int)HttpStatusCode.OK);
         }
     }
 }

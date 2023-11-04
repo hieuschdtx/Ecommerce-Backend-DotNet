@@ -38,7 +38,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpDelete]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductCategoryAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new DeleteProductCategoryCommand(id));

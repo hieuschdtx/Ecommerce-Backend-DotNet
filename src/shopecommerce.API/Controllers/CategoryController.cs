@@ -46,7 +46,7 @@ public class CategoryController : BaseController
     [HttpDelete("delete")]
     [Authorize(Policy = RoleConst.Employee)]
     [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteCategoryAsync([FromQuery] string id)
     {
         var resp = await _mediator.Send(new DeleteCategoryCommand(id));
