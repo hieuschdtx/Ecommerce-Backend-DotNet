@@ -5,6 +5,7 @@ using shopecommerce.Application.Commands.ProductCommand.CreatePrice;
 using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
 using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
+using shopecommerce.Application.Queries.ProductQuery.GetAllProduct;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -55,6 +56,15 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            return Ok(resp);
+        }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetAllProductAsync()
+        {
+            var resp = await _mediator.Send(new GetAllProductQuery());
             return Ok(resp);
         }
     }
