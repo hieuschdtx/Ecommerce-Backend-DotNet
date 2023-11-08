@@ -22,7 +22,7 @@
 
         public void SetPriceSale(int discount)
         {
-            this.price_sale = this.price - (this.price * discount / 100);
+            this.price_sale = this.price - (this.price * (discount / 100m));
         }
 
         public void SetPriceAndWeight(decimal price, decimal weight)

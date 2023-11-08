@@ -6,7 +6,6 @@ using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Consts;
 using shopecommerce.Domain.Entities;
-using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Extensions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
@@ -21,7 +20,6 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
         private readonly IProductCategoryRepository _productCategoryRepository;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _environment;
-        private readonly IPromotionRepository _promotionRepository;
         private readonly IProductPriceRepository _productPriceRepository;
         private readonly IPromotionService _promotionService;
 
@@ -29,7 +27,6 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
             IMapper mapper,
             IProductRepository productRepository,
             IProductCategoryRepository productCategoryRepository,
-            IPromotionRepository promotionRepository,
             IPromotionService promotionService,
             IProductPriceRepository productPriceRepository)
         {
@@ -39,32 +36,28 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
             _mapper = mapper;
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
-            _promotionRepository = promotionRepository;
         }
 
         public async Task<BaseResponseDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var productCatetgory = await _productCategoryRepository.GetByIdAsync(request.product_category_id) ??
-                throw new BusinessRuleException("Product_Category_id_not_existed",
-                ProductCategoryMessages.Product_Category_id_not_existed,
-                HttpStatusCode.BadRequest);
-
-            if (!string.IsNullOrEmpty(request.promotion_id) && await _promotionRepository.GetByIdAsync(request.promotion_id) is null)
+            var productCatetgory = await _productCategoryRepository.GetByIdAsync(request.product_category_id);
+            if(productCatetgory == null)
             {
-                throw new BusinessRuleException("promotion_id_not_existed", PromotionMessages.promotion_id_not_existed,
-                HttpStatusCode.BadRequest);
+                return new BaseResponseDto(false, ProductCategoryMessages.Product_Category_id_not_existed, (int)HttpStatusCode.BadRequest);
             }
+
             var newProduct = _mapper.Map(request, new Products());
             newProduct.CreateTime();
+            newProduct.SetPromotionId(productCatetgory.promotion_id);
 
             //Kiểm tra và lưu avatar
-            if (request.thumbnails_file != null)
+            if(request.avatar_file != null)
             {
-                newProduct.SetAvatarFileString(await SaveFileImageExtensions.SaveFileImageAsync(request?.avatar_file, _environment, FolderConst.Product));
+                newProduct.SetAvatarFileString(await SaveFileImageExtensions.SaveFileImageAsync(request.avatar_file, _environment, FolderConst.Product));
             }
 
             //Kiểm tra và lưu thumnail
-            if (request.thumbnails_file != null && request.thumbnails_file.Count > 0)
+            if(request.thumbnails_file != null && request.thumbnails_file.Any())
             {
                 var thumbnailList = request?.thumbnails_file
                     .Where(file => file != null && file.Length > 0)
@@ -73,33 +66,28 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
                         fileName = await SaveFileImageExtensions.SaveFileImageAsync(file, _environment, FolderConst.Product)
                     })
                     .ToList();
-                newProduct.SetThumnailFileString(JsonConvert.SerializeObject(thumbnailList));
+
+                var thumbnailFileNames = thumbnailList.Select(x => new { file_name = x.Result.fileName }).ToList();
+                var jsonString = JsonConvert.SerializeObject(thumbnailFileNames);
+                newProduct.SetThumnailFileString(jsonString);
             }
 
             await _productRepository.AddAsync(newProduct);
             await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
             //Tạo mới giá sản phẩm
-            var productPrices = new List<ProductsPrices>();
-            foreach (var price in request.prices)
+            var productPrices = new ProductsPrices
             {
-                if (price.price >= 0 && price.weight >= 0)
-                {
-                    productPrices.Add(new ProductsPrices
-                    {
-                        id = BaseGuidEx.GetNewGuid(),
-                        weight = price.weight,
-                        price = price.price,
-                        product_id = newProduct.id,
-                        price_sale = await _promotionService.GetDisCount(productCatetgory.promotion_id)
-                    });
-                }
-            }
-            var addTasks = productPrices.Select(productPrice => _productPriceRepository.AddAsync(productPrice));
-            await Task.WhenAll(addTasks);
+                id = BaseGuidEx.GetNewGuid(),
+                weight = request.weight,
+                price = request.price,
+                product_id = newProduct.id
+            };
+            productPrices.SetPriceSale(await _promotionService.GetDisCount(productCatetgory.promotion_id));
+            await _productPriceRepository.AddAsync(productPrices);
             await _productPriceRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-            return new BaseResponseDto(true, "Tạo thành công");
+            return new BaseResponseDto(true, "Tạo thành sản phẩm thành công", (int)HttpStatusCode.Created);
         }
     }
 }

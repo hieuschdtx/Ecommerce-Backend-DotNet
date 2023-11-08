@@ -56,5 +56,9 @@ namespace shopecommerce.Domain.Entities
         {
             this.thumnails = thumnails;
         }
+        public void SetPromotionId(string promotionId)
+        {
+            this.promotion_id = promotionId;
+        }
     }
 }

@@ -5,6 +5,12 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreatePrice
 {
     public class CreatePriceCommand : CommandBase<BaseResponseDto>
     {
-        public List<Prices> prices { get; set; }
+        public List<PriceWeightCreate> prices { get; set; }
+    }
+
+    public class PriceWeightCreate
+    {
+        public decimal weight { get; set; }
+        public decimal price { get; set; }
     }
 }

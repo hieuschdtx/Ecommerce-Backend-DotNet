@@ -1,12 +1,11 @@
-using System.Net;
 using shopecommerce.Application.Services.PromotionService;
 using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Entities;
-using shopecommerce.Domain.Exceptions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.ProductCommand.CreatePrice;
 
@@ -28,13 +27,13 @@ public class CreatePriceCommandHandler : ICommandHandler<CreatePriceCommand, Bas
 
     public async Task<BaseResponseDto> Handle(CreatePriceCommand request, CancellationToken cancellationToken)
     {
-        if (await _productRepository.GetByIdAsync(request.id.ToString()) is null)
+        if(await _productRepository.GetByIdAsync(request.id.ToString()) is null)
         {
-            throw new BusinessRuleException("product_id_not_existed", ProductMessages.product_id_not_existed, HttpStatusCode.BadRequest);
+            return new BaseResponseDto(false, ProductMessages.product_id_not_existed, (int)HttpStatusCode.BadRequest);
         }
         var promotion = await _promotionService.GetPromotionByProductId(request.id.ToString());
 
-        foreach (var price in request.prices)
+        foreach(var price in request.prices)
         {
             ProductsPrices productsPrices = new()
             {
@@ -47,6 +46,6 @@ public class CreatePriceCommandHandler : ICommandHandler<CreatePriceCommand, Bas
             await _productPriceRepository.AddAsync(productsPrices);
             await _productPriceRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
         }
-        return new BaseResponseDto(true, "Tạo thành công");
+        return new BaseResponseDto(true, "Tạo thành công", (int)HttpStatusCode.Created);
     }
 }
