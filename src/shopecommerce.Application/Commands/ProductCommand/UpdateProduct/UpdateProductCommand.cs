@@ -13,7 +13,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.UpdateProduct
         public bool? hot_flag { get; set; }
         public string? modified_by { get; set; }
         public int? stock { get; set; }
-        public string? product_category_id { get; set; }
+        public string product_category_id { get; set; }
         public string? origin { get; set; }
         public string? storage { get; set; }
     }

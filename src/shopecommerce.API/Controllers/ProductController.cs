@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Behaviors;
+using shopecommerce.Application.Commands.ProductCommand.AddImageProduct;
 using shopecommerce.Application.Commands.ProductCommand.CreatePrice;
 using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
 using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
@@ -79,6 +80,17 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> GetAllProductPriceAsync()
         {
             var resp = await _mediator.Send(new GetAllProductPriceQuery());
+            return Ok(resp);
+        }
+
+        [HttpPut("update-image")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> AddImageAsync([FromQuery] string id, [FromForm] AddImageProductCommand command)
+        {
+            command.SetId(id);
+            var resp = await _mediator.Send(command);
+
             return Ok(resp);
         }
     }
