@@ -1,0 +1,49 @@
+﻿using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
+using shopecommerce.Domain.Commons.Commands;
+using shopecommerce.Domain.Consts;
+using shopecommerce.Domain.Extensions;
+using shopecommerce.Domain.Interfaces;
+using shopecommerce.Domain.Models;
+using shopecommerce.Domain.Resources;
+
+namespace shopecommerce.Application.Commands.ProductCommand.AddImageProduct
+{
+    public class AddImageProductCommandHandler : ICommandHandler<AddImageProductCommand, BaseResponseDto>
+    {
+        private readonly IProductRepository _productRepository;
+        private readonly IWebHostEnvironment _environment;
+
+        public AddImageProductCommandHandler(IProductRepository productRepository, IWebHostEnvironment environment)
+        {
+            _productRepository = productRepository;
+            _environment = environment;
+        }
+
+        public async Task<BaseResponseDto> Handle(AddImageProductCommand request, CancellationToken cancellationToken)
+        {
+            var product = await _productRepository.GetByIdAsync(request.id.ToString());
+            if(product == null)
+            {
+                return new BaseResponseDto(false, ProductMessages.product_id_not_existed);
+            }
+            var thumbnailList = request?.file_image
+                    .Where(file => file != null && file.Length > 0)
+                    .Select(async file => new Image
+                    {
+                        fileName = await SaveFileImageExtensions.SaveFileImageAsync(file, _environment, FolderConst.Product)
+                    })
+                    .ToList();
+
+            var thumbnails = JsonConvert.DeserializeObject<List<dynamic>>(product.thumnails);
+            var thumbnailFileNames = thumbnailList.Select(x => new { file_name = x.Result.fileName }).ToList();
+
+            var jsonString = JsonConvert.SerializeObject(thumbnails.Append(thumbnailFileNames));
+            product.SetThumnailFileString(jsonString);
+
+            await _productRepository.UpdateAsync(product);
+            await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
+            return new BaseResponseDto(true, "Cập nhật ảnh thành công");
+        }
+    }
+}
