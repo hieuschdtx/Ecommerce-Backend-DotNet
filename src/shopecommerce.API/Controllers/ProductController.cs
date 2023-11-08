@@ -1,11 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.ProductCommand.CreatePrice;
 using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
 using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 using shopecommerce.Application.Queries.ProductQuery.GetAllProduct;
+using shopecommerce.Application.Queries.ProductQuery.GetAllProductPrice;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -26,7 +28,10 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> CreateProductAsync([FromForm] CreateProductCommand command)
         {
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
+            return StatusCode(resp.code, new { resp.success, resp.message });
         }
 
         [HttpPut("update")]
@@ -65,6 +70,15 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> GetAllProductAsync()
         {
             var resp = await _mediator.Send(new GetAllProductQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet("price")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetAllProductPriceAsync()
+        {
+            var resp = await _mediator.Send(new GetAllProductPriceQuery());
             return Ok(resp);
         }
     }

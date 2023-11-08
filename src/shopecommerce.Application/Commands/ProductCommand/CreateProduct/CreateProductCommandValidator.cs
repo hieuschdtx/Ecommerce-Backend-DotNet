@@ -14,22 +14,20 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
             RuleFor(p => p.product_category_id).NotEmpty().WithMessage("Product category id không được để trống")
                         .Must(IsvalidGuid).WithMessage("Product category id không hợp lệ");
 
-            RuleFor(p => p.promotion_id).Must(IsvalidGuid).WithMessage("Promotion id không hợp lệ");
+            //RuleFor(p => p.prices).NotEmpty().WithMessage("Giá không được để trống");
 
-            RuleFor(p => p.prices).NotEmpty().WithMessage("Giá không được để trống");
+            //RuleFor(p => p.prices).Must(prices => prices != null && prices.All(price => price.price >= 0))
+            //            .WithMessage("Giá không được để trống và phải lớn hơn hoặc bằng 0");
 
-            RuleFor(p => p.prices).Must(prices => prices != null && prices.All(price => price.price >= 0))
-                        .WithMessage("Giá không được để trống và phải lớn hơn hoặc bằng 0");
-
-            RuleFor(p => p.prices).Must(prices => prices != null && prices.All(price => price.weight > 0))
-                        .WithMessage("Cân nặng không được để trống và phải lớn hơn 0");
+            //RuleFor(p => p.prices).Must(prices => prices != null && prices.All(price => price.weight > 0))
+            //            .WithMessage("Cân nặng không được để trống và phải lớn hơn 0");
 
 
         }
 
         private static bool IsvalidGuid(string? id)
         {
-            if (string.IsNullOrEmpty(id))
+            if(string.IsNullOrEmpty(id))
             {
                 return true;
             }

@@ -1,10 +1,10 @@
-using System.Net;
 using AutoMapper;
 using shopecommerce.Domain.Commons.Commands;
-using shopecommerce.Domain.Exceptions;
+using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.ProductCommand.UpdateProduct
 {
@@ -13,15 +13,12 @@ namespace shopecommerce.Application.Commands.ProductCommand.UpdateProduct
         private readonly IProductRepository _productRepository;
         private readonly IProductCategoryRepository _productCategoryRepository;
         private readonly IMapper _mapper;
-        private readonly IPromotionRepository _promotionRepository;
 
         public UpdateProductCommandHandler(
             IProductRepository productRepository,
             IMapper mapper,
-            IProductCategoryRepository productCategoryRepository,
-            IPromotionRepository promotionRepository)
+            IProductCategoryRepository productCategoryRepository)
         {
-            _promotionRepository = promotionRepository;
             _productCategoryRepository = productCategoryRepository;
             _mapper = mapper;
             _productRepository = productRepository;
@@ -29,24 +26,30 @@ namespace shopecommerce.Application.Commands.ProductCommand.UpdateProduct
 
         public async Task<BaseResponseDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetByIdAsync(request.id.ToString()) ??
-                                throw new BusinessRuleException("product_id_not_existed", ProductMessages.product_id_not_existed, HttpStatusCode.BadRequest);
+            var product = await _productRepository.GetByIdAsync(request.id.ToString());
+            var productCategory = new ProductCategories();
 
-            if (request.product_category_id != null && await _productCategoryRepository.GetByIdAsync(request.product_category_id) is null)
+            if(product is null)
             {
-                throw new BusinessRuleException("Product_Category_id_not_existed", ProductCategoryMessages.Product_Category_id_not_existed, HttpStatusCode.BadRequest);
+                return new BaseResponseDto(false, ProductMessages.product_id_not_existed, (int)HttpStatusCode.BadRequest);
             }
 
-            if (request.promotion_id != null && await _promotionRepository.GetByIdAsync(request.promotion_id) is null)
+            if(request.product_category_id != null)
             {
-                throw new BusinessRuleException("promotion_id_not_existed", PromotionMessages.promotion_id_not_existed, HttpStatusCode.BadRequest);
+                productCategory = await _productCategoryRepository.GetByIdAsync(request.product_category_id);
+                if(productCategory is null)
+                {
+                    return new BaseResponseDto(false, ProductCategoryMessages.Product_Category_id_not_existed, (int)HttpStatusCode.BadRequest);
+                }
             }
+
             var newProduct = _mapper.Map(request, product);
             newProduct.UpdateModifiedTime();
+            newProduct.SetPromotionId(productCategory.promotion_id);
 
             await _productRepository.UpdateAsync(newProduct);
             await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
-            return new BaseResponseDto(true, "Cập nhật thành công");
+            return new BaseResponseDto(true, "Cập nhật sản phẩm thành công", (int)HttpStatusCode.OK);
         }
     }
 }
