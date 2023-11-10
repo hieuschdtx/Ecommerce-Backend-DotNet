@@ -23,6 +23,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.AddImageProduct
         public async Task<BaseResponseDto> Handle(AddImageProductCommand request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetByIdAsync(request.id.ToString());
+            var thumbnails = new List<dynamic>();
             if(product == null)
             {
                 return new BaseResponseDto(false, ProductMessages.product_id_not_existed);
@@ -35,12 +36,18 @@ namespace shopecommerce.Application.Commands.ProductCommand.AddImageProduct
                     })
                     .ToList();
 
-            var thumbnails = JsonConvert.DeserializeObject<List<dynamic>>(product.thumnails);
-            var thumbnailFileNames = thumbnailList.Select(x => new { file_name = x.Result.fileName }).ToList();
+            if(product?.thumnails != null)
+            {
+                thumbnails = JsonConvert.DeserializeObject<List<dynamic>>(product?.thumnails);
+            }
 
-            var jsonString = JsonConvert.SerializeObject(thumbnails.Append(thumbnailFileNames));
+            foreach(var thumbnail in thumbnailList)
+            {
+                thumbnails.Add(new { file_name = thumbnail.Result.fileName });
+            }
+
+            var jsonString = JsonConvert.SerializeObject(thumbnails);
             product.SetThumnailFileString(jsonString);
-
             await _productRepository.UpdateAsync(product);
             await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
             return new BaseResponseDto(true, "Cập nhật ảnh thành công");
