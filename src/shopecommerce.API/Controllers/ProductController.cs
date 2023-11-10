@@ -5,6 +5,7 @@ using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.ProductCommand.AddImageProduct;
 using shopecommerce.Application.Commands.ProductCommand.CreatePrice;
 using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
+using shopecommerce.Application.Commands.ProductCommand.DeleteImageProduct;
 using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 using shopecommerce.Application.Queries.ProductQuery.GetAllProduct;
@@ -87,6 +88,17 @@ namespace shopecommerce.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> AddImageAsync([FromQuery] string id, [FromForm] AddImageProductCommand command)
+        {
+            command.SetId(id);
+            var resp = await _mediator.Send(command);
+
+            return Ok(resp);
+        }
+
+        [HttpDelete("update-image")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> RemoveImageAsync([FromQuery] string id, [FromForm] DeleteImageProductCommand command)
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
