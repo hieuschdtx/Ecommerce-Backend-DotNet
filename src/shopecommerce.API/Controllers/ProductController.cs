@@ -10,6 +10,8 @@ using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 using shopecommerce.Application.Queries.ProductQuery.GetAllProduct;
 using shopecommerce.Application.Queries.ProductQuery.GetAllProductPrice;
+using shopecommerce.Application.Queries.ProductQuery.GetPriceByProductId;
+using shopecommerce.Application.Queries.ProductQuery.GetProductById;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -49,21 +51,27 @@ namespace shopecommerce.API.Controllers
         [HttpPost("create-price")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> CreateProductPriceAsync([FromQuery] string productId, [FromBody] CreatePriceCommand command)
+        public async Task<IActionResult> CreateProductPriceAsync([FromQuery] string productId, [FromForm] CreatePriceCommand command)
         {
             command.SetId(productId);
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
+            return StatusCode(resp.code, new { resp.success, resp.message });
         }
 
         [HttpPut("update-price")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> UpdateProductPriceAsync([FromQuery] string id, [FromBody] UpdateProductPriceCommand command)
+        public async Task<IActionResult> UpdateProductPriceAsync([FromQuery] string id, [FromForm] UpdateProductPriceCommand command)
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
+            return StatusCode(resp.code, new { resp.success, resp.message });
         }
 
         [HttpGet("get-all")]
@@ -91,18 +99,40 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
 
-            return Ok(resp);
+            return StatusCode(resp.code, new { resp.success, resp.message });
         }
 
-        [HttpDelete("update-image")]
+        [HttpDelete("delete-image")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> RemoveImageAsync([FromQuery] string id, [FromForm] DeleteImageProductCommand command)
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
 
+            return StatusCode(resp.code, new { resp.success, resp.message });
+        }
+
+        [HttpGet("price/listing")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetPriceByProductIdAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetPriceByProductIdQuery(id));
+            return Ok(resp);
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetProductByIdAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetProductByIdQuery(id));
             return Ok(resp);
         }
     }

@@ -6,6 +6,7 @@ using shopecommerce.Domain.Extensions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.ProductCommand.AddImageProduct
 {
@@ -22,35 +23,38 @@ namespace shopecommerce.Application.Commands.ProductCommand.AddImageProduct
 
         public async Task<BaseResponseDto> Handle(AddImageProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productRepository.GetByIdAsync(request.id.ToString());
-            var thumbnails = new List<dynamic>();
-            if(product == null)
+            if(request.thumbnails_file is not null)
             {
-                return new BaseResponseDto(false, ProductMessages.product_id_not_existed);
-            }
-            var thumbnailList = request?.file_image
-                    .Where(file => file != null && file.Length > 0)
-                    .Select(async file => new Image
-                    {
-                        fileName = await SaveFileImageExtensions.SaveFileImageAsync(file, _environment, FolderConst.Product)
-                    })
-                    .ToList();
+                var product = await _productRepository.GetByIdAsync(request.id.ToString());
+                var thumbnails = new List<dynamic>();
+                if(product == null)
+                {
+                    return new BaseResponseDto(false, ProductMessages.product_id_not_existed);
+                }
+                var thumbnailList = request?.thumbnails_file
+                        .Where(file => file != null && file.Length > 0)
+                        .Select(async file => new Image
+                        {
+                            fileName = await SaveFileImageExtensions.SaveFileImageAsync(file, _environment, FolderConst.Product)
+                        })
+                        .ToList();
 
-            if(product?.thumnails != null)
-            {
-                thumbnails = JsonConvert.DeserializeObject<List<dynamic>>(product?.thumnails);
-            }
+                if(product?.thumnails != null)
+                {
+                    thumbnails = JsonConvert.DeserializeObject<List<dynamic>>(product?.thumnails);
+                }
 
-            foreach(var thumbnail in thumbnailList)
-            {
-                thumbnails.Add(new { file_name = thumbnail.Result.fileName });
-            }
+                foreach(var thumbnail in thumbnailList)
+                {
+                    thumbnails.Add(new { file_name = thumbnail.Result.fileName });
+                }
 
-            var jsonString = JsonConvert.SerializeObject(thumbnails);
-            product.SetThumnailFileString(jsonString);
-            await _productRepository.UpdateAsync(product);
-            await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
-            return new BaseResponseDto(true, "Cập nhật ảnh thành công");
+                var jsonString = JsonConvert.SerializeObject(thumbnails);
+                product.SetThumnailFileString(jsonString);
+                await _productRepository.UpdateAsync(product);
+                await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
+            }
+            return new BaseResponseDto(true, "Cập nhật ảnh thành công", (int)HttpStatusCode.OK);
         }
     }
 }

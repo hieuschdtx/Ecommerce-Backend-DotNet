@@ -9,7 +9,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.CreateProduct
         {
             RuleFor(p => p.name).NotEmpty().WithMessage("Tên không được để trống");
 
-            RuleFor(p => p.stock).GreaterThan(0).WithMessage("Số lượng không được bé hơn 0");
+            RuleFor(p => p.stock).GreaterThanOrEqualTo(0).WithMessage("Số lượng không được bé hơn 0");
 
             RuleFor(p => p.product_category_id).NotEmpty().WithMessage("Product category id không được để trống")
                         .Must(IsvalidGuid).WithMessage("Product category id không hợp lệ");
