@@ -3,6 +3,7 @@ using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
+using System.Net;
 
 namespace shopecommerce.Application.Commands.ProductCommand.DeleteImageProduct
 {
@@ -44,7 +45,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.DeleteImageProduct
 
             await _productRepository.UpdateAsync(product);
             await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
-            return new BaseResponseDto(true, "Cập nhật thành công");
+            return new BaseResponseDto(true, "Cập nhật thành công", (int)HttpStatusCode.OK);
         }
     }
 }

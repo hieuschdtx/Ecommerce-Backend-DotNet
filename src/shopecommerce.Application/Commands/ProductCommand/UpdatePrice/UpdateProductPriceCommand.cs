@@ -5,6 +5,7 @@ namespace shopecommerce.Application.Commands.ProductCommand.UpdatePrice
 {
     public class UpdateProductPriceCommand : CommandBase<BaseResponseDto>
     {
-        public List<ProductPrices> product_price { get; set; }
+        public decimal weight { get; set; }
+        public decimal price { get; set; }
     }
 }

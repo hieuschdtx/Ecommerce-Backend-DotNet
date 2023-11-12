@@ -18,5 +18,11 @@ namespace shopecommerce.Application.Services.ProductPriceService
             using var conn = _factory.GetOpenConnection();
             return await conn.QueryAsync<ProductPriceDto>(queryString);
         }
+        public async Task<ProductPriceDto> GetPriceByProductIdAsync(string id)
+        {
+            const string queryString = @"select * from products_prices where product_id = @id";
+            using var conn = _factory.GetOpenConnection();
+            return await conn.QueryFirstOrDefaultAsync<ProductPriceDto>(queryString, new { id });
+        }
     }
 }

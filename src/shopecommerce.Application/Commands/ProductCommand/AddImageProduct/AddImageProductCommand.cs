@@ -6,6 +6,6 @@ namespace shopecommerce.Application.Commands.ProductCommand.AddImageProduct
 {
     public class AddImageProductCommand : CommandBase<BaseResponseDto>
     {
-        public List<IFormFile> file_image { get; set; }
+        public List<IFormFile>? thumbnails_file { get; set; }
     }
 }

@@ -5,6 +5,6 @@ namespace shopecommerce.Domain.Interfaces
 {
     public interface IProductPriceRepository : IGenericRepository<ProductsPrices>
     {
-        Task<ProductsPrices> GetProductsPricesByProductId(string productPriceId, string productId);
+        Task<ProductsPrices> GetProductsPricesByProductId(string productId);
     }
 }
