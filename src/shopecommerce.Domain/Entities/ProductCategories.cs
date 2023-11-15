@@ -27,6 +27,7 @@ namespace shopecommerce.Domain.Entities
         public string alias { get; set; }
         public string category_id { get; set; }
         public string? promotion_id { get; set; }
+        public int display_order { get; set; }
         #endregion
 
         #region Generated Relationships 

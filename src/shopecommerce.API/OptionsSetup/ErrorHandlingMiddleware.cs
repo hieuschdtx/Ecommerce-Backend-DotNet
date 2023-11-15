@@ -29,7 +29,7 @@ namespace shopecommerce.API.OptionsSetup
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var statusCode = HttpStatusCode.InternalServerError;
-            var message = "Internal Server Error";
+            var message = exception.StackTrace;
             var code = string.Empty;
 
             if(exception is InvalidCommandException invalidCommandException)

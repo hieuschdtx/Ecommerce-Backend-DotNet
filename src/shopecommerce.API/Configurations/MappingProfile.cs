@@ -8,6 +8,7 @@ using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 using shopecommerce.Application.Commands.PromotionCommand.CreatePromotion;
 using shopecommerce.Application.Commands.PromotionCommand.UpdatePromotion;
 using shopecommerce.Application.Commands.RoleCommand.CreateRole;
+using shopecommerce.Application.Commands.SlideCommand.CreateSlide;
 using shopecommerce.Application.Commands.UserCommand.CreateUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
@@ -92,5 +93,9 @@ public class MappingProfile : Profile
         CreateMap<ProductDto, Products>().ReverseMap()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
         //ProductPrice mapper
+
+        //Slides mapper
+        CreateMap<CreateSlideCommand, Slides>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }

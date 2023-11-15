@@ -49,6 +49,12 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("modified_by")
                 .HasColumnType("text");
 
+            builder.Property(t => t.display_order)
+                .IsRequired()
+                .HasColumnName("display_order")
+                .HasColumnType("bigint")
+                .ValueGeneratedOnAdd();
+
             builder.Property(t => t.modified_at)
                 .HasColumnName("modified_at")
                 .HasColumnType("timestamp without time zone");

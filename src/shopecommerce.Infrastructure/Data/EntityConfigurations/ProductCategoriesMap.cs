@@ -62,6 +62,12 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("promotion_id")
                 .HasColumnType("text");
 
+            builder.Property(t => t.display_order)
+                .IsRequired()
+                .HasColumnName("display_order")
+                .HasColumnType("bigint")
+                .ValueGeneratedOnAdd();
+
             // relationships
             builder.HasOne(t => t.category_Categories)
                 .WithMany(t => t.category_ProductCategories)

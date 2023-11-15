@@ -26,6 +26,7 @@ public class Categories : BaseEntites
     }
     public string description { get; set; }
     public string alias { get; set; }
+    public int display_order { get; set; }
     #endregion
 
     #region Generated Relationships
