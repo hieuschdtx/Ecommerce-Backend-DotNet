@@ -45,7 +45,10 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
-            return Ok(resp);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
+            return StatusCode(resp.code, new { resp.success, resp.message });
         }
 
         [HttpPost("create-price")]
