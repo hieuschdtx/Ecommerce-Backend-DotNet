@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.SlideCommand.CreateSlide;
+using shopecommerce.Application.Queries.SlideQuery.GetAllSlide;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -28,5 +29,14 @@ namespace shopecommerce.API.Controllers
                 await _mediator.Publish(new DataChangeNotification());
             return StatusCode(resp.code, new { resp.success, resp.message });
         }
+
+        [HttpGet("get-all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllSlideAsync()
+        {
+            var resp = await _mediator.Send(new GetAllSlideQuery());
+            return Ok(resp);
+        }
+
     }
 }

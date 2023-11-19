@@ -26,6 +26,7 @@ namespace shopecommerce.Domain.Entities
         public string description { get; set; }
         public string detail { get; set; }
         public string category_id { get; set; }
+        public string image { get; set; }
         #endregion
 
         #region Generated Relationships

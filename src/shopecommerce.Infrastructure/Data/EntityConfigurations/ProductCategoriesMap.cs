@@ -65,7 +65,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.display_order)
                 .IsRequired()
                 .HasColumnName("display_order")
-                .HasColumnType("bigint")
+                .HasColumnType("integer")
                 .ValueGeneratedOnAdd();
 
             // relationships
@@ -78,7 +78,6 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .WithMany(t => t.promotion_ProductCategories)
                 .HasForeignKey(d => d.promotion_id)
                 .HasConstraintName("fk_productcategory_promotion");
-
             #endregion
         }
     }

@@ -5,6 +5,7 @@ using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCat
 using shopecommerce.Application.Commands.ProductCategoryCommand.DeleteProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
 using shopecommerce.Application.Queries.ProductCategoryQuery.GetAllProductCategory;
+using shopecommerce.Application.Queries.ProductCategoryQuery.GetProductCategoriesByCategoryId;
 using shopecommerce.Application.Queries.ProductCategoryQuery.GetProductCategoryById;
 using shopecommerce.Domain.Consts;
 using System.Net;
@@ -58,6 +59,14 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> GetAllProductCategoryAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new GetProductCategoryByIdQuery(id));
+            return Ok(resp);
+        }
+
+        [HttpGet("category")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetProductCategoryByCategoryIdAsync([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetProductCategoriesByCategoryIdQuery(id));
             return Ok(resp);
         }
     }

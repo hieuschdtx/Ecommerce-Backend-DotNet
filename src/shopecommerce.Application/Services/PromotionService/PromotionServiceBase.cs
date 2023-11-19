@@ -15,7 +15,7 @@ public class PromotionServiceBase
 
     public async Task<IEnumerable<PromotionDto>> GetAllAsync()
     {
-        const string queryString = @"select * from promotions";
+        const string queryString = @"select * from promotions order by discount asc";
         using var conn = _factory.GetOpenConnection();
         return await conn.QueryAsync<PromotionDto>(queryString);
     }

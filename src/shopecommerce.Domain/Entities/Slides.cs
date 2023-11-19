@@ -21,7 +21,7 @@ namespace shopecommerce.Domain.Entities
         }
         public string image { get; set; }
         public string url { get; set; }
-        public long display_order { get; set; }
+        public int display_order { get; set; }
         public bool status { get; set; }
         #endregion
 

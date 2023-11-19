@@ -15,10 +15,17 @@ namespace shopecommerce.Application.Services.ProductCategoryService
 
         public async Task<IEnumerable<ProductCategoryDto>> GetAllProductCategory()
         {
-            const string queryString = @"select * from product_categories";
+            const string queryString = @"select * from product_categories order by display_order asc";
             using var conn = _factory.GetOpenConnection();
 
             return await conn.QueryAsync<ProductCategoryDto>(queryString);
+        }
+
+        public async Task<IEnumerable<ProductCategoryDto>> GetProductCategoryByCategoryId(string id)
+        {
+            const string queryString = @"select * from product_categories where category_id = @id";
+            using var conn = _factory.GetOpenConnection();
+            return await conn.QueryAsync<ProductCategoryDto>(queryString, new { id });
         }
     }
 }
