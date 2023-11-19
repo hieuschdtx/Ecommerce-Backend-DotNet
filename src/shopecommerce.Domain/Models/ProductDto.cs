@@ -29,10 +29,12 @@ namespace shopecommerce.Domain.Models
     //    public decimal price { get; set; }
     //}
 
-    public class ProductPrices
+    public class ProductPrices : ProductDto
     {
-        public string id { get; set; }
+        public string price_id { get; set; }
         public decimal weight { get; set; }
         public decimal price { get; set; }
+        public decimal price_sale { get; set; }
+        public int discount { get; set; }
     }
 }

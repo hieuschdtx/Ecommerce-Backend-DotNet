@@ -12,5 +12,6 @@ namespace shopecommerce.Domain.Models
         public DateTime? modified_at { get; set; }
         public string category_id { get; set; }
         public string? promotion_id { get; set; }
+        public int display_order { get; set; }
     }
 }

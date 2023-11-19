@@ -68,6 +68,9 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasForeignKey(d => d.category_id)
                 .HasConstraintName("fk_news_category");
 
+            builder.Property(t => t.image)
+                .HasColumnName("image")
+                .HasColumnType("text");
             #endregion
         }
     }

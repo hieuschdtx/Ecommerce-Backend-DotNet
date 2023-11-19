@@ -12,6 +12,7 @@ using shopecommerce.Application.Queries.ProductQuery.GetAllProduct;
 using shopecommerce.Application.Queries.ProductQuery.GetAllProductPrice;
 using shopecommerce.Application.Queries.ProductQuery.GetPriceByProductId;
 using shopecommerce.Application.Queries.ProductQuery.GetProductById;
+using shopecommerce.Application.Queries.ProductQuery.GetProductByProductCategoryId;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -136,6 +137,14 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> GetProductByIdAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new GetProductByIdQuery(id));
+            return Ok(resp);
+        }
+
+        [HttpGet("product-category")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllByProductCategoryId([FromQuery] string id)
+        {
+            var resp = await _mediator.Send(new GetProductByProductCategoryIdQuery(id));
             return Ok(resp);
         }
     }

@@ -61,7 +61,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.display_order)
                 .IsRequired()
                 .HasColumnName("display_order")
-                .HasColumnType("bigint")
+                .HasColumnType("integer")
                 .ValueGeneratedOnAdd();
 
             // relationships
