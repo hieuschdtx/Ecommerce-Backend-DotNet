@@ -15,7 +15,7 @@ namespace shopecommerce.Application.Queries.ProductQuery.GetProductByProductCate
 
         public async Task<IEnumerable<ProductPrices>> Handle(GetProductByProductCategoryIdQuery request, CancellationToken cancellationToken)
         {
-            var data = await _productService.GetProductByProductCategory(request.id);
+            var data = await _productService.GetProductByProductCategory();
             return data;
         }
     }

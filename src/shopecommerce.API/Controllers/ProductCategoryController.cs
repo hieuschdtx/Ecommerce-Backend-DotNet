@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.DeleteProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
@@ -14,7 +15,6 @@ namespace shopecommerce.API.Controllers
 {
     [ApiController]
     [Route("v1/product-category")]
-    [Authorize(Policy = RoleConst.Employee)]
     public class ProductCategoryController : BaseController
     {
         public ProductCategoryController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
@@ -22,6 +22,8 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateProductCategoryAsync([FromBody] CreateProductCategoryCommand command)
         {
@@ -30,6 +32,8 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateProductCategoryAsync([FromQuery] string id, [FromBody] UpdateProductCategoryCommand command)
         {
@@ -39,6 +43,8 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductCategoryAsync([FromQuery] string id)
         {

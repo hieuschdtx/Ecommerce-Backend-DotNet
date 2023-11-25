@@ -5,10 +5,5 @@ namespace shopecommerce.Application.Queries.ProductQuery.GetProductByProductCate
 {
     public class GetProductByProductCategoryIdQuery : IQuery<IEnumerable<ProductPrices>>
     {
-        public GetProductByProductCategoryIdQuery(string id)
-        {
-            this.id = id;
-        }
-        public string id { get; set; }
     }
 }

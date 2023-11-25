@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.ProductCommand.AddImageProduct;
 using shopecommerce.Application.Commands.ProductCommand.CreatePrice;
@@ -20,7 +21,6 @@ namespace shopecommerce.API.Controllers
 {
     [ApiController]
     [Route("v1/product")]
-    [Authorize(Policy = RoleConst.Employee)]
     public class ProductController : BaseController
     {
         public ProductController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
@@ -28,8 +28,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> CreateProductAsync([FromForm] CreateProductCommand command)
         {
             var resp = await _mediator.Send(command);
@@ -40,8 +41,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> UpdateProductAsync([FromQuery] string id, [FromForm] UpdateProductCommand command)
         {
             command.SetId(id);
@@ -53,8 +55,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("create-price")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> CreateProductPriceAsync([FromQuery] string productId, [FromForm] CreatePriceCommand command)
         {
             command.SetId(productId);
@@ -66,8 +69,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update-price")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> UpdateProductPriceAsync([FromQuery] string id, [FromForm] UpdateProductPriceCommand command)
         {
             command.SetId(id);
@@ -80,7 +84,6 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet("get-all")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAllProductAsync()
         {
             var resp = await _mediator.Send(new GetAllProductQuery());
@@ -97,8 +100,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update-image")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> AddImageAsync([FromQuery] string id, [FromForm] AddImageProductCommand command)
         {
             command.SetId(id);
@@ -110,8 +114,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpDelete("delete-image")]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> RemoveImageAsync([FromQuery] string id, [FromForm] DeleteImageProductCommand command)
         {
             command.SetId(id);
@@ -124,7 +129,6 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet("price/listing")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetPriceByProductIdAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new GetPriceByProductIdQuery(id));
@@ -133,7 +137,6 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetProductByIdAsync([FromQuery] string id)
         {
             var resp = await _mediator.Send(new GetProductByIdQuery(id));
@@ -142,9 +145,9 @@ namespace shopecommerce.API.Controllers
 
         [HttpGet("product-category")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllByProductCategoryId([FromQuery] string id)
+        public async Task<IActionResult> GetAllByProductCategoryId()
         {
-            var resp = await _mediator.Send(new GetProductByProductCategoryIdQuery(id));
+            var resp = await _mediator.Send(new GetProductByProductCategoryIdQuery());
             return Ok(resp);
         }
     }
