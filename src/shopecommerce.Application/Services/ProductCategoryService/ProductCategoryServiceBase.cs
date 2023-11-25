@@ -23,7 +23,7 @@ namespace shopecommerce.Application.Services.ProductCategoryService
 
         public async Task<IEnumerable<ProductCategoryDto>> GetProductCategoryByCategoryId(string id)
         {
-            const string queryString = @"select * from product_categories where category_id = @id";
+            const string queryString = @"select * from product_categories where category_id = @id order by display_order asc";
             using var conn = _factory.GetOpenConnection();
             return await conn.QueryAsync<ProductCategoryDto>(queryString, new { id });
         }
