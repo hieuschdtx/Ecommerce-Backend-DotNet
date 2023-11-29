@@ -48,12 +48,12 @@ namespace shopecommerce.API.Controllers
 
 
         [HttpPut("update")]
-        [Authorize(Policy = RoleConst.Manager)]
+        [Authorize(Policy = RoleConst.Guest)]
         [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUserAsync([FromForm] UpdateUserCommand command)
         {
-            command.SetId(id);
+            command.SetId(CurrentUserId);
 
             var resp = await _mediator.Send(command);
             return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
@@ -97,11 +97,9 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet("profile")]
-        [Authorize(Policy = RoleConst.Guest)]
-        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
-        public async Task<IActionResult> GetUserInformation()
+        public async Task<IActionResult> GetUserInformation([FromQuery] string id)
         {
-            var resp = await _mediator.Send(new GetUserByIdQuery(CurrentUserId));
+            var resp = await _mediator.Send(new GetUserByIdQuery(id));
             return Ok(resp);
         }
     }

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using shopecommerce.Domain.Commons.Commands;
+using shopecommerce.Domain.Consts;
+using shopecommerce.Domain.Extensions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
@@ -11,11 +14,13 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _environment;
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IWebHostEnvironment environment)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _environment = environment;
         }
 
         public async Task<BaseResponseDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -25,11 +30,17 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
             {
                 return new BaseResponseDto(false, UserMessages.user_id_is_not_existed, (int)HttpStatusCode.BadRequest);
             }
+            var updateUser = _mapper.Map(request, user);
 
-            await _userRepository.UpdateAsync(_mapper.Map(request, user));
+            if(request.avatar_file != null)
+            {
+                updateUser.SetAvatarFileString(await SaveFileImageExtensions.SaveFileImageAsync(request.avatar_file, _environment, FolderConst.Avatar));
+            }
+
+            await _userRepository.UpdateAsync(updateUser);
             await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
-            return new BaseResponseDto(true, "Update thông tin người dùng thành công", (int)HttpStatusCode.OK);
+            return new BaseResponseDto(true, "Cập nhật thông tin thành công", (int)HttpStatusCode.OK);
         }
     }
 }

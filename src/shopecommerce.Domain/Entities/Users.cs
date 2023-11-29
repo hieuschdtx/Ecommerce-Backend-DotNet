@@ -65,4 +65,9 @@ public class Users
     {
         this.lockout_end = DateTime.Now;
     }
+
+    public void SetAvatarFileString(string avatar)
+    {
+        this.avatar = avatar;
+    }
 }
