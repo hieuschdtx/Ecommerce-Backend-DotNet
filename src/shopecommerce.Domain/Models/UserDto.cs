@@ -12,7 +12,6 @@
         public bool? gender { get; set; }
         public string email { get; set; }
         public bool? email_confirmed { get; set; }
-        public string password { get; set; }
         public string phone_number { get; set; }
         public bool? phone_number_confirmed { get; set; }
         public DateTime? lockout_end { get; set; }

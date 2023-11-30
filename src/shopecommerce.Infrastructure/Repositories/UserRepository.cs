@@ -42,4 +42,9 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(p => p.phone_number == phoneNumber);
     }
+
+    public async Task<Users> GetUserByEmail(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(p => p.email == email);
+    }
 }

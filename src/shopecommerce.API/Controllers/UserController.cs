@@ -6,7 +6,10 @@ using shopecommerce.Application.Commands.UserCommand.CreateUser;
 using shopecommerce.Application.Commands.UserCommand.LoginUser;
 using shopecommerce.Application.Commands.UserCommand.LogoutUser;
 using shopecommerce.Application.Commands.UserCommand.RegisterUser;
+using shopecommerce.Application.Commands.UserCommand.SendMailUser;
+using shopecommerce.Application.Commands.UserCommand.UpdatePassword;
 using shopecommerce.Application.Commands.UserCommand.UpdateUser;
+using shopecommerce.Application.Queries.UserQuery.CheckVerifyCodeUser;
 using shopecommerce.Application.Queries.UserQuery.GetAllUser;
 using shopecommerce.Application.Queries.UserQuery.GetUserById;
 using shopecommerce.Domain.Consts;
@@ -101,6 +104,30 @@ namespace shopecommerce.API.Controllers
         {
             var resp = await _mediator.Send(new GetUserByIdQuery(id));
             return Ok(resp);
+        }
+
+        [HttpPost("email")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> SendMailOtp([FromBody] SendMailUserCommand command)
+        {
+            var resp = await _mediator.Send(command);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
+        }
+
+        [HttpPost("check-verify")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CheckVerifyCodeUser([FromBody] CheckVerifyCodeUserQuery query)
+        {
+            var resp = await _mediator.Send(query);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
+        }
+
+        [HttpPut("update-password")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> UpdatePasswordUser([FromBody] UpdatePasswordUserCommand command)
+        {
+            var resp = await _mediator.Send(command);
+            return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
     }
 }

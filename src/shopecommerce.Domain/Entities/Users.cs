@@ -26,6 +26,8 @@ public class Users
     public bool? phone_number_confirmed { get; set; }
     public DateTime? lockout_end { get; set; }
     public int? access_failed_count { get; set; }
+    public string? verify_code { get; set; }
+    public decimal verify_time_exp { get; set; }
     public DateTime? modified_at { get; set; }
     public DateTime created_at { get; set; }
     public string role_id { get; set; }
@@ -44,6 +46,10 @@ public class Users
     public void SetCreatedatUser()
     {
         this.created_at = DateTime.Now;
+    }
+    public void SetModifiedDateUser()
+    {
+        this.modified_at = DateTime.Now;
     }
 
     public void SetPassWordHash(string enteredPassword)
@@ -69,5 +75,11 @@ public class Users
     public void SetAvatarFileString(string avatar)
     {
         this.avatar = avatar;
+    }
+
+    public void SetVerifyCodeExp(string verifyCode, decimal expTime)
+    {
+        this.verify_code = verifyCode;
+        this.verify_time_exp = expTime;
     }
 }
