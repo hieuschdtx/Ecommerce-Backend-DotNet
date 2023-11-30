@@ -25,8 +25,6 @@ namespace shopecommerce.Domain.Entities
         }
         public string alias { get; set; }
         public string description { get; set; }
-
-        [DisplayFormat(HtmlEncode = true)]
         public string detail { get; set; }
         public string category_id { get; set; }
         public string image { get; set; }
