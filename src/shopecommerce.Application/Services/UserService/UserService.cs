@@ -32,4 +32,12 @@ public class UserService : UserServiceBase, IUserService
 
         return await conn.ExecuteScalarAsync<bool>(commnandText, new { refreshToken });
     }
+
+    public async Task<bool> MatchVerifyCodeUserAsync(string email, string vefiryCode, decimal expTime)
+    {
+        const string commnandText = @"select exists(select 1 from users where email = @email and verify_code = @vefiryCode and verify_time_exp > @expTime)";
+        using var conn = _factory.GetOpenConnection();
+
+        return await conn.ExecuteScalarAsync<bool>(commnandText, new { email, vefiryCode, expTime });
+    }
 }

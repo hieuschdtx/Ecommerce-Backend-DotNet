@@ -115,7 +115,7 @@ namespace shopecommerce.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thông tin User Id không tồn tại..
+        ///   Looks up a localized string similar to Thông tin người dùng không tồn tại..
         /// </summary>
         public static string user_id_is_not_existed {
             get {

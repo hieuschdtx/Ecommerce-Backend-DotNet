@@ -11,9 +11,11 @@ using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Behaviors;
 using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Consts;
+using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Authentications;
 using shopecommerce.Infrastructure.Configurations;
 using shopecommerce.Infrastructure.Data;
+using shopecommerce.Infrastructure.Repositories;
 using System.Data;
 using System.Reflection;
 
@@ -26,6 +28,8 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         var setting = new AppSetting();
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        var mailSettings = builder.Configuration.GetSection("MailSettings").Get<MailSettings>();
+
         // Add services to the container.
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -53,6 +57,10 @@ internal class Program
         builder.Services.AddScoped<TokenVerificationMiddleware, TokenVerificationMiddlewareImplementation>();
 
         builder.Services.AddScoped<JwtValidation, JwtValidationImplementation>();
+
+        builder.Services.AddSingleton(mailSettings);
+
+        builder.Services.AddTransient<ISendMailRepository, SendMailRepository>();
 
         builder.Services.AddAutofac();
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())

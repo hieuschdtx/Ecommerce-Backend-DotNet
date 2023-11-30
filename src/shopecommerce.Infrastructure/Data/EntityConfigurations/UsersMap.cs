@@ -97,6 +97,15 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("role_id")
                 .HasColumnType("text");
 
+            builder.Property(t => t.verify_code)
+                .HasColumnName("verify_code")
+                .HasColumnType("text");
+
+            builder.Property(t => t.verify_time_exp)
+                .HasColumnName("verify_time_exp")
+                .HasColumnType("numeric(19,0)")
+                .HasDefaultValueSql("0");
+
             // relationships
             builder.HasOne(t => t.role_Roles)
                 .WithMany(t => t.role_Users)
