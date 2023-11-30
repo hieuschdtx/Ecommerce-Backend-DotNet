@@ -1,4 +1,5 @@
 using shopecommerce.Domain.Commons;
+using System.ComponentModel.DataAnnotations;
 
 namespace shopecommerce.Domain.Entities
 {
@@ -24,6 +25,8 @@ namespace shopecommerce.Domain.Entities
         }
         public string alias { get; set; }
         public string description { get; set; }
+
+        [DisplayFormat(HtmlEncode = true)]
         public string detail { get; set; }
         public string category_id { get; set; }
         public string image { get; set; }
@@ -32,5 +35,10 @@ namespace shopecommerce.Domain.Entities
         #region Generated Relationships
         public virtual Categories category_Categories { get; set; }
         #endregion
+
+        public void SetImageFileUrl(string imageFileUrl)
+        {
+            this.image = imageFileUrl;
+        }
     }
 }
