@@ -9,7 +9,6 @@ namespace shopecommerce.Infrastructure.Repositories
     public class NewsRepository : INewsRepository
     {
         private readonly EcommerceContext _context;
-
         public NewsRepository(EcommerceContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -30,7 +29,7 @@ namespace shopecommerce.Infrastructure.Repositories
 
         public async Task<News> GetByIdAsync(string id)
         {
-            return (await _context.News.FirstOrDefaultAsync(x => x.id == id))!;
+            return await _context.News.FindAsync(id);
         }
 
         public async Task UpdateAsync(News entity)
