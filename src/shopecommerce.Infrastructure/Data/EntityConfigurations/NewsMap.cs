@@ -40,12 +40,12 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnType("text");
 
             builder.Property(t => t.created_by)
-                .HasColumnName("create_by")
+                .HasColumnName("created_by")
                 .HasColumnType("text");
 
             builder.Property(t => t.created_at)
                 .IsRequired()
-                .HasColumnName("create_at")
+                .HasColumnName("created_at")
                 .HasColumnType("timestamp without time zone")
                 .HasDefaultValueSql("now()");
 
@@ -62,15 +62,16 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("category_id")
                 .HasColumnType("text");
 
+            builder.Property(t => t.image)
+                .HasColumnName("image")
+                .HasColumnType("text");
+
             // relationships
             builder.HasOne(t => t.category_Categories)
                 .WithMany(t => t.category_News)
                 .HasForeignKey(d => d.category_id)
                 .HasConstraintName("fk_news_category");
 
-            builder.Property(t => t.image)
-                .HasColumnName("image")
-                .HasColumnType("text");
             #endregion
         }
     }
