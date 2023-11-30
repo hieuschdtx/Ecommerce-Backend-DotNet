@@ -5,6 +5,9 @@ using shopecommerce.API.OptionsSetup;
 using shopecommerce.Application.Commands.NewsCommand.CreateNews;
 using shopecommerce.Application.Commands.NewsCommand.DeleteNews;
 using shopecommerce.Application.Commands.NewsCommand.UpdateNews;
+using shopecommerce.Application.Queries.NewsQuery.GetAllNews;
+using shopecommerce.Application.Queries.NewsQuery.GetAllNewsPaging;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -47,6 +50,24 @@ namespace shopecommerce.API.Controllers
         {
             var resp = await _mediator.Send(new DeleteNewsCommand(id));
             return StatusCode(resp.code, new { resp.success, resp.message });
+        }
+
+        [HttpGet]
+        [Authorize(Policy = RoleConst.Employee)]
+        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var resp = await _mediator.Send(new GetAllNewsQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet("paging")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllPagingAsync([FromQuery] QueryStringParameters request)
+        {
+            var resp = await _mediator.Send(new GetAllNewsPagingQuery(request));
+            return Ok(resp);
         }
     }
 }

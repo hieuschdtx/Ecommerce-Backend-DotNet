@@ -1,29 +1,30 @@
 ﻿using Microsoft.AspNetCore.Http;
-using shopecommerce.Application.Services.CategoryService;
+using shopecommerce.Application.Services.NewsService;
 using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Queries;
 using shopecommerce.Domain.Extensions;
 using shopecommerce.Domain.Models;
 using shopecommerce.Infrastructure.Configurations;
 
-namespace shopecommerce.Application.Queries.CategoryQuery.GetCategoryPaging
+namespace shopecommerce.Application.Queries.NewsQuery.GetAllNewsPaging
 {
-    public class GetCategoryPagingQueryHandler : IQueryHandler<GetCategoryPagingQuery, PagedList<CategoryDto>>
+    public class GetAllNewsPagingQueryHandler : IQueryHandler<GetAllNewsPagingQuery, PagedList<NewsDto>>
     {
-        private readonly ICategoryService _categoryService;
+        private readonly INewsService _newsService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppSetting Setting = new();
 
-        public GetCategoryPagingQueryHandler(ICategoryService categoryService, IHttpContextAccessor httpContextAccessor)
+        public GetAllNewsPagingQueryHandler(INewsService newsService, IHttpContextAccessor httpContextAccessor)
         {
-            _categoryService = categoryService;
+            _newsService = newsService;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<PagedList<CategoryDto>> Handle(GetCategoryPagingQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<NewsDto>> Handle(GetAllNewsPagingQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _categoryService.GetAllCategoryAsync();
-            var data = PagedList<CategoryDto>.ToPagedList(categories.OrderBy(on => on.name),
+            var news = await _newsService.GetAllNewsListAsync();
+
+            var data = PagedList<NewsDto>.ToPagedList(news.OrderByDescending(on => on.created_at),
                 request.queryStringParameters.pageNumber,
                 request.queryStringParameters.pageSize);
 
