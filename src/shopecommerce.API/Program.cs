@@ -72,7 +72,9 @@ internal class Program
 
         //Connection Db
         builder.Services.AddDbContext<EcommerceContext>(option =>
-           option.UseNpgsql(connectionString));
+        {
+            option.UseNpgsql(connectionString);
+        });
 
         builder.Services.AddTransient(provider =>
            provider.GetRequiredService<IDbConnection>().BeginTransaction());
@@ -141,10 +143,11 @@ internal class Program
             options.AddPolicy("AllowAllOrigins", builder =>
             {
                 builder
-                .WithOrigins("http://localhost:3030/")
+                .WithOrigins("http://localhost:3030/", "http://localhost:3031/")
                 .SetIsOriginAllowed(host => true)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .WithExposedHeaders("X-Panigation")
                 .AllowCredentials();
             });
         });
