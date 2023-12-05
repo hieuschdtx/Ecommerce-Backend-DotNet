@@ -26,6 +26,11 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("customer_name")
                 .HasColumnType("text");
 
+            builder.Property(t => t.code)
+               .IsRequired()
+               .HasColumnName("code")
+               .HasColumnType("text");
+
             builder.Property(t => t.customer_address)
                 .IsRequired()
                 .HasColumnName("customer_address")
@@ -66,6 +71,11 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .IsRequired()
                 .HasColumnName("bill_invoice")
                 .HasColumnType("numeric(18,2)");
+
+            builder.Property(t => t.is_vat)
+                .IsRequired()
+                .HasColumnName("is_vat")
+                .HasColumnType("boolean");
 
             builder.Property(t => t.user_id)
                 .HasColumnName("user_id")
