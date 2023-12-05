@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\templates\EmailOrder.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
@@ -19,6 +23,10 @@
     <Folder Include="wwwroot\images\banners\" />
     <Folder Include="wwwroot\images\news\" />
     <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\templates\EmailOrder.html" />
   </ItemGroup>
 
 </Project>
