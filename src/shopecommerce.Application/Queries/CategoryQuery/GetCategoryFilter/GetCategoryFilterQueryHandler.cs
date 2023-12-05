@@ -33,8 +33,8 @@ namespace shopecommerce.Application.Queries.CategoryQuery.GetCategoryFilter
                 data.page_size,
                 data.current_page,
                 data.total_pages,
-                data.HasNext,
-                data.HasPrevious
+                data.has_next,
+                data.has_previous
             };
 
             _httpContextAccessor.HttpContext.SetHeaderValue(Setting.headerKeyStrings.Panigation, metadata.ToJson());

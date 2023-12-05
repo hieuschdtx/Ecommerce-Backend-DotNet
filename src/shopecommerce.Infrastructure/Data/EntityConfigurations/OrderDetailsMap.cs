@@ -13,7 +13,7 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.ToTable("order_details", "public");
 
             // key
-            builder.HasKey(t => new { t.product_id, t.order_id });
+            builder.HasKey(t => t.id);
 
             // properties
             builder.Property(t => t.product_id)
@@ -35,6 +35,11 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .IsRequired()
                 .HasColumnName("total_amount")
                 .HasColumnType("numeric(18,2)");
+
+            builder.Property(t => t.id)
+                .IsRequired()
+                .HasColumnName("id")
+                .HasColumnType("text");
 
             // relationships
             builder.HasOne(t => t.product_Products)

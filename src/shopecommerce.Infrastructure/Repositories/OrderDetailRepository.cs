@@ -1,42 +1,42 @@
-using Microsoft.EntityFrameworkCore;
-using shopecommerce.Domain.Commons;
+﻿using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Infrastructure.Data;
 
 namespace shopecommerce.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class OrderDetailRepository : IOrderDetailRepository
     {
         private readonly EcommerceContext _context;
 
-        public ProductRepository(EcommerceContext context)
+        public OrderDetailRepository(EcommerceContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public async Task<Products> AddAsync(Products entity)
+        public async Task<OrderDetails> AddAsync(OrderDetails entity)
         {
+
             return (await _context.AddAsync(entity)).Entity;
         }
 
-        public async Task DeleteAsync(Products entity)
+        public async Task DeleteAsync(OrderDetails entity)
         {
             _context.Remove(entity);
             await Task.CompletedTask;
         }
 
-        public async Task<Products> GetByIdAsync(string id)
+        public async Task<OrderDetails> GetByIdAsync(string id)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.id == id);
+            return await _context.OrderDetails.FindAsync(id);
         }
 
-        public async Task UpdateAsync(Products entity)
+        public Task UpdateAsync(OrderDetails entity)
         {
             _context.Update(entity);
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

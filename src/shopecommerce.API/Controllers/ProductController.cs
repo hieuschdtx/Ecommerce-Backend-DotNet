@@ -14,6 +14,9 @@ using shopecommerce.Application.Queries.ProductQuery.GetAllProductPrice;
 using shopecommerce.Application.Queries.ProductQuery.GetPriceByProductId;
 using shopecommerce.Application.Queries.ProductQuery.GetProductById;
 using shopecommerce.Application.Queries.ProductQuery.GetProductByProductCategoryId;
+using shopecommerce.Application.Queries.ProductQuery.GetProductPaging;
+using shopecommerce.Application.Queries.ProductQuery.GetProductsByProductCategory;
+using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Consts;
 using System.Net;
 
@@ -148,6 +151,22 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> GetAllByProductCategoryId()
         {
             var resp = await _mediator.Send(new GetProductByProductCategoryIdQuery());
+            return Ok(resp);
+        }
+
+        [HttpGet("listing/pro-category")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetProductsByProductCategory([FromQuery] string id, [FromQuery] QueryStringParameters queryStringParameters)
+        {
+            var resp = await _mediator.Send(new GetProductsByProductCategoryQuery(id, queryStringParameters));
+            return Ok(resp);
+        }
+
+        [HttpGet("paging")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllProductPaging([FromQuery] QueryStringParameters request)
+        {
+            var resp = await _mediator.Send(new GetProductPagingQuery(request));
             return Ok(resp);
         }
     }

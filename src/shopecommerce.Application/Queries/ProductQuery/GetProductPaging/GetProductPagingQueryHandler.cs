@@ -1,30 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
-using shopecommerce.Application.Services.NewsService;
+using shopecommerce.Application.Services.ProductService;
 using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Commons.Queries;
 using shopecommerce.Domain.Extensions;
 using shopecommerce.Domain.Models;
 using shopecommerce.Infrastructure.Configurations;
 
-namespace shopecommerce.Application.Queries.NewsQuery.GetAllNewsPaging
+namespace shopecommerce.Application.Queries.ProductQuery.GetProductPaging
 {
-    public class GetAllNewsPagingQueryHandler : IQueryHandler<GetAllNewsPagingQuery, PagedList<NewsDto>>
+    public class GetProductPagingQueryHandler : IQueryHandler<GetProductPagingQuery, PagedList<ProductPrices>>
     {
-        private readonly INewsService _newsService;
+        private readonly IProductService _productService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppSetting Setting = new();
 
-        public GetAllNewsPagingQueryHandler(INewsService newsService, IHttpContextAccessor httpContextAccessor)
+        public GetProductPagingQueryHandler(IProductService productService, IHttpContextAccessor httpContextAccessor)
         {
-            _newsService = newsService;
+            _productService = productService;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<PagedList<NewsDto>> Handle(GetAllNewsPagingQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<ProductPrices>> Handle(GetProductPagingQuery request, CancellationToken cancellationToken)
         {
-            var news = await _newsService.GetAllNewsListAsync();
-
-            var data = PagedList<NewsDto>.ToPagedList(news.OrderByDescending(on => on.created_at),
+            var products = await _productService.GetProductByProductCategory();
+            var data = PagedList<ProductPrices>.ToPagedList(products.OrderByDescending(on => on.discount),
                 request.queryStringParameters.pageNumber,
                 request.queryStringParameters.pageSize);
 

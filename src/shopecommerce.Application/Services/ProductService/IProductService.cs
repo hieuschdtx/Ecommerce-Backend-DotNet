@@ -6,5 +6,6 @@ namespace shopecommerce.Application.Services.ProductService
     {
         Task<IEnumerable<ProductDto>> GetAllProduct();
         Task<IEnumerable<ProductPrices>> GetProductByProductCategory();
+        Task<IEnumerable<ProductPrices>> GetProductsByProductCategory(string productCategoryId);
     }
 }

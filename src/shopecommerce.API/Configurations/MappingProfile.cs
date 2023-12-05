@@ -3,6 +3,7 @@ using shopecommerce.Application.Commands.CategoryCommand.CreateCategory;
 using shopecommerce.Application.Commands.CategoryCommand.UpdateCategory;
 using shopecommerce.Application.Commands.NewsCommand.CreateNews;
 using shopecommerce.Application.Commands.NewsCommand.UpdateNews;
+using shopecommerce.Application.Commands.OrderCommand.CreateOrder;
 using shopecommerce.Application.Commands.ProductCategoryCommand.CreateProductCategory;
 using shopecommerce.Application.Commands.ProductCategoryCommand.UpdateProductCategory;
 using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
@@ -105,6 +106,10 @@ public class MappingProfile : Profile
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         CreateMap<UpdateNewsCommand, News>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        //Order Mapper
+        CreateMap<CreateOrderCommand, Orders>()
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
     }
 }

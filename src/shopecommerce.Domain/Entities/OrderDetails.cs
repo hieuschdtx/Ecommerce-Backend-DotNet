@@ -9,6 +9,7 @@ namespace shopecommerce.Domain.Entities
         }
 
         #region Generated Properties
+        public string id { get; set; }
         public string product_id { get; set; }
         public string order_id { get; set; }
         public int quantity { get; set; }
