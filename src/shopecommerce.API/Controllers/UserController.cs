@@ -91,7 +91,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = RoleConst.Manager)]
+        [Authorize(Policy = RoleConst.Employee)]
         [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         public async Task<IActionResult> GetUserByIdAsync([FromQuery] string id)
         {

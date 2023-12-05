@@ -13,7 +13,7 @@ namespace shopecommerce.API.Controllers
 {
     [ApiController]
     [Route("v1/role")]
-    [Authorize(Policy = RoleConst.Manager)]
+
     public class RoleController : BaseController
     {
         public RoleController(IMediator mediator, IAuthorizationService authorizationService) : base(mediator, authorizationService)
@@ -21,6 +21,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateRoleAsync([FromBody] CreateRoleCommand command)
         {
@@ -29,6 +30,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateRoleAsync([FromQuery] string role_id, [FromBody] UpdateRoleCommand command)
         {
@@ -38,6 +40,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteRoleAsync([FromQuery] string role_id)
         {
@@ -46,14 +49,16 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = RoleConst.Employee)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetRoleByIdAsync([FromQuery] string role_id)
+        public async Task<IActionResult> GetRoleByIdAsync([FromQuery] string id)
         {
-            var resp = await _mediator.Send(new GetRoleByIdQuery(role_id));
+            var resp = await _mediator.Send(new GetRoleByIdQuery(id));
             return Ok(resp);
         }
 
         [HttpGet("get-all")]
+        [Authorize(Policy = RoleConst.Manager)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllRoleAsync()
         {

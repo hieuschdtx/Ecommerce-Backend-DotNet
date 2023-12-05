@@ -116,9 +116,6 @@ namespace shopecommerce.Application.Commands.OrderCommand.CreateOrder
                 }
             }
             return new BaseResponseDto(true, "Tạo đơn hàng thành công", (int)HttpStatusCode.Created);
-            //var currentDirectory = Directory.GetCurrentDirectory();
-            //var filePath = Path.Combine(currentDirectory, "Templates/SendUser.html");
-            //var contentCustomer = File.ReadAllText(filePath);
         }
     }
 }
