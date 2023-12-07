@@ -19,4 +19,10 @@ public class UserServiceBase
         using var conn = _factory.GetOpenConnection();
         return await conn.QueryAsync<UserDto>(queryString);
     }
+    public async Task<UserDto> GetByIdAsync(string id)
+    {
+        const string queryString = @"select * from users where id = @id";
+        using var conn = _factory.GetOpenConnection();
+        return await conn.QuerySingleOrDefaultAsync<UserDto>(queryString, new { id });
+    }
 }

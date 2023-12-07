@@ -10,7 +10,7 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
         public string? address { get; set; }
         public string? email { get; set; }
         public IFormFile? avatar_file { get; set; }
-        public DateOnly? dob { get; set; }
+        public string? day_of_birth { get; set; }
         public bool? gender { get; set; }
     }
 }
