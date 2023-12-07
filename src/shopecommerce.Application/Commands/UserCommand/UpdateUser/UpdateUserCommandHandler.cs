@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using shopecommerce.Domain.Commons.Commands;
 using shopecommerce.Domain.Consts;
+using shopecommerce.Domain.Entities;
 using shopecommerce.Domain.Extensions;
 using shopecommerce.Domain.Interfaces;
 using shopecommerce.Domain.Models;
@@ -36,6 +37,7 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
             {
                 updateUser.SetAvatarFileString(await SaveFileImageExtensions.SaveFileImageAsync(request.avatar_file, _environment, FolderConst.Avatar));
             }
+            user.dob = BaseEntites.ParsedDob(request.day_of_birth);
 
             await _userRepository.UpdateAsync(updateUser);
             await _userRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);

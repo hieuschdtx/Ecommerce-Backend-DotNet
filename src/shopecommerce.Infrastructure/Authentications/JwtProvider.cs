@@ -92,7 +92,6 @@ public class JwtProvider : IJwtProvider
     public async Task SignOutAsync()
     {
         await _httpContextAccessor.HttpContext.SignOutAsync(_appSetting.cookieSettings.Name);
-        _httpContextAccessor.HttpContext.Response.Cookies.Delete(JwtBearerDefaults.AuthenticationScheme);
     }
 
     public async Task<bool> VerifyAccessTokenAsync(string token)
@@ -130,7 +129,6 @@ public class JwtProvider : IJwtProvider
     private async Task SigningAsync(IIdentity claimsIdentity)
     {
         var principal = new ClaimsPrincipal(claimsIdentity);
-
         await _httpContextAccessor.HttpContext.SignInAsync(_appSetting.cookieSettings.Name, principal);
     }
 }

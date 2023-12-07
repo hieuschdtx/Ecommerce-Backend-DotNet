@@ -9,7 +9,7 @@ namespace shopecommerce.Application.Commands.UserCommand.CreateUser
         public string full_name { get; set; }
         public string address { get; set; }
         public IFormFile? avatar_file { get; set; }
-        public string day_of_birth { get; set; }
+        public string? day_of_birth { get; set; }
         public bool gender { get; set; }
         public string email { get; set; }
         public string password { get; set; }

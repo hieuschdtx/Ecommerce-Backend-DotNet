@@ -2,6 +2,7 @@ using shopecommerce.Domain.Commons;
 using shopecommerce.Domain.Models;
 using shopecommerce.Domain.Resources;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 
 namespace shopecommerce.API.OptionsSetup
 {
@@ -19,7 +20,7 @@ namespace shopecommerce.API.OptionsSetup
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var tokenValue = context.Request.Cookies["Bearer"];
+            var tokenValue = context.Request.Headers["Authorization"];
 
             if(string.IsNullOrEmpty(tokenValue))
             {
@@ -27,9 +28,18 @@ namespace shopecommerce.API.OptionsSetup
                 await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.unauthorized), default);
                 return;
             }
+            AuthenticationHeaderValue authHeader = AuthenticationHeaderValue.Parse(tokenValue);
 
+            if(!authHeader.Scheme.Equals("Bearer", StringComparison.OrdinalIgnoreCase))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.unauthorized), default);
+                return;
+            }
+
+            var token = authHeader.Parameter;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtToken = tokenHandler.ReadToken(tokenValue) as JwtSecurityToken;
+            var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
             //Kiểm tra sau khi đọc có null hay không
             if(jwtToken == null)
@@ -48,7 +58,7 @@ namespace shopecommerce.API.OptionsSetup
             }
 
             //Kiểm tra thông tin token của người dùng
-            if(!await _jwtProvider.VerifyAccessTokenAsync(tokenValue))
+            if(!await _jwtProvider.VerifyAccessTokenAsync(token))
             {
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
                 await context.Response.WriteAsJsonAsync(new BaseResponseDto(false, UserMessages.forbidden), default);

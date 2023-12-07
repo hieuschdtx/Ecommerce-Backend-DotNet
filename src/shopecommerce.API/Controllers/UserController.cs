@@ -49,15 +49,12 @@ namespace shopecommerce.API.Controllers
             return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 
-
         [HttpPut("update")]
-        [Authorize(Policy = RoleConst.Guest)]
-        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateUserAsync([FromForm] UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromForm] UpdateUserCommand command)
         {
-            command.SetId(CurrentUserId);
-
+            command.SetId(id);
             var resp = await _mediator.Send(command);
             return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
@@ -72,7 +69,6 @@ namespace shopecommerce.API.Controllers
 
         [HttpPost("logout")]
         [Authorize]
-        [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> LogoutUserAsync()
         {
@@ -91,7 +87,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = RoleConst.Employee)]
+        [Authorize(Policy = RoleConst.Manager)]
         [MiddlewareFilter(typeof(TokenVerificationMiddleware))]
         public async Task<IActionResult> GetUserByIdAsync([FromQuery] string id)
         {
@@ -100,6 +96,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpGet("profile")]
+        [Authorize]
         public async Task<IActionResult> GetUserInformation([FromQuery] string id)
         {
             var resp = await _mediator.Send(new GetUserByIdQuery(id));
@@ -107,6 +104,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("email")]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> SendMailOtp([FromBody] SendMailUserCommand command)
         {
@@ -115,6 +113,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("check-verify")]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> CheckVerifyCodeUser([FromBody] CheckVerifyCodeUserQuery query)
         {
@@ -123,6 +122,7 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update-password")]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdatePasswordUser([FromBody] UpdatePasswordUserCommand command)
         {

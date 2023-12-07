@@ -115,22 +115,22 @@ internal class Program
             options.AddPolicy(RoleConst.Guest, policy =>
             {
                 policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Guest)
-                    .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
+                    .AddAuthenticationSchemes(setting.cookieSettings.Name);
             });
             options.AddPolicy(RoleConst.Employee, policy =>
            {
                policy.RequireRole(RoleConst.Manager, RoleConst.Administrator, RoleConst.Employee)
-                   .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
+                   .AddAuthenticationSchemes(setting.cookieSettings.Name);
            });
             options.AddPolicy(RoleConst.Manager, policy =>
             {
                 policy.RequireRole(RoleConst.Manager, RoleConst.Administrator)
-                    .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
+                    .AddAuthenticationSchemes(setting.cookieSettings.Name);
             });
             options.AddPolicy(RoleConst.Administrator, policy =>
             {
                 policy.RequireRole(RoleConst.Administrator)
-                    .AddAuthenticationSchemes(setting.jwtBearerSetting.Name, setting.cookieSettings.Name);
+                    .AddAuthenticationSchemes(setting.cookieSettings.Name);
             });
         });
         builder.Services.ConfigureOptions<JwtOptionsSetup>();
