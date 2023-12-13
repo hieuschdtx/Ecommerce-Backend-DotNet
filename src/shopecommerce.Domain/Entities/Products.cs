@@ -60,5 +60,10 @@ namespace shopecommerce.Domain.Entities
         {
             this.promotion_id = promotionId;
         }
+
+        public void SetStock(int stock)
+        {
+            this.stock -= stock;
+        }
     }
 }

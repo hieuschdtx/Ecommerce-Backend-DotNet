@@ -15,6 +15,8 @@ namespace shopecommerce.Application.Commands.OrderCommand.CreateOrder
         public int payment_methods_id { get; set; }
         public List<ProductCart> carts { get; set; }
         public string? userId { get; set; }
+        public int status { get; set; } = 1;
+        public bool payment_status { get; set; } = false;
     }
     public class ProductCart
     {

@@ -86,10 +86,11 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("status")
                 .HasColumnType("boolean");
 
-            builder.Property(t => t.payment_status)
+            builder.Property(t => t.status)
                 .IsRequired()
-                .HasColumnName("payment_status")
-                .HasColumnType("boolean");
+                .HasColumnName("status")
+                .HasColumnType("integer")
+                .HasDefaultValueSql("1");
 
             builder.Property(t => t.payment_methods_id)
                 .IsRequired()
