@@ -23,7 +23,7 @@ namespace shopecommerce.Domain.Entities
         public decimal bill_invoice { get; set; }
         public bool is_vat { get; set; }
         public string? user_id { get; set; }
-        public bool status { get; set; } = false;
+        public int status { get; set; }
         public bool payment_status { get; set; } = false;
         public int payment_methods_id { get; set; }
 

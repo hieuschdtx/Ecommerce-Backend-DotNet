@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.API.OptionsSetup;
+using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.UserCommand.CreateUser;
 using shopecommerce.Application.Commands.UserCommand.LoginUser;
 using shopecommerce.Application.Commands.UserCommand.LogoutUser;
@@ -56,6 +57,8 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
             return StatusCode(resp.code, new { resp.success, resp.message, resp.data });
         }
 

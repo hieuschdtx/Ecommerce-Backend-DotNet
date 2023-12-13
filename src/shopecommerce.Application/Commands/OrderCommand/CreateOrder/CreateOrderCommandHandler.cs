@@ -66,6 +66,22 @@ namespace shopecommerce.Application.Commands.OrderCommand.CreateOrder
             await _oderRepository.AddAsync(order);
             await _oderRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
 
+            if(order.status == 2)
+            {
+                foreach(var cart in request.carts)
+                {
+                    var product = await _productRepository.GetByIdAsync(cart.product_id);
+                    if(!(product.stock <= 0))
+                    {
+                        product.SetStock(cart.quantity);
+                        product.UpdateModifiedTime();
+
+                        await _productRepository.UpdateAsync(product);
+                        await _productRepository.UnitOfWork.SaveEntitiesChangeAsync(cancellationToken);
+                    }
+                }
+            }
+
             foreach(var cart in request.carts)
             {
                 var orderDetail = new OrderDetails
