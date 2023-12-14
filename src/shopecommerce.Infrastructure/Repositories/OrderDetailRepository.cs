@@ -30,6 +30,12 @@ namespace shopecommerce.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
+        public async Task DeleteManyOrderDetailByOrderId(string id)
+        {
+            var relatedRecords = await _context.OrderDetails.Where(b => b.order_id == id).ToListAsync();
+            _context.RemoveRange(relatedRecords);
+        }
+
         public async Task<List<OrderDetailsDto>> GetAllOrderDetailByOrderId(string orderId)
         {
             var orderDetails = await _context.OrderDetails.Where(od => od.order_id == orderId).ToListAsync();

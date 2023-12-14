@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shopecommerce.Application.Behaviors;
 using shopecommerce.Application.Commands.OrderCommand.CreateOrder;
+using shopecommerce.Application.Commands.OrderCommand.DeleteOrder;
 using shopecommerce.Application.Commands.OrderCommand.UpdateOrder;
 using shopecommerce.Application.Queries.OrderQuery.FilterOrderDetail;
 using shopecommerce.Application.Queries.OrderQuery.GetAllOrder;
 using shopecommerce.Application.Queries.OrderQuery.GetOrderById;
+using shopecommerce.Domain.Consts;
 using System.Net;
 
 namespace shopecommerce.API.Controllers
@@ -62,6 +64,19 @@ namespace shopecommerce.API.Controllers
         {
             command.SetId(id);
             var resp = await _mediator.Send(command);
+            if(resp.success)
+            {
+                await _mediator.Publish(new DataChangeNotification());
+            }
+            return Ok(resp);
+        }
+        [HttpDelete("{id}/delete")]
+        [Authorize(Policy = RoleConst.Manager)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteOrder(string id)
+        {
+            var resp = await _mediator.Send(new DeleteOrderCommand(id));
+
             if(resp.success)
             {
                 await _mediator.Publish(new DataChangeNotification());
