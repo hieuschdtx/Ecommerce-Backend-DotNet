@@ -107,7 +107,10 @@ public class MappingProfile : Profile
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         CreateMap<UpdateNewsCommand, News>()
-            .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+        .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+        CreateMap<NewsDto, News>().ReverseMap()
+        .ForAllMembers(opt => opt.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
         //Order Mapper
         CreateMap<CreateOrderCommand, Orders>()

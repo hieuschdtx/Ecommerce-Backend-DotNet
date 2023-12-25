@@ -1,5 +1,4 @@
 using shopecommerce.Domain.Commons;
-using System.ComponentModel.DataAnnotations;
 
 namespace shopecommerce.Domain.Entities
 {
@@ -24,10 +23,10 @@ namespace shopecommerce.Domain.Entities
             }
         }
         public string alias { get; set; }
-        public string description { get; set; }
-        public string detail { get; set; }
+        public string? description { get; set; }
+        public string? detail { get; set; }
         public string category_id { get; set; }
-        public string image { get; set; }
+        public string? image { get; set; }
         #endregion
 
         #region Generated Relationships
