@@ -49,7 +49,10 @@ namespace shopecommerce.Application.Commands.NewsCommand.UpdateNews
             if(request.image_file is not null)
             {
                 newsMapping.SetImageFileUrl(await SaveFileImageExtensions.SaveFileImageAsync(request.image_file, _webHostEnviroment, FolderConst.News));
-                File.Delete(directoryPath + file_name);
+                if(file_name is not null)
+                {
+                    File.Delete(directoryPath + file_name);
+                }
             }
 
             newsMapping.UpdateModifiedTime();
