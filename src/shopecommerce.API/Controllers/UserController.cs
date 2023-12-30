@@ -107,7 +107,6 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("email")]
-        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> SendMailOtp([FromBody] SendMailUserCommand command)
         {
@@ -116,7 +115,6 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPost("check-verify")]
-        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> CheckVerifyCodeUser([FromBody] CheckVerifyCodeUserQuery query)
         {
@@ -125,7 +123,6 @@ namespace shopecommerce.API.Controllers
         }
 
         [HttpPut("update-password")]
-        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdatePasswordUser([FromBody] UpdatePasswordUserCommand command)
         {

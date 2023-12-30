@@ -12,5 +12,6 @@ namespace shopecommerce.Application.Commands.UserCommand.UpdateUser
         public IFormFile? avatar_file { get; set; }
         public string? day_of_birth { get; set; }
         public bool? gender { get; set; }
+        public string? role_id { get; set; }
     }
 }

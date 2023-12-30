@@ -7,6 +7,7 @@ using shopecommerce.Application.Commands.ProductCommand.AddImageProduct;
 using shopecommerce.Application.Commands.ProductCommand.CreatePrice;
 using shopecommerce.Application.Commands.ProductCommand.CreateProduct;
 using shopecommerce.Application.Commands.ProductCommand.DeleteImageProduct;
+using shopecommerce.Application.Commands.ProductCommand.DeleteProduct;
 using shopecommerce.Application.Commands.ProductCommand.UpdatePrice;
 using shopecommerce.Application.Commands.ProductCommand.UpdateProduct;
 using shopecommerce.Application.Queries.ProductQuery.GetAllProduct;
@@ -167,6 +168,16 @@ namespace shopecommerce.API.Controllers
         public async Task<IActionResult> GetAllProductPaging([FromQuery] QueryStringParameters request)
         {
             var resp = await _mediator.Send(new GetProductPagingQuery(request));
+            return Ok(resp);
+        }
+
+        [HttpDelete("{id}/detele")]
+        public async Task<IActionResult> DeteleProductById(string id)
+        {
+            var resp = await _mediator.Send(new DeleteProductCommand(id));
+            if(resp.success)
+                await _mediator.Publish(new DataChangeNotification());
+
             return Ok(resp);
         }
     }
