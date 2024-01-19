@@ -79,7 +79,7 @@ namespace shopecommerce.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thông tin đăng nhập không hợp lệ..
+        ///   Looks up a localized string similar to Bạn chưa đăng nhập hoặc đã hết phiên làm việc..
         /// </summary>
         public static string unauthorized {
             get {
@@ -115,7 +115,7 @@ namespace shopecommerce.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thông tin User Id không tồn tại..
+        ///   Looks up a localized string similar to Thông tin người dùng không tồn tại..
         /// </summary>
         public static string user_id_is_not_existed {
             get {
@@ -165,6 +165,15 @@ namespace shopecommerce.Domain.Resources {
         public static string user_phone_number_is_existed {
             get {
                 return ResourceManager.GetString("user_phone_number_is_existed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Số điện thoại không tồn tại..
+        /// </summary>
+        public static string user_phone_number_is_not_existed {
+            get {
+                return ResourceManager.GetString("user_phone_number_is_not_existed", resourceCulture);
             }
         }
     }

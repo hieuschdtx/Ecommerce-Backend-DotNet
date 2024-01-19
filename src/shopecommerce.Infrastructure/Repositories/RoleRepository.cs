@@ -21,7 +21,7 @@ namespace shopecommerce.Infrastructure.Repositories
 
         public async Task<Roles> GetByIdAsync(string id)
         {
-            return (await _context.Roles.FirstOrDefaultAsync(x => x.id == id))!;
+            return await _context.Roles.FindAsync(id);
         }
 
         public async Task<Roles> AddAsync(Roles entity)
@@ -39,6 +39,11 @@ namespace shopecommerce.Infrastructure.Repositories
         {
             _context.Remove(entity);
             await Task.CompletedTask;
+        }
+
+        public async Task<Roles> GetRoleByNameAsync(string name)
+        {
+            return await _context.Roles.FirstOrDefaultAsync(p => p.name.ToLower() == name.ToLower());
         }
     }
 }

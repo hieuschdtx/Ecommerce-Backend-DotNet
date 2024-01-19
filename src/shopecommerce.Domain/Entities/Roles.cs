@@ -11,14 +11,22 @@ namespace shopecommerce.Domain.Entities
 
         #region Generated Properties
         public string id { get; set; }
-        public string description { get; set; }
+        public string? description { get; set; }
         public string name { get; set; }
-        public string normalize_name { get; set; }
-        public string concurrency_stamp { get; set; }
         #endregion
-        
+
         #region Generated Relationships
         public virtual ICollection<Users> role_Users { get; set; }
         #endregion
+
+        public void SetUpdateRole(string name, string description)
+        {
+            this.name = name;
+            this.description = description;
+        }
+        public void SetNameToLower(string name)
+        {
+            this.name = name.ToLower();
+        }
     }
 }

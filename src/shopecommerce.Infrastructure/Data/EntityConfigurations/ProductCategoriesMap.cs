@@ -24,46 +24,49 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.Property(t => t.name)
                 .IsRequired()
                 .HasColumnName("name")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.description)
                 .HasColumnName("description")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.alias)
                 .IsRequired()
                 .HasColumnName("alias")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
-            builder.Property(t => t.create_by)
-                .HasColumnName("create_by")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+            builder.Property(t => t.created_by)
+                .HasColumnName("created_by")
+                .HasColumnType("text");
 
-            builder.Property(t => t.create_at)
+            builder.Property(t => t.created_at)
                 .IsRequired()
-                .HasColumnName("create_at")
-                .HasColumnType("timestamp without time zone");
+                .HasColumnName("created_at")
+                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("now()");
 
             builder.Property(t => t.modified_by)
                 .HasColumnName("modified_by")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
 
             builder.Property(t => t.modified_at)
                 .HasColumnName("modified_at")
                 .HasColumnType("timestamp without time zone");
 
             builder.Property(t => t.category_id)
+                .IsRequired()
                 .HasColumnName("category_id")
                 .HasColumnType("text");
 
             builder.Property(t => t.promotion_id)
                 .HasColumnName("promotion_id")
                 .HasColumnType("text");
+
+            builder.Property(t => t.display_order)
+                .IsRequired()
+                .HasColumnName("display_order")
+                .HasColumnType("integer")
+                .ValueGeneratedOnAdd();
 
             // relationships
             builder.HasOne(t => t.category_Categories)
@@ -75,7 +78,6 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .WithMany(t => t.promotion_ProductCategories)
                 .HasForeignKey(d => d.promotion_id)
                 .HasConstraintName("fk_productcategory_promotion");
-
             #endregion
         }
     }

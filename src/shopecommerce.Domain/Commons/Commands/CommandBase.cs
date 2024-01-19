@@ -16,7 +16,7 @@
     public abstract class CommandBase<TResponse> : ICommand<TResponse>
     {
         public Guid id { get; private set; }
-        public int user_id { get; private set; }
+        public string user_id { get; private set; }
         protected CommandBase()
         {
             this.id = Guid.NewGuid();
@@ -27,7 +27,7 @@
             this.id = id;
         }
 
-        public void SetUserId(int userId)
+        public void SetUserId(string userId)
         {
             this.user_id = userId;
         }

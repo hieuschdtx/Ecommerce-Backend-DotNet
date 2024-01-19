@@ -8,11 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\templates\EmailOrder.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.25" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\shopecommerce.Application\shopecommerce.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\banners\" />
+    <Folder Include="wwwroot\images\news\" />
+    <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\templates\EmailOrder.html" />
   </ItemGroup>
 
 </Project>

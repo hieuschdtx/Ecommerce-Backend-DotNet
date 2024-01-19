@@ -8,14 +8,14 @@ public class CategoryServiceBase
 {
     protected readonly ISqlConnectionFactory _factory;
 
-    protected CategoryServiceBase( ISqlConnectionFactory factory )
+    protected CategoryServiceBase(ISqlConnectionFactory factory)
     {
         _factory = factory;
     }
 
     public async Task<IEnumerable<CategoryDto>> GetAllCategoryAsync()
     {
-        const string commandText = @"select * from categories";
+        const string commandText = @"select * from categories order by display_order asc";
         using var conn = _factory.GetOpenConnection();
         return await conn.QueryAsync<CategoryDto>(commandText);
     }

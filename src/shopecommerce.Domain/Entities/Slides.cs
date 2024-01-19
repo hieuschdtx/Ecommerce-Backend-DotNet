@@ -10,14 +10,24 @@ namespace shopecommerce.Domain.Entities
 
         #region Generated Properties
         public new string id { get; set; }
-        public string name { get; set; }
+        private string _name;
+        public string name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+            }
+        }
         public string image { get; set; }
         public string url { get; set; }
-        public int? display_order { get; set; }
+        public int display_order { get; set; }
         public bool status { get; set; }
         #endregion
 
-        #region Generated Relationships
-        #endregion
+        public void SetImagefileName(string filename)
+        {
+            this.image = filename;
+        }
     }
 }

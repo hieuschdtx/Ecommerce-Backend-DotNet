@@ -18,7 +18,7 @@ public class UserRepository : IUserRepository
 
     public async Task<Users> GetByIdAsync(string id)
     {
-        return (await _context.Users.FirstOrDefaultAsync(x => Equals(BaseGuidEx.GetGuid(id), BaseGuidEx.GetGuid(x.id))))!;
+        return await _context.Users.FindAsync(id);
     }
 
     public async Task<Users> AddAsync(Users entity)
@@ -36,5 +36,15 @@ public class UserRepository : IUserRepository
     {
         _context.Remove(entity);
         await Task.CompletedTask;
+    }
+
+    public async Task<Users> GetUserByPhoneNumber(string phoneNumber)
+    {
+        return await _context.Users.FirstOrDefaultAsync(p => p.phone_number == phoneNumber);
+    }
+
+    public async Task<Users> GetUserByEmail(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(p => p.email == email);
     }
 }

@@ -23,13 +23,19 @@ namespace shopecommerce.Domain.Entities
             }
         }
         public string alias { get; set; }
-        public string description { get; set; }
-        public string detail { get; set; }
+        public string? description { get; set; }
+        public string? detail { get; set; }
         public string category_id { get; set; }
+        public string? image { get; set; }
         #endregion
 
         #region Generated Relationships
         public virtual Categories category_Categories { get; set; }
         #endregion
+
+        public void SetImageFileUrl(string imageFileUrl)
+        {
+            this.image = imageFileUrl;
+        }
     }
 }

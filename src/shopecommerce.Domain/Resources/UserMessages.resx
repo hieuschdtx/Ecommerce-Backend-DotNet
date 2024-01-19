@@ -124,7 +124,7 @@
     <value>Không tìm thấy dữ liệu.</value>
   </data>
   <data name="unauthorized" xml:space="preserve">
-    <value>Thông tin đăng nhập không hợp lệ.</value>
+    <value>Bạn chưa đăng nhập hoặc đã hết phiên làm việc.</value>
   </data>
   <data name="user_email_existed" xml:space="preserve">
     <value>Email đã được đăng ký.</value>
@@ -136,7 +136,7 @@
     <value>Thông tin User Id không hợp lệ.</value>
   </data>
   <data name="user_id_is_not_existed" xml:space="preserve">
-    <value>Thông tin User Id không tồn tại.</value>
+    <value>Thông tin người dùng không tồn tại.</value>
   </data>
   <data name="user_id_is_required" xml:space="preserve">
     <value>Thiếu thông tin User Id.</value>
@@ -152,5 +152,8 @@
   </data>
   <data name="user_phone_number_is_existed" xml:space="preserve">
     <value>Số điện thoại đã được đăng ký.</value>
+  </data>
+  <data name="user_phone_number_is_not_existed" xml:space="preserve">
+    <value>Số điện thoại không tồn tại.</value>
   </data>
 </root>

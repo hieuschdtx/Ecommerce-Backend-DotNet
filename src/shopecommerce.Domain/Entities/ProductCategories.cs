@@ -23,13 +23,14 @@ namespace shopecommerce.Domain.Entities
                 alias = HandleCharacter.ConvertAlias(value);
             }
         }
-        public string description { get; set; }
+        public string? description { get; set; }
         public string alias { get; set; }
         public string category_id { get; set; }
         public string promotion_id { get; set; }
+        public int display_order { get; set; }
         #endregion
 
-        #region Generated Relationships 
+        #region Generated Relationships
         public virtual Categories category_Categories { get; set; }
         public virtual ICollection<Products> product_category_Products { get; set; }
         public virtual Promotions promotion_Promotions { get; set; }

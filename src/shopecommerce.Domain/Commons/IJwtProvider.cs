@@ -4,7 +4,9 @@ namespace shopecommerce.Domain.Commons;
 
 public interface IJwtProvider
 {
-    Task<string> GenerateAsync(Users user);
+    Task<string> GenerateAccessTokenAsync(Users user);
     void SaveCookiesStorage(string token);
+    string GenerateRefreshToken();
     Task SignOutAsync();
+    Task<bool> VerifyAccessTokenAsync(string token);
 }

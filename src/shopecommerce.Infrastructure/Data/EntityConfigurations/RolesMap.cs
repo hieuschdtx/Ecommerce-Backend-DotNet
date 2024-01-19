@@ -30,14 +30,6 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
                 .HasColumnName("name")
                 .HasColumnType("text");
 
-            builder.Property(t => t.normalize_name)
-                .HasColumnName("normalize_name")
-                .HasColumnType("text");
-
-            builder.Property(t => t.concurrency_stamp)
-                .HasColumnName("concurrency_stamp")
-                .HasColumnType("text");
-
             // relationships
             #endregion
         }

@@ -16,16 +16,16 @@ namespace shopecommerce.Infrastructure.Data.EntityConfigurations
             builder.HasKey(t => t.id);
 
             // properties
-            builder.Property(t => t.id)
-                .IsRequired()
-                .HasColumnName("id")
-                .HasColumnType("text");
-
             builder.Property(t => t.name)
                 .IsRequired()
                 .HasColumnName("name")
-                .HasColumnType("character varying(256)")
-                .HasMaxLength(256);
+                .HasColumnType("text");
+
+            builder.Property(t => t.id)
+                .IsRequired()
+                .HasColumnName("id")
+                .HasColumnType("integer")
+                .ValueGeneratedOnAdd();
 
             // relationships
             #endregion
